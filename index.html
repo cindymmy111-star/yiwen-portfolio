@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="zh-CN" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>马益雯 Yiwen Ma · 个人主页</title>
+<meta name="description" content="马益雯 / Yiwen Ma —— 布里斯托大学商业分析硕士。在数据、行业和用户之间，寻找值得落地的答案。">
+<style>
+/* ══════════════════════════════════════════════════════════
+   暖调编辑室风格：浮动面板 + 衬线大字 + 封面人像
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --canvas:#deddd5;
+  --paper:#f6f3eb;
+  --paper-2:#ebe8df;
+  --ink:#181a17;
+  --ink-2:#f2f0e9;
+  --ink-2-soft:#9a9c95;
+  --muted:#686a63;
+  --line:rgba(24,26,23,.14);
+  --line-on:rgba(255,255,255,.15);
+  --sea:#305f68;
+  --sea-deep:#25505a;
+  --sage:#72806f;
+  --clay:#a96348;
+  --sand:#c7ad7b;
+  --radius:34px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--canvas);line-height:1.6;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+.serif{font-family:Georgia,"Times New Roman","Songti SC",serif}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+button,a{color:inherit;font:inherit}
+button{border:0;cursor:pointer;background:none}
+a{text-decoration:none}
+img{display:block;max-width:100%}
+::selection{color:var(--paper);background:var(--sea)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- 顶栏 ---------- */
+.topbar{position:fixed;z-index:200;left:28px;right:28px;top:18px;height:58px;padding:0 10px 0 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  border:1px solid rgba(255,255,255,.4);border-radius:99px;background:rgba(246,243,235,.8);
+  backdrop-filter:blur(18px) saturate(1.2);box-shadow:0 8px 30px rgba(20,24,20,.07)}
+.wordmark{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.04em}
+.wordmark i{width:7px;height:7px;border-radius:50%;background:var(--sea);flex:none}
+.wordmark sup{color:#8c8c84;font:9px ui-monospace,Menlo,monospace;letter-spacing:.1em}
+.topnav{display:flex;gap:2px}
+.topnav a{padding:8px 12px;color:var(--muted);border-radius:99px;font-size:12px;transition:.25s var(--ease)}
+.topnav a:hover,.topnav a.on{color:var(--ink);background:rgba(24,26,23,.06)}
+.nav-end{display:flex;align-items:center;gap:8px}
+.lang-toggle{display:flex;align-items:center;gap:1px;padding:3px;border-radius:99px;background:rgba(24,26,23,.06)}
+.lang-toggle button{padding:6px 12px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--muted);transition:.25s var(--ease)}
+.lang-toggle button.on{background:var(--ink);color:var(--paper)}
+.nav-resume{padding:10px 16px;border-radius:99px;color:var(--paper);background:var(--ink);font-size:11px;letter-spacing:.06em;white-space:nowrap}
+.nav-menu-btn{display:none;padding:8px 10px;font-size:12px}
+@media(max-width:980px){
+  .topbar{left:14px;right:14px}
+  .topnav{display:none;position:absolute;top:66px;left:0;right:0;padding:10px;flex-direction:column;
+    border-radius:18px;background:var(--paper);box-shadow:0 16px 40px rgba(24,26,23,.14)}
+  .topnav.open{display:flex}
+  .topnav a{padding:11px 14px}
+  .nav-resume{display:none}
+  .nav-menu-btn{display:block}
+}
+
+/* ---------- 面板骨架 ---------- */
+main{padding:10px}
+.panel{width:min(1440px,100%);margin:0 auto 10px;position:relative;overflow:hidden;border-radius:var(--radius)}
+.panel.dark{background:var(--ink);color:var(--ink-2)}
+.pad{padding:clamp(58px,9vw,110px) clamp(24px,6vw,92px)}
+.kicker{margin:0 0 22px;display:block;color:#8b8c85;font:10px ui-monospace,Menlo,monospace;letter-spacing:.2em;text-transform:uppercase}
+.dark .kicker{color:#787b73}
+.kicker b{color:var(--sea);font-weight:400}
+.dark .kicker b{color:#8fc0c9}
+.panel-head{display:grid;grid-template-columns:1fr 230px;align-items:end;gap:40px;margin-bottom:56px}
+.panel-head h2{margin:0;font-weight:400;font-size:clamp(38px,5vw,68px);line-height:1.05;letter-spacing:-.04em}
+.panel-head h2 em{color:var(--sea);font-style:italic}
+.dark .panel-head h2 em{color:#8fc0c9}
+.panel-head>p{margin:0;color:#8b8c85;text-align:right;font-size:11px}
+.dark .panel-head>p{color:#83857d}
+@media(max-width:700px){.panel-head{grid-template-columns:1fr;margin-bottom:38px}.panel-head>p{display:none}}
+
+/* ---------- 封面 ---------- */
+.hero-panel{min-height:calc(100svh - 20px);display:grid;grid-template-columns:52% 48%;background:var(--paper)}
+.hero-copy{z-index:2;align-self:center;padding:130px clamp(30px,6vw,90px) 50px}
+.hero-copy h1{margin:0;font-weight:400;font-size:clamp(38px,5vw,68px);line-height:1.06;letter-spacing:-.05em}
+.hero-copy h1 .thin{color:var(--muted);font-weight:300}
+.hero-claim{margin:18px 0 0;font-weight:400;font-size:clamp(22px,2.8vw,36px);
+  line-height:1.3;letter-spacing:-.03em;color:var(--muted);max-width:24ch}
+.hero-claim em{color:var(--sea);font-style:normal}
+.intro{max-width:520px;margin:30px 0 0;color:var(--muted);font-size:15px;line-height:1.9}
+.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}
+.hero-tags span{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);
+  border-radius:99px;font-size:11.5px;color:var(--muted)}
+.hero-tags span i{width:4px;height:4px;border-radius:50%;background:var(--sea)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.hero-actions button,.hero-actions a{display:inline-flex;align-items:center;justify-content:space-between;gap:22px;
+  min-width:148px;padding:13px 18px;border:1px solid var(--line);border-radius:99px;font-size:12px;transition:.28s var(--ease)}
+.hero-actions button{color:var(--paper);background:var(--ink)}
+.hero-actions button:hover,.hero-actions a:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(24,26,23,.13)}
+.direction-line{max-width:560px;margin-top:48px;padding-top:16px;display:grid;grid-template-columns:90px 1fr;border-top:1px solid var(--line)}
+.direction-line span{color:#96978f;font-size:11px}
+.direction-line p{margin:0;font-size:11px;line-height:1.8}
+
+.hero-photo{position:relative;align-self:center;justify-self:center;padding:60px clamp(24px,4vw,60px)}
+.hero-frame{position:relative;aspect-ratio:3/4;max-width:440px;overflow:hidden;border-radius:26px;background:var(--paper-2)}
+.hero-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.hero-photo:hover .hero-frame img{transform:scale(1.03)}
+.hero-photo .fcap{display:flex;justify-content:space-between;gap:12px;margin-top:14px;max-width:440px;
+  font:10.5px ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:980px){
+  .hero-panel{grid-template-columns:1fr;padding-top:84px}
+  .hero-copy{padding:52px 28px 46px}
+  .hero-photo{order:-1;padding:36px 28px 10px}
+  .hero-frame{max-width:360px}
+}
+@media(max-width:700px){
+  main{padding:6px}.panel{margin-bottom:6px;border-radius:24px}
+  .topbar{top:10px;left:10px;right:10px;padding:0 8px 0 14px}
+  .wordmark sup{display:none}
+  .hero-copy h1{font-size:40px}
+  .direction-line{grid-template-columns:1fr;gap:8px}
+}
+
+/* ---------- 数字条 ---------- */
+.stats-panel{padding:30px clamp(24px,6vw,92px);background:var(--paper-2);display:grid;grid-template-columns:repeat(4,1fr)}
+.stats-panel div{padding:0 22px;border-left:1px solid var(--line)}
+.stats-panel div:first-child{padding-left:0;border-left:none}
+.stat-n{font-weight:400;font-size:clamp(28px,3.2vw,44px);line-height:1;letter-spacing:-.03em}
+.stat-n i{font-style:normal;font-size:.4em;color:var(--muted);margin-left:4px}
+.stat-k{margin-top:9px;font-size:11px;color:var(--muted);letter-spacing:.02em}
+@media(max-width:700px){.stats-panel{grid-template-columns:1fr 1fr;gap:22px 0}
+  .stats-panel div:nth-child(2n+1){padding-left:0;border-left:none}}
+
+/* ---------- 关注领域 ---------- */
+.focus-panel{background:var(--paper)}
+.focus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,34px)}
+.focus-it{padding-top:20px;border-top:1px solid var(--line)}
+.focus-it .no{font:11px ui-monospace,Menlo,monospace;color:var(--sea);letter-spacing:.08em}
+.focus-it h4{margin:16px 0 9px;font-weight:400;font-size:19px;font-family:Georgia,"Songti SC",serif;letter-spacing:-.01em}
+.focus-it p{margin:0;font-size:13px;color:var(--muted);line-height:1.75}
+@media(max-width:880px){.focus-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.focus-grid{grid-template-columns:1fr}}
+
+/* ---------- 经历（深色手风琴） ---------- */
+.experience-panel .kicker{color:#787b73}
+.experience-list{border-top:1px solid var(--line-on)}
+.exp-row{border-bottom:1px solid var(--line-on)}
+.exp-trigger{width:100%;padding:24px 0;display:grid;grid-template-columns:56px 1fr auto 42px;gap:22px;align-items:center;
+  text-align:left;transition:padding .35s var(--ease),opacity .25s ease}
+.exp-trigger:hover{padding-left:10px}
+.experience-list:has(.exp-trigger:hover) .exp-trigger:not(:hover){opacity:.46}
+.exp-no{color:#696c65;font:11px ui-monospace,Menlo,monospace}
+.exp-trigger h3{margin:0;font-weight:400;font-family:Georgia,"Songti SC",serif;font-size:clamp(19px,2.1vw,27px)}
+.exp-trigger p{margin:5px 0 0;color:#898c85;font-size:12px}
+.exp-trigger time{color:#8c8f88;font:11px ui-monospace,Menlo,monospace;white-space:nowrap}
+.exp-trigger i{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.17);
+  border-radius:50%;font-style:normal;transition:.35s var(--ease)}
+.exp-row.active .exp-trigger i{color:var(--ink);background:#d9d5ca;transform:rotate(45deg)}
+.exp-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.exp-row.active .exp-body{grid-template-rows:1fr}
+.exp-inner{overflow:hidden;display:grid;grid-template-columns:.75fr 1.25fr;gap:50px}
+.exp-row.active .exp-inner{padding:0 74px 34px 78px}
+.exp-summary{margin:0;color:#d2d0c9;font:italic 16px/1.7 Georgia,serif}
+.exp-inner ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.exp-inner li{position:relative;padding-left:18px;color:#a2a49e;font-size:13px;line-height:1.75}
+.exp-inner li::before{content:"—";position:absolute;left:0;color:#686b65}
+.exp-inner li b{color:var(--ink-2);font-weight:500}
+.exp-tags{grid-column:2;display:flex;flex-wrap:wrap;gap:7px}
+.exp-tags span{padding:6px 10px;border:1px solid rgba(255,255,255,.15);border-radius:99px;color:#a8aaa4;font-size:10px}
+@media(max-width:820px){
+  .exp-trigger{grid-template-columns:34px 1fr 34px;gap:12px}
+  .exp-trigger time{grid-column:2;grid-row:2}
+  .exp-trigger i{grid-column:3;grid-row:1/3}
+  .exp-inner{grid-template-columns:1fr;gap:20px}
+  .exp-row.active .exp-inner{padding:0 0 28px 46px}
+  .exp-tags{grid-column:1}
+}
+
+/* ---------- 作品 ---------- */
+.work-panel{background:var(--paper)}
+.work-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+.work-grid>.work-card:first-child{grid-column:1/3;display:grid;grid-template-columns:.42fr .58fr;align-items:end;min-height:340px}
+.work-card{position:relative;overflow:hidden;padding:28px;display:flex;flex-direction:column;border-radius:24px;
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.work-card:hover{transform:translateY(-6px);box-shadow:0 26px 60px rgba(24,26,23,.14)}
+.work-card.clay{background:#b56f52;color:#fff9ef}
+.work-card.sea{background:#315d63;color:#f2efe6}
+.work-card.sage{background:#7b8574;color:#f8f5ec}
+.work-card-top{display:flex;justify-content:space-between;font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em;opacity:.72}
+.work-card-main{margin:auto 0 22px;display:grid;grid-template-columns:.38fr .62fr;gap:24px;align-items:end}
+.work-grid>.work-card:first-child .work-card-main{grid-column:1/3;margin:0}
+.work-metric{margin:0}
+.work-metric strong{display:block;font-weight:400;font-family:Georgia,serif;font-size:clamp(46px,5.6vw,84px);line-height:.8;letter-spacing:-.07em}
+.work-metric span{display:block;margin-top:10px;font-size:10px;opacity:.72}
+.work-card h3{margin:0;font-weight:400;font-family:Georgia,serif;font-size:clamp(22px,2.4vw,34px);line-height:1.06;letter-spacing:-.03em}
+.work-card-main>div>p{margin:13px 0 0;max-width:400px;font-size:12px;line-height:1.75;opacity:.78}
+.work-methods{display:flex;flex-wrap:wrap;gap:6px;position:relative;z-index:2}
+.work-methods span{padding:6px 9px;border:1px solid currentColor;border-radius:99px;font-size:9px;opacity:.6}
+.work-card>button.open-case{align-self:flex-start;margin-top:22px;padding:0;font:10px ui-monospace,Menlo,monospace;
+  letter-spacing:.1em;position:relative;z-index:2}
+.work-card>button.open-case span{margin-left:8px}
+.work-watermark{position:absolute;right:-14px;bottom:-58px;font:400 200px/1 Georgia,serif;opacity:.09;pointer-events:none}
+@media(max-width:980px){
+  .work-grid{grid-template-columns:1fr}
+  .work-grid>.work-card:first-child{grid-column:1;grid-template-columns:1fr}
+  .work-grid>.work-card:first-child .work-card-main{grid-column:1;grid-template-columns:1fr}
+}
+@media(max-width:700px){.work-card{min-height:auto;padding:22px}.work-card-main{grid-template-columns:1fr}}
+
+/* also built 列表 */
+.more-head{margin:clamp(50px,7vw,80px) 0 20px;padding-top:30px;border-top:1px solid var(--line)}
+.more-list{border-top:1px solid var(--line)}
+.more-row{display:grid;grid-template-columns:118px 1fr 190px;gap:clamp(14px,3vw,32px);align-items:baseline;
+  padding:22px 0;border-bottom:1px solid var(--line);transition:.35s var(--ease)}
+.more-row:hover{padding-left:8px}
+.more-row .d{font:11px ui-monospace,Menlo,monospace;color:var(--muted)}
+.more-row h4{margin:0;font-weight:400;font-family:Georgia,"Songti SC",serif;font-size:17px;letter-spacing:-.01em}
+.more-row .s{margin:6px 0 0;font-size:12.5px;color:var(--muted);line-height:1.65;max-width:56ch}
+.more-row .n{font-weight:400;font-family:Georgia,serif;font-size:clamp(17px,1.8vw,21px);letter-spacing:-.02em;text-align:right}
+.more-row .n em{display:block;font-style:normal;margin-top:3px;font-size:10.5px;color:var(--muted);letter-spacing:.02em}
+@media(max-width:820px){.more-row{grid-template-columns:1fr}.more-row .n{text-align:left}}
+
+/* ---------- 媒体报道 ---------- */
+.media-list{border-top:1px solid var(--line-on)}
+.media-row{display:grid;grid-template-columns:110px 1fr auto;gap:clamp(14px,3vw,30px);align-items:baseline;padding:22px 0;
+  border-bottom:1px solid var(--line-on);transition:.35s var(--ease)}
+.media-row:hover{padding-left:10px}
+.media-row .meta{font:11px ui-monospace,Menlo,monospace;color:#8fc0c9}
+.media-row .meta span{display:block;color:#8b8d85;margin-top:4px}
+.media-row h4{margin:0;font-weight:400;font-family:Georgia,"Songti SC",serif;font-size:16px;line-height:1.4}
+.media-row p{margin:6px 0 0;font-size:12.5px;color:#a3a59d;line-height:1.65;max-width:62ch}
+.media-row .go{font:11px ui-monospace,Menlo,monospace;color:#8b8d85;white-space:nowrap}
+@media(max-width:820px){.media-row{grid-template-columns:1fr}.media-row .go{display:none}}
+
+/* ---------- 播客 ---------- */
+.pod-grid{display:grid;grid-template-columns:minmax(190px,30%) 1fr;gap:clamp(26px,4.4vw,64px);align-items:start}
+.pod-art{aspect-ratio:1;position:relative;overflow:hidden;border-radius:18px;background:#232520;border:1px solid var(--line-on)}
+.pod-art img{width:100%;height:100%;object-fit:cover}
+.pod-meta{margin-top:16px;display:grid;gap:6px;font-size:12px;color:#a3a59d}
+.pod-quote{font:italic 400 clamp(18px,2vw,25px)/1.55 Georgia,serif;letter-spacing:-.01em;white-space:pre-line;max-width:34ch}
+.pod-link{display:inline-flex;margin-top:20px;align-items:center;gap:8px;font-size:12.5px;padding-bottom:3px;
+  border-bottom:1px solid var(--line-on);transition:.3s var(--ease)}
+.pod-link:hover{border-color:var(--ink-2);gap:12px}
+.eps{margin-top:clamp(30px,4vw,48px);border-top:1px solid var(--line-on)}
+.ep{display:grid;grid-template-columns:58px 1fr auto;gap:clamp(12px,2.4vw,26px);align-items:baseline;padding:19px 0;
+  border-bottom:1px solid var(--line-on);transition:.35s var(--ease)}
+.ep:hover{padding-left:10px}
+.ep .no{font:11px ui-monospace,Menlo,monospace;color:#8fc0c9}
+.ep h4{margin:0;font-weight:400;font-family:Georgia,"Songti SC",serif;font-size:16px;line-height:1.4}
+.ep p{margin:5px 0 0;font-size:12.5px;color:#a3a59d;max-width:56ch}
+.ep .go{font:11px ui-monospace,Menlo,monospace;color:#8b8d85;white-space:nowrap}
+@media(max-width:880px){.pod-grid{grid-template-columns:1fr}.pod-art{max-width:260px}.ep{grid-template-columns:44px 1fr}.ep .go{display:none}}
+
+/* ---------- 教育背景 ---------- */
+.edu-panel{background:#e8e5dc}
+.edu-head{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:baseline}
+.edu-head h3{margin:0;font-weight:400;font-size:clamp(24px,2.6vw,34px)}
+.edu-head p{margin:7px 0 0;color:var(--muted);font-size:14px}
+.edu-head>span{font:12px ui-monospace,Menlo,monospace;color:#85877f;white-space:nowrap}
+.row{display:grid;grid-template-columns:128px 1fr;gap:clamp(14px,3vw,32px);padding:18px 0;border-top:1px solid var(--line);font-size:14px}
+.row .k{font:10.5px ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.row .v{color:#454740;line-height:1.7}
+.row .v b{color:var(--ink);font-weight:600}
+.edu-block{margin-top:clamp(40px,5vw,64px)}
+.edu-block>h4{margin:0 0 4px;font:10.5px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.honor-it{padding:16px 0;border-top:1px solid var(--line)}
+.honor-it b{font-size:14.5px;font-weight:600}
+.honor-it .s{margin-top:5px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.campus-it{padding:24px 0;border-top:1px solid var(--line)}
+.campus-it .chead{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.campus-it .role{font-family:Georgia,"Songti SC",serif;font-size:16.5px;font-weight:500;letter-spacing:-.01em}
+.campus-it .org{margin-top:3px;font-size:12.5px;color:var(--muted)}
+.campus-it time{font:11px ui-monospace,Menlo,monospace;color:var(--muted);white-space:nowrap}
+.campus-it ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:9px}
+.campus-it li{position:relative;padding-left:16px;font-size:12.5px;color:#454740;line-height:1.75}
+.campus-it li::before{content:"—";position:absolute;left:0;color:var(--sea)}
+@media(max-width:760px){.row{grid-template-columns:1fr;gap:5px}.edu-head{grid-template-columns:1fr}
+  .campus-it .chead{flex-direction:column;gap:4px}}
+
+/* ---------- 抽卡 ---------- */
+.cards-panel{background:#d1c4aa}
+.tabs{display:flex;gap:22px;margin-bottom:clamp(24px,3.2vw,38px)}
+.tabs button{font-size:13px;color:#6f6a5c;padding-bottom:6px;border-bottom:1px solid transparent;transition:.3s}
+.tabs button.on{color:var(--ink);border-color:var(--ink)}
+.gacha{display:grid;grid-template-columns:236px 1fr;gap:clamp(24px,4vw,50px);align-items:start}
+.deck-side{position:sticky;top:100px}
+.deck{position:relative;width:100%;max-width:200px;aspect-ratio:.72;cursor:pointer;margin-bottom:20px}
+.dc{position:absolute;inset:0;border-radius:16px;background:#f4f0e5;border:1px solid rgba(24,26,23,.19);transition:.5s var(--ease)}
+.dc:nth-child(1){transform:translate(9px,9px) rotate(3deg);opacity:.4}
+.dc:nth-child(2){transform:translate(4.5px,4.5px) rotate(1.5deg);opacity:.7}
+.deck:hover .dc:nth-child(1){transform:translate(15px,13px) rotate(6deg)}
+.deck:hover .dc:nth-child(2){transform:translate(7px,6px) rotate(3deg)}
+.deck:hover .dc:nth-child(3){transform:translateY(-7px) rotate(-1.5deg)}
+.dface{display:grid;place-items:center;overflow:hidden}
+.dface .in{position:absolute;inset:11px;border:1px solid rgba(24,26,23,.15);border-radius:9px}
+.dface .mk{position:relative;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8c8a82}
+.dface .sh{position:absolute;top:-60%;left:-60%;width:60%;height:220%;transform:rotate(22deg);
+  background:linear-gradient(90deg,transparent,rgba(48,95,104,.14),transparent);animation:sh 4.2s ease-in-out infinite}
+@keyframes sh{0%{left:-70%}55%,100%{left:130%}}
+.deck-meta{font-size:13px;color:#514e43}
+.deck-meta b{color:var(--ink)}
+.deck-meta .h{font-size:11px;color:#7a7666;margin-top:5px}
+.deck-act{display:flex;gap:18px;margin-top:16px;flex-wrap:wrap}
+.deck-act button{font-size:12px;padding-bottom:3px;border-bottom:1px solid rgba(24,26,23,.3);color:#514e43;transition:.25s}
+.deck-act button:hover{border-color:var(--ink);color:var(--ink)}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+.slot{aspect-ratio:.72;border:1px dashed rgba(24,26,23,.22);border-radius:16px;display:grid;place-items:center;
+  color:#8c8a82;font-size:10px;letter-spacing:.3em}
+.gcard{aspect-ratio:.72;position:relative;animation:deal .6s var(--ease) backwards}
+@keyframes deal{from{opacity:0;transform:translateY(22px) rotateY(-70deg)}to{opacity:1;transform:none}}
+.gc{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;overflow:hidden;text-align:left;
+  border-radius:16px;color:var(--ink);background:
+    linear-gradient(rgba(24,26,23,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(24,26,23,.055) 1px,transparent 1px),#f4f0e5;
+  background-size:22px 22px;border:1px solid rgba(24,26,23,.19);
+  box-shadow:9px 10px 0 rgba(24,26,23,.08);transition:.4s var(--ease)}
+.gcard:hover .gc{transform:translateY(-6px) rotate(-1deg);box-shadow:11px 16px 0 rgba(24,26,23,.1),0 22px 44px rgba(24,26,23,.16)}
+.gcard[data-r="SSR"] .gc{border-color:var(--sea)}
+.gc-pic{position:absolute;inset:0;overflow:hidden;opacity:.16}
+.gc-pic img{width:100%;height:100%;object-fit:cover;filter:saturate(.3)}
+.gcard:hover .gc-pic{opacity:.3}
+.gc-t{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:baseline;
+  font:10px ui-monospace,Menlo,monospace;color:#8c8a82}
+.gcard[data-r="SSR"] .gc-t .r{color:var(--sea)}
+.gc-n{position:relative;z-index:2;margin:auto 0 8px;font-weight:400;font-family:Georgia,"Songti SC",serif;font-size:23px;letter-spacing:-.01em}
+.gc-d{position:relative;z-index:2;font-size:11.5px;color:#5b584f;line-height:1.55}
+.bar{position:relative;z-index:2;height:1px;background:rgba(24,26,23,.15);margin-top:12px}
+.bar i{position:absolute;left:0;top:0;height:1px;background:var(--sea);width:0;transition:width 1.1s var(--ease) .2s}
+.gc-l{position:relative;z-index:2;display:flex;justify-content:space-between;font:9.5px ui-monospace,Menlo,monospace;color:#8c8a82;margin-top:7px}
+@media(max-width:860px){.gacha{grid-template-columns:1fr}.deck-side{position:static}}
+
+/* ---------- 摄影墙 ---------- */
+.wall-panel .kicker{color:#787b73}
+.wall{columns:4;column-gap:10px}
+@media(max-width:1000px){.wall{columns:3}}
+@media(max-width:640px){.wall{columns:2}}
+.shot{break-inside:avoid;margin-bottom:10px;position:relative;overflow:hidden;border-radius:14px;cursor:zoom-in;background:#232520}
+.shot img{width:100%;filter:grayscale(1) contrast(1.04);transition:.8s var(--ease);opacity:.92}
+.shot:hover img{filter:none;opacity:1}
+.shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 13px 12px;font-size:12.5px;color:#fff;
+  background:linear-gradient(transparent,rgba(10,9,8,.86) 40%);opacity:0;transition:.45s var(--ease);letter-spacing:.01em}
+.shot:hover figcaption{opacity:1}
+.shot figcaption b{font-weight:500;display:block;font-family:Georgia,"Songti SC",serif;font-size:14px}
+.shot figcaption i{font-style:normal;display:block;color:rgba(255,255,255,.5);font-size:9.5px;margin-top:3px;letter-spacing:.1em;text-transform:uppercase}
+.shot figcaption .story{display:block;color:rgba(255,255,255,.72);font-size:11px;margin-top:7px;line-height:1.5}
+
+/* ---------- 结尾 ---------- */
+.footer-panel{min-height:560px;display:flex;flex-direction:column;padding-bottom:34px}
+.footer-panel h2{margin:0;font-weight:400;font-size:clamp(46px,7vw,100px);line-height:1.06;letter-spacing:-.04em}
+.footer-panel h2 b{font-weight:400;color:#8fc0c9;font-style:italic}
+.footer-link{margin-top:auto;padding:20px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--line-on);
+  color:#b9bbb4;font:16px ui-monospace,Menlo,monospace}
+.footer-meta{padding-top:22px;display:flex;justify-content:space-between;color:#666961;font:9px ui-monospace,Menlo,monospace;letter-spacing:.12em}
+.foot-cols{margin-top:44px;display:grid;grid-template-columns:1.2fr .8fr .6fr;gap:clamp(22px,4vw,54px)}
+.foot-cols h5{margin:0 0 14px;font:10px ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:#787b73}
+.foot-cols .li{display:grid;gap:10px;font-size:13.5px}
+.foot-cols .li a,.foot-cols .li span{color:#c2c3bc;transition:.25s}
+.foot-cols .li a:hover{color:#fff}
+@media(max-width:760px){.foot-cols{grid-template-columns:1fr}}
+
+/* ---------- 弹窗通用 ---------- */
+.overlay{position:fixed;z-index:500;inset:0;padding:22px;display:none;place-items:center;background:rgba(18,20,17,.76);backdrop-filter:blur(14px)}
+.overlay.open{display:grid}
+.resume-modal{width:min(940px,100%);max-height:92vh;overflow:hidden;border-radius:22px;background:var(--paper)}
+.modal-bar,.modal-links{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.modal-bar p{margin:0;font-size:13px}
+.resume-modal iframe{width:100%;height:68vh;border:0;background:#fff}
+.modal-links{justify-content:flex-end;gap:10px;border:0;border-top:1px solid var(--line)}
+.modal-links a{padding:8px 13px;border-radius:99px;color:var(--paper);background:var(--ink);font-size:11px}
+.fb{padding:40px 26px;display:grid;place-content:center;justify-items:center;gap:12px;text-align:center}
+.fb .s{font-size:13px;color:var(--muted);max-width:400px}
+.fb code{background:var(--paper-2);border:1px solid var(--line);padding:2px 7px;font-size:12px;border-radius:4px}
+
+/* 作品 弹窗 */
+.case-modal{width:min(1120px,100%);max-height:92vh;padding:22px;overflow:auto;border-radius:26px;color:var(--ink);background:#f6f3eb}
+.case-head{position:sticky;z-index:4;top:-22px;margin:-22px -22px 0;padding:18px 22px;display:flex;justify-content:space-between;
+  border-bottom:1px solid var(--line);background:rgba(246,243,235,.9);backdrop-filter:blur(14px);
+  font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em}
+.case-intro{padding:36px 16px 28px;display:grid;grid-template-columns:.18fr .82fr;gap:28px;align-items:end}
+.case-number{margin:0;font:400 90px/.8 Georgia,serif;color:var(--sea);opacity:.22}
+.case-modal.clay .case-number{color:var(--clay)}
+.case-modal.sage .case-number{color:var(--sage)}
+.case-modal h2{margin:0;max-width:820px;font-weight:400;font-family:Georgia,serif;font-size:clamp(34px,4.6vw,64px);line-height:.97;letter-spacing:-.04em}
+.case-modal h3{max-width:720px;margin:18px 0 0;font:italic 400 17px/1.55 Georgia,"Songti SC",serif;color:var(--muted)}
+.case-kind{display:block;margin-top:10px;font-size:12px;color:var(--sea)}
+.case-modal.clay .case-kind{color:var(--clay)}
+.case-modal.sage .case-kind{color:var(--sage)}
+.case-gallery{overflow:hidden;border-radius:18px;background:#e9e4d9}
+.case-figure{height:min(54vh,560px);display:grid;place-items:center;padding:18px;background:#eeebe4}
+.case-figure img{width:100%;height:100%;object-fit:contain;filter:saturate(.92)}
+.case-gallery-nav{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);
+  font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em}
+.case-gallery-nav div{display:flex;gap:6px}
+.case-gallery-nav button{width:34px;height:29px;border:1px solid var(--line);border-radius:99px;background:transparent}
+.case-story{padding:40px 16px 16px;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:36px}
+.case-label{margin:0 0 16px;font:10px ui-monospace,Menlo,monospace;letter-spacing:.12em;color:var(--muted)}
+.case-detail{max-width:560px;margin:0 0 20px;font-size:13px;line-height:1.85;color:#454740}
+.case-story ul{margin:0;padding:0;list-style:none}
+.case-story li{position:relative;padding:0 0 12px 17px;font-size:12px;line-height:1.7;color:#55574f}
+.case-story li::before{content:"—";position:absolute;left:0;color:var(--sea)}
+.case-story li b{color:var(--ink);font-weight:600}
+.case-change .big{font:400 clamp(30px,3.6vw,46px)/.9 Georgia,serif;letter-spacing:-.03em}
+.case-change .big i{font-style:normal;font-size:.34em;color:var(--muted);margin-left:5px}
+.case-change .txt{margin-top:12px;font-size:12.5px;color:#55574f;line-height:1.7}
+.case-takeaway{grid-column:1/-1;margin-top:6px;padding-top:22px;border-top:1px solid var(--line)}
+.case-takeaway p{font:italic 400 14px/1.8 Georgia,serif;color:var(--muted);max-width:74ch}
+.case-links{margin:16px;padding:22px 0 4px;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line)}
+.case-links a{padding:11px 15px;border-radius:99px;color:var(--paper);background:var(--ink);font-size:11px}
+@media(max-width:700px){
+  .overlay{padding:8px}
+  .case-modal{padding:16px}
+  .case-head{top:-16px;margin:-16px -16px 0;padding:14px 16px}
+  .case-intro{padding:30px 4px 24px;grid-template-columns:1fr;gap:16px}
+  .case-number{font-size:58px}
+  .case-modal h2{font-size:34px}
+  .case-figure{height:40vh;padding:6px}
+  .case-story{padding:30px 4px 8px;grid-template-columns:1fr;gap:30px}
+  .case-links{margin:6px;flex-direction:column;align-items:flex-start}
+}
+
+/* 灯箱 */
+.lb{position:fixed;inset:0;z-index:520;display:none;place-items:center;background:rgba(14,13,12,.95);padding:26px;cursor:zoom-out}
+.lb.open{display:grid}
+.lb img{max-width:100%;max-height:86vh;border-radius:10px}
+.lb .cap{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:11.5px;color:rgba(255,255,255,.62);letter-spacing:.12em;text-transform:uppercase}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="wordmark" href="#top"><i></i><span class="fnameEn">Yiwen Ma</span></a>
+  <nav class="topnav" id="topnav">
+    <a href="#top" data-en="Home">主页</a><a href="#focus" data-en="Focus">关注领域</a><a href="#exp" data-en="Experience">经历</a><a href="#work" data-en="Work">作品</a>
+    <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a><a href="#skill" data-en="Interests">技能爱好</a>
+  </nav>
+  <div class="nav-end">
+    <div class="lang-toggle" id="langToggle">
+      <button data-lang="en">EN</button><button data-lang="zh" class="on">中文</button>
+    </div>
+    <button class="nav-resume" data-resume data-en="View Resume ↗">查看简历 ↗</button>
+    <button class="nav-menu-btn" id="menuBtn" data-en="Menu">菜单</button>
+  </div>
+</header>
+
+<main>
+
+<!-- 封面 -->
+<section id="top" class="panel hero-panel">
+  <div class="hero-copy rv">
+    <span class="kicker" id="statusText"></span>
+    <h1 id="heroName"></h1>
+    <p class="hero-claim" id="heroTitle"></p>
+    <p class="intro" id="intro"></p>
+    <div class="hero-tags" id="who"></div>
+    <div class="hero-actions">
+      <button data-resume data-en="View Resume &lt;span&gt;↗&lt;/span&gt;">查看简历 <span>↗</span></button>
+      <a href="#work" data-en="View Work &lt;span&gt;↓&lt;/span&gt;">查看作品 <span>↓</span></a>
+    </div>
+    <div class="direction-line">
+      <span data-en="Currently looking for">正在寻找</span>
+      <p id="lookingFor"></p>
+    </div>
+  </div>
+  <div class="hero-photo rv">
+    <div class="hero-frame"><img src="assets/photos/cover-westminster.jpg" alt="马益雯 Cindy · Westminster Bridge, London"></div>
+    <div class="fcap"><span>Westminster Bridge, London</span><span>2026</span></div>
+  </div>
+</section>
+
+<section class="panel stats-panel rv" id="nums"></section>
+
+<!-- 关注领域 -->
+<section id="focus" class="panel focus-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>02</b> <span data-en="FOCUS">关注领域</span></span><h2 data-en="Four areas &lt;br&gt;I keep coming back to.">四个我常驻的<br>关注领域。</h2></div>
+      <p data-en="From user interviews to financial models — these are the four things I do most solidly.">从用户访谈到财务模型，这是我目前做得最踏实的四块。</p>
+    </div>
+    <div class="focus-grid rv" id="focusGrid"></div>
+  </div>
+</section>
+
+<!-- 经历 -->
+<section id="exp" class="panel dark experience-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>03</b> <span data-en="EXPERIENCE">经历</span></span><h2 data-en="Experience is not a list &lt;br&gt;— it is the &lt;em&gt;path&lt;/em&gt; that built the skills.">经历不是清单，<br>是能力形成的<em>路径</em>。</h2></div>
+      <p data-en="Click to expand each role">点击展开每一段经历</p>
+    </div>
+    <div class="experience-list rv" id="timeline"></div>
+  </div>
+</section>
+
+<!-- 作品 -->
+<section id="work" class="panel work-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>04</b> <span data-en="SELECTED WORK">精选作品</span></span><h2 data-en="Research and work.&lt;br&gt;&lt;em&gt;The question comes first, the tool second.&lt;/em&gt;">研究与作品。<br><em>先有问题，再有工具。</em></h2></div>
+      <p data-en="Three projects, three ways of understanding a business">三个项目，三种理解业务的方式</p>
+    </div>
+    <div class="work-grid rv" id="workGrid"></div>
+
+    <div class="more-head rv"><span class="kicker">04.1 <span data-en="ALSO BUILT">其他项目</span></span></div>
+    <div class="more-list rv" id="more"></div>
+  </div>
+</section>
+
+<!-- 媒体报道 -->
+<section id="media" class="panel dark">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>05</b> <span data-en="IN THE PRESS">媒体报道</span></span><h2 data-en="A few moments&lt;br&gt;&lt;em&gt;someone else noticed&lt;/em&gt;.">被看见的<br><em>几个瞬间</em>。</h2></div>
+      <p data-en="Publicly verifiable third-party coverage">公开可查的第三方报道</p>
+    </div>
+    <div class="media-list rv" id="mediaList"></div>
+  </div>
+</section>
+
+<!-- 播客 -->
+<section id="pod" class="panel dark">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>06</b> <span data-en="PODCAST">播客</span></span><h2 id="podTitle"></h2></div>
+      <p data-en="Listen on Xiaoyuzhou">点开在小宇宙收听</p>
+    </div>
+    <div class="pod-grid rv" id="podBox"></div>
+  </div>
+</section>
+
+<!-- 教育背景 -->
+<section id="edu" class="panel edu-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>07</b> <span data-en="EDUCATION">教育背景</span></span><h2 data-en="Education.">教育背景。</h2></div>
+      <p></p>
+    </div>
+    <div class="rv" id="eduBox"></div>
+  </div>
+</section>
+
+<!-- 技能爱好 -->
+<section id="skill" class="panel cards-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>08</b> <span data-en="DRAW A CARD">抽卡</span></span><h2 data-en="Skills &amp;amp; interests —&lt;br&gt;draw a card.">技能 &amp; 兴趣<br>抽卡。</h2></div>
+      <p data-en="Draw from the deck — what you get joins the collection">点卡堆抽一张，抽到的进图鉴</p>
+    </div>
+    <div class="rv">
+      <div class="tabs" id="tabs">
+        <button data-pool="skill" class="on" data-en="Skill Pool">技能卡池</button>
+        <button data-pool="hobby" data-en="Interest Pool">兴趣卡池</button>
+      </div>
+      <div class="gacha">
+        <div class="deck-side">
+          <div class="deck" id="deck">
+            <div class="dc"></div><div class="dc"></div>
+            <div class="dc dface"><span class="in"></span><span class="mk" id="deckMark">Skill</span><span class="sh"></span></div>
+          </div>
+          <div class="deck-meta"><span data-en="Drawn">已抽到</span> <b id="drawn">0</b> / <span id="total">0</span>
+            <div class="h" id="deckHint">点击卡堆抽一张</div></div>
+          <div class="deck-act">
+            <button id="drawBtn" data-en="Draw">抽一张</button>
+            <button id="allBtn" data-en="Reveal All">全部展开</button>
+            <button id="resetBtn" data-en="Reset">重置</button>
+          </div>
+        </div>
+        <div class="grid-cards" id="cardGrid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 摄影墙 -->
+<section id="photo" class="panel dark wall-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>08.1</b> <span data-en="PHOTOGRAPHY">摄影</span></span><h2 data-en="Photography · Travel.">摄影 · 旅行。</h2></div>
+      <p id="wallSub"></p>
+    </div>
+    <div class="wall rv" id="wall"></div>
+  </div>
+</section>
+
+<!-- 结尾 -->
+<footer id="contact" class="panel dark footer-panel">
+  <div class="pad" style="display:flex;flex-direction:column;flex:1">
+    <span class="kicker rv"><b>09</b> <span data-en="LET'S TALK">联系方式</span></span>
+    <h2 class="rv" data-en="If you are also looking&lt;br&gt;&lt;b&gt;for an answer worth acting on.&lt;/b&gt;">如果你也在寻找<br><b>值得落地的答案。</b></h2>
+    <a class="footer-link rv" href="mailto:cindyyiwen0101@163.com">cindyyiwen0101@163.com <span>↗</span></a>
+    <div class="foot-cols rv">
+      <div>
+        <h5>Contact</h5>
+        <div class="li"><span data-en="Bristol, UK · Open to remote or relocating to China">Bristol, UK · 可远程 / 可回国面试</span></div>
+      </div>
+      <div>
+        <h5>Elsewhere</h5>
+        <div class="li">
+          <a id="footPod" target="_blank" rel="noopener" data-en="Close Up, Wide Lens · Xiaoyuzhou">《近距远观》· 小宇宙</a>
+          <a href="https://www.linkedin.com/in/yiwen-ma-cindy" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/cindymmy111-star" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <div>
+        <h5>Index</h5>
+        <div class="li">
+          <a href="#focus" data-en="Focus">关注领域</a><a href="#exp" data-en="Experience">经历</a><a href="#work" data-en="Work">作品</a><a href="#media" data-en="Press">媒体报道</a>
+          <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta rv"><span>YIWEN MA © 2026</span><span>BRISTOL / NANJING</span></div>
+  </div>
+</footer>
+
+</main>
+
+<div class="overlay" id="resumeOverlay">
+  <div class="resume-modal" onclick="event.stopPropagation()">
+    <div class="modal-bar"><p id="resumeModalTitle">马益雯 · 中文简历</p><button data-close data-en="Close">关闭</button></div>
+    <div id="resumeBody"></div>
+    <div class="modal-links"><a href="assets/resume.pdf" target="_blank" data-en="Open in new tab">新窗口打开</a><a href="assets/resume.pdf" download data-en="Download PDF">下载 PDF</a></div>
+  </div>
+</div>
+
+<div class="overlay" id="workOverlay"><div id="workModalBody"></div></div>
+
+<div class="lb" id="lb"><img id="lbImg" alt=""><div class="cap" id="lbCap"></div></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   【内容配置区】—— 与主站内容保持一致
+   ══════════════════════════════════════════════════════════ */
+const CONTENT = { zh: {
+  name:"马益雯 Cindy", nameSub:"Yiwen Ma", nameEn:"CINDY",
+  email:"cindyyiwen0101@163.com",
+  resume:"assets/resume.pdf",
+  status:"University of Bristol · MSc Business Analytics",
+  heroHtml:`在数据、行业和用户之间，<br>寻找<em>值得落地</em>的答案。`,
+  intro:"你好，我是马益雯 Cindy。金融学本科、商业分析硕士，经历横跨证券研究、咨询、互联网产品与数据分析。",
+  who:["本科金融 · 硕士商业分析","商业分析 / 产品 / 数据分析 / 行研 / 咨询","播客主播 · 摄影 · 古筝十级"],
+  lookingFor:"Data / Product Analytics · Business Analysis · 科技与产业研究",
+  wallCaption:"富士随身机拍的 {n} 张 —— 瑞士、英国、法国、意大利。点图放大，悬停恢复彩色。",
+  ui:{
+    closeX:"关闭 ✕", openDemo:"打开 Demo ↗", viewRepo:"看源码 ↗",
+    resumeModalTitle:"马益雯 · 中文简历", resumeIframeTitle:"简历",
+    noResumeTitle:"还没放简历文件", noResumeBody:'把 PDF 命名为 <code>resume.pdf</code> 放进 <code>assets/</code> 即可自动预览。',
+    gachaHintDefault:"点击卡堆抽一张", gachaHintPoolDone:"卡池已抽完，可重置", gachaHintAllDrawn:"都抽到啦，点重置",
+    gachaProficiency:"熟练度", gachaPassion:"热爱度"
+  },
+
+  focus:[
+    {no:"01",t:"产品与用户研究",d:"半结构化访谈、端到端工作流梳理、需求拆解，把定性反馈变成有优先级的产品迭代方向。"},
+    {no:"02",t:"行业研究与产业链拆解",d:"跟踪政策与技术路线，拆解产业链竞争位置，测算市场空间与增长驱动。"},
+    {no:"03",t:"数据分析与建模",d:"SQL 清洗聚合、Python（Pandas / scikit-learn / statsmodels）与 Tableau，把假设变成可验证的结论。"},
+    {no:"04",t:"商业与财务分析",d:"NPV 与敏感性分析、盈利预测拆分、可比公司对比，为投资与经营决策提供依据。"}
+  ],
+
+  nums:[
+    {n:"6",i:"段",k:"经历 · 产品 / 行研 / 咨询 / 风控 / 审计"},
+    {n:"9",i:"期",k:"播客单集 · 独立策划到剪辑"},
+    {n:"173",i:"国",k:"最大一次分析的数据覆盖范围"},
+    {n:"12",i:"张",k:"摄影精选"}
+  ],
+
+  timeline:[
+    { y:"2026.01 — 05", role:"IBM Group Project · 学生开发者", co:"IBM × University of Bristol", tag:"产品",
+      summary:"把「下一门课学什么」，变成一套讲得清逻辑的推荐系统。",
+      points:[
+        "为 IBM SkillsBuild 平台设计课程推荐系统，把「选课」重新定义成<b>可解释的评分问题</b>——角色匹配、学科关联度、难度分级、技能缺口奖励、前置技能校验、兴趣关键词，六项规则各自打分再加权求和。",
+        "难度门控是我坚持要加的：按学生年级限定可推荐的课程难度，避免系统给低年级学生推一堆「听起来对口、实际学不下去」的高阶课。",
+        "独立实现纯前端单页应用（HTML/CSS/JS）的规则引擎与打分逻辑，对 <b>12 门课程</b>结构化打分排序，输出可追溯的 Top 4 学习路径。",
+        "与 <b>6 人</b>跨职能团队协作，撰写架构图与评分算法说明文档，减少前端与客户沟通的返工。"],
+      abil:["产品设计","规则引擎","数据建模","跨职能协作"] },
+    { y:"2025.01 — 05", role:"产品实习生", co:"字节跳动 ByteDance · 深圳", tag:"产品",
+      summary:"从三家漫画工作室的真实工作流出发，把模糊的创作反馈变成可评价、可迭代的产品问题。",
+      points:[
+        "对 <b>3 家</b>专业漫画工作室做半结构化访谈与端到端工作流梳理，定位重复性环节、模型质量问题，以及 AI 辅助创作工具的采纳阻碍。",
+        "把定性反馈转成有优先级的需求，并共同搭建 <b>12 项指标</b>的离线评测框架（线条完整度、上色区域准确率、画风一致性），支撑模型选型、版本对比与功能迭代。",
+        "搭内部看板监控活跃、功能使用、任务完成与留存，定位用户旅程摩擦点，试点用户留存<b>相对提升约 7%</b>。"],
+      abil:["用户研究","需求拆解","评测框架设计","数据看板"] },
+    { y:"2024.11 — 2025.01", role:"行业研究实习生 · 机械组", co:"山西证券 行业研究所 · 上海", tag:"行研",
+      summary:"在产业信息、公司财务和供应链数据之间，寻找能够支持投资判断的证据。",
+      points:[
+        "围绕机械、AIDC（AI 数据中心）、轨交装备、人形机器人做行业与公司研究，跟踪市场动态、业务模式与重点厂商布局，产出 <b>5 份以上</b>研究底稿与专题材料。",
+        "拆解 AIDC 产业链<b>约 12 家</b>公司的技术路线、客户结构、产能规划、供应链与竞争位置，识别成长驱动与国产替代机会。",
+        "更新振宇科技、中国中车等公司盈利预测，完成主营业务拆分与分部收入、毛利、费用、现金流、EPS / ROE / ROIC 测算，并对约 15 家上市公司做 PE / PB / EV-EBITDA 对比；参与发动机、发电机盈利预测模型搭建，<b>预测准确率提高 15%</b>。",
+        "用 SQL 清洗标准化 2020–2024 城轨招标数据：<b>217 个项目、26,088 辆车、约 2,063 亿元</b>合同额，形成结构化数据集支撑市场空间测算与车辆需求预测。",
+        "收集整理液冷设备、发电机组等行业数据搭建结构化底稿；参与 <b>AIDC 行业白皮书</b>撰写，搭建中美供应链成本比较模型，分析不同市场下的成本结构与竞争差异。"],
+      abil:["行业研究","产业链拆解","盈利预测","SQL 数据清洗","跨市场比较"] },
+    { y:"2024.05 — 08", role:"咨询部实习生", co:"致同会计师事务所 Grant Thornton · 深圳", tag:"咨询",
+      summary:"把制度、流程与财务数据放在同一张图里，理解组织如何真正运转。",
+      points:[
+        "参与制造业与物流装备升级项目，搭 Excel <b>NPV 模型</b>与敏感性分析评估设备升级方案，测算相对基准方案<b>最高约 23%</b> 的成本节省空间，交付 Excel 模型与书面报告支持投资决策。",
+        "为医疗客户做内控手册与预算管理评估：梳理预算编报与调整、预算绩效、收支与付款、采购招投标、合同履约、资产盘点报废等关键流程，明确岗位职责分离与审批权限，识别控制缺口并协助形成<b>内控手册初稿</b>。",
+        "提出的改进建议——不相容岗位分离、按金额分级审批、强化预算刚性约束、建立月度预算执行分析与「绩效目标—监控—评价—整改」闭环——被纳入正式客户报告。",
+        "日均核查 <b>1,000+ 条</b>交易记录，重点核对重复账单与授权缺失，识别 <b>38 项</b>异常并结构化成问题清单供管理层复核。",
+        "参与公共部门智能设备<b>补贴资格评估</b>，按预设资格标准核对客户申报材料与申请条件。"],
+      abil:["财务测算","流程梳理","内控评估","异常识别","合规核查"] },
+    { y:"2024.01 — 02", role:"风控合规部实习生", co:"东海证券 · 南京", tag:"风控",
+      summary:"第一次近距离参与风险管理体系的建设，理解合规如何在业务一线真正生效。",
+      points:[
+        "参与风险管理体系的建设与运作——风险识别、评估、监控与应对，协助识别评估潜在风险点 <b>20 项以上</b>，有效监控使风险事件发生率<b>降低 15%</b>。",
+        "负责审查反洗钱黑名单系统，确保无一遗漏，保障交易合规性。",
+        "研究公司合规政策，参与策划并执行 <b>3 场</b>合规培训，覆盖员工超百人。"],
+      abil:["风险识别","反洗钱审查","合规培训"] },
+    { y:"2023.06 — 07", role:"税务部实习生", co:"中审众环会计师事务所 · 江苏分所", tag:"审计",
+      summary:"从一张张凭证里，学会怎么把细节核对做成一件靠谱的事。",
+      points:[
+        "协助完成 <b>2 个</b>审计项目，通过细致检索凭证识别并报告被审单位管理漏洞与潜在违约点 <b>12 处</b>，审计效率<b>提升约 20%</b>。",
+        "完成会计凭证整理与账证核对，校对会计档案、参与审计底稿制定；主动与合作公司沟通协调资料收集。"],
+      abil:["凭证核查","审计底稿","细节把控","对外沟通"] }
+  ],
+
+  cases:[
+    { no:"01", tone:"clay", type:"INDUSTRY RESEARCH", name:"人形机器人产业透视",
+      kind:"行业研究简报 · 数据网站　|　个人项目　|　2026.09",
+      subtitle:"60+ 条数据全部挂回一手来源，把行业里对不上的数字理清楚。",
+      metric:"60+", metricLabel:"条一手信源",
+      problem:"人形机器人是这两年最热也最乱的赛道——高盛说 2035 年出货 140 万台，Macquarie 说 110 万台，各家机构口径、时间点都不一样，网上还流传一堆查无实据的「在手订单」传闻。<b>普通读者根本分不清哪个数字能信。</b>",
+      judge:"我不想再做一份新闻合集。所以坚持每个关键数字都挂回一手来源——分析师报告、招股书、官方通稿，点开就能溯源；网传但核实不到出处、或互相矛盾的数字（比如某些企业「在手订单超 300 亿元」的说法），我在正文里直接标注「不采用」，而不是照抄。另外写了个每日定时任务自动抓取当天行业动态放进单独的「快讯」区，不让没核实的信息混进正式分析结论。",
+      result:{t:"市场规模、竞争格局、核心零部件、投融资四大板块，条条数据可点击溯源；外加每日自动更新的行业快讯"},
+      learn:"行研报告最费时间的不是收集数据，是判断哪些数字能用、哪些必须明确写「不采用」。取舍比堆砌更难，也更值钱。",
+      stack:["HTML/CSS/JS","定时任务自动抓取","多信源交叉核验","GitHub Pages"],
+      figures:[{src:"assets/case/humanoid-robot/report-zh.jpg", alt:"人形机器人产业透视 · 网站截图（中文版）"}],
+      link:"https://cindymmy111-star.github.io/humanoid-robot-report/",
+      repo:"https://github.com/cindymmy111-star/humanoid-robot-report" },
+
+    { no:"02", tone:"sea", type:"PRODUCT & MECHANISM DESIGN", name:"CompositeLens · 工业质检 AI 应用",
+      kind:"计算机视觉 · NCC AI Hackathon 先进制造赛道冠军　|　Team Clover（5 人）　|　2026.08",
+      subtitle:"5 人团队的冠军作品，我负责把技术判断做成一个真的能用、敢用的产品。",
+      metric:"39/39", metricLabel:"缺陷零漏检",
+      problem:"碳纤维复合材料的内部质量目前靠人工看显微图像判断——慢、主观、结论无法追溯。NCC（英国国家复合材料中心）要的不只是一个识别模型，而是一套能给出合格/不合格判断、且每条结论都能回溯到证据的方案。",
+      judge:"模型训练由队友 Boang 负责。我做的是让它变成一个能交付、敢用、讲得清价值的产品：<br><br><b>把模型封装成浏览器应用。</b>上传单张图或整个文件夹，服务端完成推理，几分钟返回 PDF 检测报告，用户不需要配环境、不需要 GPU。原型跑在谁的笔记本上，和客户自己能打开，中间隔着的就是这一层。<br><br><b>设计人机协同的复核机制。</b>系统不对每个样本强行给结论：严重度落在判定阈值 ±5µm 内、多视角预测跨阈值分歧、图像质量异常或物理尺度缺失的，自动转人工。独立原型验证（247 张 holdout）：84.6% 的样本自动处理，这部分准确率 95.7%、零漏检；模型出错的 15 例里有 6 例被规则拦下转了人工。在安全敏感场景，「知道自己什么时候不该下结论」是产品能力，不是模型指标。<br><br><b>统一评估口径，并做商业化测算。</b>团队试了 8 种方案，我把它们放到同一套去重、按母图像分组、零重叠的验证集上比较——让「哪个更好」从各说各话变成可比较。商业侧设计了试点验证→年度许可→按检测量扩展的分层模式，并建了 ROI 模型：按年检 1 万张、每张人工判读 4 分钟、检测员全成本 £34/小时测算，单客户年化可验证价值约 £19k；定价 £6k/年时客户回报 3.4 倍、回本 3.6 个月。",
+      result:{t:"NCC Advanced Manufacturing 赛道冠军。团队提交方案在 268 张源分离独立验证集上零漏检（TP 39 / FP 3 / FN 0），Void Dice 0.8023，综合验证分数 0.9848。Dice 最高的方案（0.8200）综合得分反而更低——它漏掉了 2 个真实缺陷，团队选了零漏检的那个。"},
+      learn:"8 种方案里综合分最高的不是 Dice 最高的那个——官方指标把「漏检」的代价定得比「误报」高 4 倍，所以真正决定排名的是有没有漏检，不是像素画得多准。把这件事讲成客户听得懂的逻辑，比调出那个模型更难，也更接近我想做的工作。",
+      stack:["产品化","人机协同复核","评估体系","商业化建模"],
+      figures:[{src:"assets/case/hackathon-certificate.jpg", alt:"NCC AI Hackathon Winner · Team Clover"}],
+      link:"https://compositelens.guanboang.com", linkLabel:"访问产品（需登录）↗",
+      repo:"assets/compositelens-explorer/model_network_visualization.html", repoLabel:"看模型可视化 ↗" },
+
+    { no:"03", tone:"sage", type:"SOCIAL MEDIA ANALYTICS", name:"Lululemon 用户评论与社媒分析",
+      kind:"文本挖掘 · Python　|　University of Bristol · EFIMM0139　|　2026.03 — 04",
+      subtitle:"2,180 条跨平台评论里，找到品牌看不到的「为什么」。",
+      metric:"2,180", metricLabel:"条评论",
+      problem:"一件百镑级别的外套，评论区到底在抱怨什么？品牌能看到星级评分，但看不到「为什么」——而只有「为什么」才能改产品页和沟通口径。",
+      judge:"我没有停在情感打分。通过 Reddit 公开接口与 Selenium 采集清洗 2,180 条 Reddit 与 YouTube 评论后，69.2% 的正面比例说明口碑本来不差，真正值钱的是那 12.8% 负面里反复出现的三件事：尺码不准、面料耐用性、价格价值感。主题拆分上我其实先试了 LDA 无监督建模，但跑出来主题边界模糊、还得反复调参和人工贴标签；运动服饰评论的主题类型文献里已经很成熟，所以我换成关键词种子词分类+共现网络，牺牲一点「自动发现」的完整性，换来更可解释、可复现的结果。最后把三个高频议题一条条转化成能直接执行的建议：产品页尺码指引、材质沟通话术、营销表达调整。",
+      result:{t:"Reddit 1,974 + YouTube 206，采集清洗后做 VADER 情感分析、六类关键词主题分类与共现网络；正面 69.2% / 中性 18.0% / 负面 12.8%，产出产品页尺码指引、材质沟通、营销表达三项可执行建议。"},
+      learn:"情感分析给的是温度，主题分类给的才是病因。只报比例的报告，业务方看完不知道下一步做什么。",
+      stack:["Python","Selenium","VADER","关键词主题分类","共现网络"],
+      figures:[
+        {src:"assets/case/lululemon/fig1_sentiment_overview.png", alt:"整体情感分布（正面69.2% / 中性18.0% / 负面12.8%）"},
+        {src:"assets/case/lululemon/fig2_sentiment_platform.png", alt:"Reddit 与 YouTube 情感对比"},
+        {src:"assets/case/lululemon/fig3_topic_frequency.png", alt:"六类主题频率分布"},
+        {src:"assets/case/lululemon/fig4_keyword_importance.png", alt:"高频主题关键词"},
+        {src:"assets/case/lululemon/fig5_topic_sentiment_stacked.png", alt:"各主题情感分布"},
+        {src:"assets/case/lululemon/fig6_sna_network.png", alt:"主题共现网络"},
+        {src:"assets/case/lululemon/fig7_lda_topics.png", alt:"LDA 主题词分布（最终未采用的对比实验）"}
+      ],
+      link:"", repo:"" }
+  ],
+
+  more:[
+    { d:"2026.09", name:"半导体企业运营效率研究 · DEA 价值链分析",
+      s:"硕士毕业论文：Compustat 40 家纯半导体上市公司、200 个 firm-year 观测（2020–2024），output-oriented BCC DEA 模型（总资产+员工 → 营收）测算运营效率，按 IC 设计 / 晶圆代工 / 封测三段价值链与国别对比，Bootstrap 截断回归做二阶段分析。",
+      n:"46%", e:"晶圆代工效率显著低于 IC 设计（p=0.0018）；国别差异未通过显著性检验" },
+    { d:"2026.07", name:"Deloitte Australia 数据分析实战模拟",
+      s:"把 Daikibo 设备遥测 JSON 接入 Tableau，建 unhealthy 计算字段换算停机时间，按工厂与机器类型定位停机最多的产线，并交付看板方案。",
+      n:"Tableau", e:"Forage 认证 · 停机分析与看板提案" },
+    { d:"2025.10 — 12", name:"营销预算优化模型",
+      s:"清洗 TechCorp 品牌 40,237 条投放记录，按每美元转化率筛选出效果前 80%（32,189 条），用 PuLP 线性规划在守住转化、曝光与互动目标下最小化总支出；再用敏感性分析找出 10 个「明星广告」放宽预算上限，额外省下 91.6 万美元。",
+      n:"−28%", e:"投放支出（对比入选投放的历史支出 $387.6M）" },
+    { d:"2025.10 — 12", name:"绿色投资吸引力指数 GBAI",
+      s:"173 国宏观、能源与环境数据，46 个变量做 PCA 构建综合指数；Random Forest 与 Elastic Net 十折交叉验证。",
+      n:"R² 0.907", e:"关键驱动：电力可及性、人均 GDP" },
+    { d:"2025.05", name:"股票名称语音特性对 IPO 表现的影响",
+      s:"本科毕业论文 + 课程报告：Wind 与深交所 2010–2023 年 IPO 数据，2,039 家公司、6,121 个 firm-year 观测，固定效应回归 + HC3 稳健标准误 + 行业异质性分析。",
+      n:"+4.8~5.8%", e:"易读声调对应更高 IPO 市盈率" },
+    { d:"2023.12 — 2024.01", name:"辉瑞投资报告 · 组长",
+      s:"拆解辉瑞收入、利润、成本与现金流，研究生物医药行业与疫情影响并与主要竞争者对比；用头肩反转、下降三角形、均线与 RSI 做股价分析，以 CAPM 测算 Beta 与 2024 年预期收益。",
+      n:"CAPM", e:"Beta 与预期收益测算 · 团队负责人" },
+    { d:"2022.04 — 2023.12", name:"江苏中小制造企业数字化转型研究 · 负责人",
+      s:"带队完成整体规划与进度控制，走访南京、苏州两地制造业中小企业做实地调研与访谈；国家级大创省级立项与结项，论文发表于《现代商业》。",
+      n:"40+", e:"家企业实地调研 · 7 万字结项报告" },
+    { d:"2023.08", name:"全国大学生统计建模大赛（第九届）",
+      s:"收集 8 家医疗企业 2014–2022 年数据，用 TF-IDF 与 TOPSIS 衡量数字化转型程度并排序。",
+      n:"二等奖", e:"江苏赛区 · 省级" },
+    { d:"2023.03 — 05", name:"Top Boss 商业模拟经营 · 经理 / 财务总监",
+      s:"制定产量、时间与工艺生产计划，协调采购与销售部门，分析财务状况并控制财务风险。",
+      n:"第 1", e:"年度模拟经营绩效 · Best Team" }
+  ],
+
+  media:[
+    { type:"海外报道", source:"RootCause.ai · LinkedIn", date:"2026.08",
+      title:"Day two of the hackathon closed with the pitches",
+      desc:"赛事主办方官方账号发布的获奖公告，点名 Team Clover（Zeineb、Boang、Allan、Yiwen）拿下 NCC Advanced Manufacturing 赛道冠军。",
+      link:"https://www.linkedin.com/posts/rootcauseai_day-two-of-the-hackathon-closed-with-the-activity-7495756193999507456-crXV" },
+    { type:"校友专访", source:"南京审计大学经济与金融研究院 · 公众号", date:"2025",
+      title:"布里斯托大学商业分析硕士！EFIT 学子马益雯的跨专业申研之路",
+      desc:"母校学院公众号的毕业生专访，梳理了从贸易经济转入 EFIT 项目、放弃毕马威南京所 / 招商银行苏州分行 / 农业银行扬州支行 offer、选择商业分析读研的完整路径。",
+      link:"https://mp.weixin.qq.com/s/hSl5_zhQSXyPJeZGzj7mWA" }
+  ],
+
+  podcast:{
+    title:"主持播客《近距远观》",
+    titleHtml:"主持播客<br><em>《近距远观》</em>",
+    moreLabel:"共 9 期，其余单集在小宇宙持续更新", listenLabel:"在小宇宙收听",
+    cover:"assets/podcast-cover.jpg",
+    url:"https://www.xiaoyuzhoufm.com/podcast/698de3beef0b3c4f10b49575",
+    meta:["主播 / 策划 / 剪辑 · 一人包","小宇宙 · 已更新 9 期","2026 至今"],
+    intro:`一档关于个体选择与认知差异的播客。
+通过不同的城市、行业和人生阶段，
+重新校准对生活的理解。`,
+    eps:[
+      { no:"Vol.9", date:"2026-07-28", title:"公式之外的调参：数学、镜头与机器人",
+        desc:"和嘉宾 Eric 聊：一个习惯寻找「最优解」的人，如何面对没有标准答案的问题。" },
+      { no:"Vol.8", date:"2026-07-10", title:"拿着天才剧本一路奔跑之后，她开始……（下）",
+        desc:"与 Emily 三期对谈的最后一集：当代女性到底在追求什么。" },
+      { no:"Vol.7", date:"2026-06-25", title:"拿着天才剧本一路奔跑之后，她开始……（中）",
+        desc:"上一期聊学业与学术路，这一期聊亲密关系。" }
+    ]
+  },
+
+  edu:{
+    school:"英国布里斯托大学 University of Bristol",
+    degree:"商业分析硕士 MSc Business Analytics",
+    when:"2025.09 — 2026.09（预计）",
+    honorsLabel:"荣誉 / 奖项", campusLabel:"在校经历",
+    rows:[
+      {k:"硕士课程",v:"社交媒体与网络分析 70 · 建模分析 77 · 商业分析编程 70 · 行为决策与分析 72 · 商业数据分析 69 · <b>IBM Group Project</b>"},
+      {k:"本科",v:"<b>南京审计大学</b> · 金融学院 金融学学士 · 2021.09 — 2025.06；均分 83%，专业前 20%"},
+      {k:"本科成绩",v:"房地产金融 94 · 商业银行业务与经营 94 · 微观计量学 93 · 统计与数据分析 88 · 公司金融 87 · 线性代数 87 · 中级宏观 84 · 计量经济学 84"},
+      {k:"语言",v:"雅思 <b>6.5</b>（单项最低 6.0）· CET-4 603 / CET-6 443 · 普通话二级甲等 88.6"},
+      {k:"证书",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python（2024.12）<br>Deloitte Australia Data Analytics Job Simulation, Forage（2026.07）"}
+    ],
+    honors:[
+      {t:"NCC AI Hackathon 冠军 · Advanced Manufacturing 赛道",d:"Team Clover（5 人）· University of Bristol × UWE Bristol · 2026.08<br>Global Tech Advocates 主办，英国国家复合材料中心（NCC）提供赛题"},
+      {t:"校级优秀毕业生奖学金 · 院级方阵代表",d:"南京审计大学 · 2025.06"},
+      {t:"学业优秀奖学金三等 · 国际创新人才奖学金三等",d:"南京审计大学 · 2024.10"},
+      {t:"全国大学生统计建模大赛 江苏赛区二等奖",d:"第九届 · 2023.08"},
+      {t:"SAP 商业模拟挑战赛 一等奖",d:"南京审计大学 · 2022.05"},
+      {t:"外研社全国大学生英语竞赛 三等奖",d:"2021"}
+    ],
+    campus:[
+      { role:"商业分析硕士项目 · 学生代表（Course Representative）", org:"University of Bristol", y:"2025.09 — 2026.09",
+        points:[
+          "代表 110 名商业分析硕士同学，作为学生与教职团队之间的联络人，5 次参加师生联席会议（Staff-Student Liaison Committee），系统汇总并反馈课程安排、作业负担与教学资源方面的意见。",
+          "定期收集并归纳同学在课程设置、教学进度与学习资源方面的反馈（问卷 107 份），梳理集中问题并提交院方，推动增加答疑时段、开放 Kaggle 课程资料数据库权限落地。",
+          "搭建并运营商学院学生共享文档平台，整合课程资料与信息通知，提升国际学生群体内部的协作与参与度。"
+        ]},
+      { role:"《近距远观》播客主播", org:"个人项目", y:"2026 至今",
+        points:["独立策划选题、约访嘉宾、剪辑上线，已更新 9 期。"]},
+      { role:"国家级大学生创新创业训练计划 · 项目主持人", org:"南京审计大学", y:"2022.04 — 2023.12",
+        points:["2022.04 春季省级立项、2023.12 省级结项；作为第三作者在核心期刊《现代商业》发表论文。"]},
+      { role:"大学生暑期社会实践 · 校级重点项目", org:"南京审计大学", y:"2023.08",
+        points:[]},
+      { role:"泽园书院科学与技术协会 · 外联部干事", org:"南京审计大学", y:"2021.09 — 2022.06",
+        points:[
+          "成功策划并主导「相约南审，寻梦光影」高校联谊活动，覆盖南京农业大学、南京师范大学等知名高校，吸引超 200 名学生参与，有效促进校际间交流。",
+          "撰写的活动策划案创意独特、执行细节详尽，评为优秀方案。",
+          "协助部长领导外联团队与多家高校社团建立合作，成功争取到赞助资金 5,000 元。"
+        ]},
+      { role:"班级组织委员", org:"南京审计大学", y:"2021.09 — 2022.06",
+        points:[
+          "协助团支书工作，成功举办 5 场校级/院级活动，组织同学积极参与，平均参与人数达 50 人。",
+          "策划并组织 8 次班级团建和小组聚会，通过创意策划（如户外拓展、主题晚会等），参与率超 90%，显著增强同学间的沟通与团队协作能力。",
+          "精准传达领导教学活动通知 85 条，确保信息覆盖 100% 班级成员，积极沟通班集体，解决 16 项班级内部沟通障碍。"
+        ]}
+    ]
+  },
+
+  cards:{
+    skill:[
+      {n:"用户研究",r:"SSR",lv:90,d:"3 家工作室的半结构化访谈与端到端工作流梳理，把定性反馈变成有优先级的需求。"},
+      {n:"评测框架",r:"SSR",lv:86,d:"共建 12 项指标的模型离线评测框架 —— 让「效果好不好」变成可比的数。"},
+      {n:"SQL",r:"SSR",lv:85,d:"清洗标准化 217 个城轨项目、26,088 辆车、约 2,063 亿元合同额的数据集。"},
+      {n:"Python",r:"SSR",lv:84,d:"Pandas / scikit-learn / statsmodels / Selenium：采集、清洗、回归、PCA、主题模型都跑过。"},
+      {n:"行业研究",r:"SR",lv:82,d:"AIDC、人形机器人、轨交装备：产业链拆解 + 竞争位置 + 市场空间。"},
+      {n:"财务测算",r:"SR",lv:80,d:"NPV 与敏感性分析、盈利预测拆分、PE / PB / EV-EBITDA 可比公司对比。"},
+      {n:"可视化",r:"SR",lv:76,d:"Tableau / Matplotlib / Power BI，把分析做成能直接汇报的看板。"},
+      {n:"VibeCoding",r:"R",lv:74,d:"IBM 推荐系统原型和这个网站都是自己写、自己部署的。"},
+      {n:"内容表达",r:"R",lv:86,d:"播客 9 期练出来的结构化表达；也写过 7 万字结项报告。"}
+    ],
+    hobby:[
+      {n:"摄影",r:"SSR",lv:90,d:"富士随身机 + Lightroom / Capture One，偏爱清晨与黄昏的光。",img:"assets/gallery/seven-sisters.jpg"},
+      {n:"旅行",r:"SSR",lv:95,d:"瑞士、英国、法国、葡萄牙、意大利 —— 先看世界，再看自己。",img:"assets/photos/geneva-clock.jpg"},
+      {n:"古筝十级",r:"SSR",lv:92,d:"从小学到十级，最长坚持下来的一件事；练琴教我的耐心比任何课都多。",img:"assets/photos/paris.jpg"},
+      {n:"播客主播",r:"SSR",lv:88,d:"《近距远观》主播，聊个体选择与认知差异。",img:"assets/photos/portrait.jpg"},
+      {n:"跳伞",r:"SR",lv:80,d:"因特拉肯高空跳过一次。恐高，但还是跳了。",img:"assets/photos/skydive.jpg"},
+      {n:"看展",r:"SR",lv:76,d:"美术馆、摄影展、建筑展 —— 旅行必留半天给展馆。",img:"assets/photos/exhibit.jpg"},
+      {n:"City Walk",r:"R",lv:70,d:"到一座城市先走两万步，用脚熟悉街区尺度。",img:"assets/photos/british-museum.jpg"}
+    ]
+  },
+
+  wall:[
+    {f:"seven-sisters.jpg",     cap:"七姐妹白崖",     loc:"England · Seven Sisters",
+      s:"风从英吉利海峡吹来，把白垩崖劈成一排沉默的墙。"},
+    {f:"mont-saint-michel.jpg", cap:"潮汐里的修道院", loc:"France · Mont Saint-Michel",
+      s:"涨潮时石阶被海水收走，修道院像悬在半空。"},
+    {f:"lucerne-dusk.jpg",      cap:"黄昏的湖畔",     loc:"Switzerland · Luzern",
+      s:"山影落进湖面，天光只剩最后一层暖色。"},
+    {f:"duomo.jpg",             cap:"落日下的穹顶",   loc:"Italy · Firenze",
+      s:"六百年的砖红穹顶，接住了整座城市的落日。"},
+    {f:"lake-aerial.jpg",       cap:"俯瞰湖心岛",     loc:"Switzerland · Rigi",
+      s:"缆车爬到山顶，湖心的小岛忽然缩成一枚绿点。"},
+    {f:"hydepark-sunset.jpg",   cap:"天鹅与日落",     loc:"London · Hyde Park",
+      s:"天鹅划开水面，把橙色的天空也划出一道涟漪。"},
+    {f:"train-window.jpg",      cap:"登山列车的车窗", loc:"Switzerland · Rigi Bahn",
+      s:"齿轨列车贴着山壁爬升，云雾从车窗外掠过。"},
+    {f:"arno.jpg",              cap:"阿诺河的清晨",   loc:"Italy · Firenze",
+      s:"晨雾还没散尽，阿诺河先醒了过来。"},
+    {f:"lake-flowers.jpg",      cap:"花丛后的游船",   loc:"Switzerland · Brienz",
+      s:"湖水绿得不真实，游船从花丛后面慢慢驶出。"},
+    {f:"hydepark-autumn.jpg",   cap:"逆光的秋叶",     loc:"London · Hyde Park",
+      s:"阳光穿过秋叶，把整条小路染成金色。"},
+    {f:"normandy-sheep.jpg",    cap:"盐沼上的羊群",   loc:"France · Normandie",
+      s:"潮水退去后的盐沼地，成了羊群安静的牧场。"},
+    {f:"winter-fair.jpg",       cap:"冬日游乐场",     loc:"London · Winter Wonderland",
+      s:"摩天轮转起来的时候，伦敦的冬天忽然有了糖果味。"}
+  ]
+},
+
+en: {
+  name:"Yiwen Ma", nameSub:"马益雯 · Cindy", nameEn:"CINDY",
+  email:"cindyyiwen0101@163.com",
+  resume:"assets/resume.pdf",
+  status:"University of Bristol · MSc Business Analytics",
+  heroHtml:`Between data, industries,<br>and users, I look for answers <em>worth acting on</em>.`,
+  intro:"Hi, I am Yiwen Ma (Cindy) — a Finance graduate turned MSc Business Analytics student, with experience spanning equity research, consulting, tech product, and data analytics.",
+  who:["BSc Finance · MSc Business Analytics","Business Analysis / Product / Data Analytics / Equity Research / Consulting","Podcast Host · Photography · Guzheng (Grade 10)"],
+  lookingFor:"Data / Product Analytics · Business Analysis · Tech & Industry Research",
+  wallCaption:"{n} shots from a Fujifilm compact — Switzerland, the UK, France and Italy. Click to enlarge; hover to bring back the colour.",
+  ui:{
+    closeX:"Close ✕", openDemo:"Open Demo ↗", viewRepo:"View Source ↗",
+    resumeModalTitle:"Yiwen Ma · Resume (Chinese)", resumeIframeTitle:"Resume",
+    noResumeTitle:"No resume file yet", noResumeBody:'Name the PDF <code>resume.pdf</code> and drop it in <code>assets/</code> to preview it here.',
+    gachaHintDefault:"Click the deck to draw a card", gachaHintPoolDone:"Pool complete — reset to draw again", gachaHintAllDrawn:"All drawn — reset to try again",
+    gachaProficiency:"Proficiency", gachaPassion:"Enthusiasm"
+  },
+
+  focus:[
+    {no:"01",t:"Product & User Research",d:"Semi-structured interviews and end-to-end workflow mapping, turning qualitative feedback into prioritised product direction."},
+    {no:"02",t:"Industry Research & Value-Chain Analysis",d:"Tracking policy and technology roadmaps, mapping competitive positioning across the value chain, and sizing market opportunity."},
+    {no:"03",t:"Data Analysis & Modelling",d:"SQL for cleaning and aggregation, Python (Pandas / scikit-learn / statsmodels) and Tableau — turning hypotheses into testable conclusions."},
+    {no:"04",t:"Business & Financial Analysis",d:"NPV and sensitivity analysis, earnings-forecast breakdowns, and comparable-company benchmarking to support investment and operating decisions."}
+  ],
+
+  nums:[
+    {n:"6",i:"roles",k:"Experience · Product / Research / Consulting / Risk / Audit"},
+    {n:"9",i:"eps",k:"Podcast episodes · Self-produced start to finish"},
+    {n:"173",i:"countries",k:"Widest country coverage in a single analysis"},
+    {n:"12",i:"shots",k:"Featured photographs"}
+  ],
+
+  timeline:[
+    { y:"2026.01 — 05", role:"IBM Group Project · Student Developer", co:"IBM × University of Bristol", tag:"Product",
+      summary:"Turned ‘what course should I take next’ into a recommendation system with logic you can actually explain.",
+      points:[
+        "Designed a course recommendation system for the IBM SkillsBuild platform, reframing course selection as an <b>explainable scoring problem</b> — role match, discipline relevance, difficulty tier, skill-gap bonus, prerequisite check and interest keywords, each rule scored and combined into a weighted sum.",
+        "Insisted on adding a difficulty gate: recommendable course levels are capped by year of study, so the system never pushes a first-year student a pile of advanced courses that sound relevant but are practically unlearnable.",
+        "Independently built the rule engine and scoring logic as a pure front-end single-page app (HTML/CSS/JS), structurally scoring and ranking <b>12 courses</b> to output a traceable Top-4 learning path.",
+        "Collaborated with a <b>6-person</b> cross-functional team, writing the architecture diagrams and scoring-algorithm documentation that cut down rework between front-end and client communication."],
+      abil:["Product Design","Rule Engines","Data Modelling","Cross-functional Collaboration"] },
+    { y:"2025.01 — 05", role:"Product Intern", co:"ByteDance · Shenzhen", tag:"Product",
+      summary:"Started from the real workflows of three professional comic studios, turning vague creative feedback into product problems that could be measured and iterated on.",
+      points:[
+        "Ran semi-structured interviews and end-to-end workflow mapping across <b>3</b> professional comic studios, pinpointing repetitive steps, model-quality issues, and barriers to adopting AI-assisted creative tools.",
+        "Converted qualitative feedback into prioritised requirements and co-built a <b>12-metric</b> offline evaluation framework (line completeness, colour-fill accuracy, style consistency) supporting model selection, version comparison and feature iteration.",
+        "Built an internal dashboard tracking activity, feature usage, task completion and retention, identifying friction points in the user journey; pilot-user retention rose <b>roughly 7% relative</b>."],
+      abil:["User Research","Requirements Breakdown","Evaluation Framework Design","Data Dashboards"] },
+    { y:"2024.11 — 2025.01", role:"Industry Research Intern · Machinery Group", co:"Shanxi Securities Research Institute · Shanghai", tag:"Research",
+      summary:"Worked across industry intelligence, company financials and supply-chain data to find evidence that could actually support an investment call.",
+      points:[
+        "Covered industry and company research across machinery, AIDC (AI data centres), rail-transit equipment and humanoid robotics — tracking market developments, business models and key manufacturers’ positioning, producing <b>5+</b> research drafts and thematic reports.",
+        "Broke down the technology roadmaps, customer mix, capacity plans, supply chains and competitive positioning of <b>roughly 12</b> companies across the AIDC value chain, identifying growth drivers and domestic-substitution opportunities.",
+        "Updated earnings forecasts for companies including Zhenyu Technology and CRRC, modelling segment revenue, gross margin, expenses, cash flow, EPS / ROE / ROIC and benchmarking roughly 15 listed companies on PE / PB / EV-EBITDA; contributed to engine and generator earnings-forecast models, <b>improving forecast accuracy by 15%</b>.",
+        "Used SQL to clean and standardise 2020–2024 urban-rail tender data — <b>217 projects, 26,088 vehicles, roughly RMB 206.3bn</b> in contract value — building a structured dataset to support market sizing and vehicle-demand forecasting.",
+        "Collected and structured industry data on liquid-cooling equipment and generator sets; contributed to an <b>AIDC industry white paper</b>, building a US–China supply-chain cost comparison model."],
+      abil:["Industry Research","Value-Chain Analysis","Earnings Forecasting","SQL Data Cleaning","Cross-Market Comparison"] },
+    { y:"2024.05 — 08", role:"Consulting Intern", co:"Grant Thornton · Shenzhen", tag:"Consulting",
+      summary:"Put policy, process and financial data on the same page to understand how an organisation actually runs.",
+      points:[
+        "Contributed to a manufacturing and logistics equipment-upgrade project, building an Excel <b>NPV model</b> with sensitivity analysis, quantifying up to <b>roughly 23%</b> cost savings versus the baseline, and delivering the model plus a written report to support the investment decision.",
+        "Conducted an internal-control manual and budget-management assessment for a healthcare client: mapping budgeting, budget performance, receipts and payments, procurement and tendering, contract fulfilment and asset write-off; clarifying segregation of duties and approval authority, and helping draft the <b>internal control manual</b>.",
+        "Proposed improvements — segregating incompatible duties, tiered approval by amount, tighter budget discipline, and a monthly budget-execution review with a ‘target–monitor–evaluate–remediate’ loop — that were adopted into the formal client report.",
+        "Reviewed <b>1,000+</b> transaction records a day, focusing on duplicate billing and missing authorisation, flagging <b>38</b> exceptions and structuring them into an issue log for management review.",
+        "Contributed to a <b>subsidy-eligibility assessment</b> for public-sector smart equipment, checking client materials against predefined eligibility criteria."],
+      abil:["Financial Modelling","Process Mapping","Internal Controls Assessment","Exception Detection","Compliance Review"] },
+    { y:"2024.01 — 02", role:"Risk & Compliance Intern", co:"Donghai Securities · Nanjing", tag:"Risk",
+      summary:"My first close look at building a risk-management framework, and at how compliance actually holds up on the front line of the business.",
+      points:[
+        "Contributed to building and running the risk-management framework — identification, assessment, monitoring and response — helping assess <b>20+</b> potential risk points; effective monitoring <b>cut the incidence of risk events by 15%</b>.",
+        "Reviewed the anti-money-laundering blacklist system to ensure zero omissions and safeguard transaction compliance.",
+        "Studied company compliance policy and helped plan and deliver <b>3</b> compliance training sessions, reaching 100+ staff."],
+      abil:["Risk Identification","AML Review","Compliance Training"] },
+    { y:"2023.06 — 07", role:"Tax Intern", co:"ZSZH CPAs · Jiangsu Branch", tag:"Audit",
+      summary:"Learned, voucher by voucher, how to make detail-checking something you can actually rely on.",
+      points:[
+        "Helped complete <b>2</b> audit engagements, combing through vouchers to identify and report <b>12</b> management gaps and potential breach points at the audited entities, <b>improving audit efficiency by roughly 20%</b>.",
+        "Organised accounting vouchers and reconciled ledgers against source documents, proofread accounting files, contributed to audit working papers, and proactively coordinated with client companies on material collection."],
+      abil:["Voucher Verification","Audit Working Papers","Attention to Detail","Client Communication"] }
+  ],
+
+  cases:[
+    { no:"01", tone:"clay", type:"INDUSTRY RESEARCH", name:"Humanoid Robotics Industry Landscape",
+      kind:"Industry Research Brief · Data Website　|　Personal Project　|　Sep 2026",
+      subtitle:"60+ data points, every one traced to a primary source — sorting out the numbers that do not add up across the industry.",
+      metric:"60+", metricLabel:"primary sources",
+      problem:"Humanoid robotics is the hottest — and messiest — sector of the past two years: Goldman Sachs projects 1.4 million units shipped by 2035, Macquarie says 1.1 million, every institution uses different assumptions and timeframes, and the internet is full of unverifiable ‘confirmed order’ rumours. <b>An ordinary reader has no way to tell which numbers to trust.</b>",
+      judge:"I did not want to build another news roundup. So I insisted every key figure trace back to a primary source — analyst reports, prospectuses, official releases — clickable and verifiable; numbers that circulate online but cannot be sourced, or that contradict each other (like certain companies’ claims of ‘RMB 30bn+ in confirmed orders’), I flagged directly in the text as ‘not used’ rather than copying them anyway. I also wrote a daily scheduled job that pulls that day’s industry news into a separate ‘briefing’ section, so unverified information never bleeds into the formal analysis.",
+      result:{t:"Four sections — market size, competitive landscape, core components, and financing — every data point click-through traceable, plus a daily auto-updating news briefing."},
+      learn:"The slowest part of an industry report is not gathering data — it is deciding which numbers to use and which to explicitly mark as unusable. That judgement call is harder than piling up data, and worth more.",
+      stack:["HTML/CSS/JS","Scheduled Auto-Scraping","Cross-Source Verification","GitHub Pages"],
+      figures:[{src:"assets/case/humanoid-robot/report-en.jpg", alt:"Humanoid Robotics Industry Report · site screenshot (English)"}],
+      link:"https://cindymmy111-star.github.io/humanoid-robot-report/",
+      repo:"https://github.com/cindymmy111-star/humanoid-robot-report" },
+
+    { no:"02", tone:"sea", type:"PRODUCT & MECHANISM DESIGN", name:"CompositeLens · Industrial Inspection AI",
+      kind:"Computer Vision · Winner, NCC AI Hackathon — Advanced Manufacturing Track　|　Team Clover (5 people)　|　Aug 2026",
+      subtitle:"A 5-person team’s winning entry — my job was turning a technical judgement call into a product people could actually use and trust.",
+      metric:"39/39", metricLabel:"defects caught, zero missed",
+      problem:"The internal quality of carbon-fibre composites is currently judged by manually inspecting microscopy images — slow, subjective, and the conclusions can't be traced back to evidence. NCC (the UK's National Composites Centre) didn't just want a detection model; they wanted a system that could issue a pass/fail verdict where every conclusion traces back to its evidence.",
+      judge:"Model training was Boang's job. Mine was turning it into a product you could actually ship, trust, and explain the value of:<br><br><b>Packaged the model as a browser app.</b> Upload a single image or a whole folder, inference runs server-side, and a PDF inspection report comes back within minutes — no environment to set up, no GPU required. The gap between 'a prototype running on someone's laptop' and 'a customer can open it themselves' is exactly this layer.<br><br><b>Designed a human-in-the-loop review mechanism.</b> The system doesn't force a verdict on every sample: cases where severity falls within ±5µm of the threshold, multi-view predictions disagree across the threshold, image quality is abnormal, or physical scale is missing are automatically routed to a human reviewer. In an independent prototype validation (247 holdout images): 84.6% of samples were auto-processed at 95.7% accuracy with zero missed defects on that subset; of the 15 cases where the model got it wrong, 6 were caught by the rules and routed to a human. In safety-sensitive settings, 'knowing when not to conclude' is a product capability, not a model metric.<br><br><b>Standardised the evaluation criteria and built the commercial case.</b> The team tried 8 modelling approaches, and I put them on the same deduplicated, parent-image-grouped, zero-overlap validation set so 'which one's better' stopped being a matter of opinion. On the business side, I designed a tiered model — pilot validation → annual licence → usage-based expansion — and built an ROI model: assuming 10,000 annual inspection images, 4 minutes of manual review per image, and a fully-loaded inspector cost of £34/hour, the verifiable annual value per customer comes out to roughly £19k; at a £6k/year price point, that's a 3.4x return with a 3.6-month payback.",
+      result:{t:"Winner, NCC Advanced Manufacturing track. The team's submitted solution scored zero missed defects (TP 39 / FP 3 / FN 0) on a 268-image source-separated independent validation set, Void Dice 0.8023, combined validation score 0.9848. The approach with the highest Dice score (0.8200) actually scored lower overall — it missed 2 real defects; the team chose the zero-miss model instead."},
+      learn:"The highest combined score among the 8 approaches didn't belong to the one with the highest Dice score — the official metric weighted a missed defect 4x higher than a false alarm, so what actually decided the ranking was whether anything got missed, not how precisely the pixels were drawn. Explaining that logic in terms a client actually cares about was harder than tuning the model itself — and closer to the work I want to do.",
+      stack:["Productisation","Human-in-the-Loop Review","Evaluation Framework","Commercial Modelling"],
+      figures:[{src:"assets/case/hackathon-certificate.jpg", alt:"NCC AI Hackathon Winner · Team Clover"}],
+      link:"https://compositelens.guanboang.com", linkLabel:"Visit Product (login required) ↗",
+      repo:"assets/compositelens-explorer/model_network_visualization.html", repoLabel:"View Model Visualisation ↗" },
+
+    { no:"03", tone:"sage", type:"SOCIAL MEDIA ANALYTICS", name:"Lululemon User Reviews & Social Analytics",
+      kind:"Text Mining · Python　|　University of Bristol · EFIMM0139　|　Mar – Apr 2026",
+      subtitle:"Inside 2,180 cross-platform comments, finding the ‘why’ the brand could not see.",
+      metric:"2,180", metricLabel:"comments",
+      problem:"For a £100+ jacket, what are people in the comments actually complaining about? A brand can see the star rating, but not the ‘why’ — and only the ‘why’ can actually change the product page or the messaging.",
+      judge:"I did not stop at sentiment scoring. After collecting and cleaning 2,180 Reddit and YouTube comments via Reddit's public API and Selenium, a 69.2% positive rate showed word-of-mouth was never really the problem — the value is in the three recurring complaints inside that 12.8% negative share: sizing inconsistency, fabric durability, and perceived price-to-value. For topic separation I actually tried unsupervised LDA first, but the topic boundaries came out blurry and needed constant retuning and manual labelling; the topic categories for athletic-wear reviews are already well established in the literature, so I switched to keyword-seeded classification plus a co-occurrence network — trading some of LDA's 'automatic discovery' completeness for results that were more interpretable and reproducible. I then turned the three highest-frequency issues into concrete, actionable recommendations: product-page sizing guidance, fabric-communication language, and adjusted marketing messaging.",
+      result:{t:"Reddit 1,974 + YouTube 206 comments, collected and cleaned, then run through VADER sentiment analysis, six-category keyword topic classification and a co-occurrence network; 69.2% positive / 18.0% neutral / 12.8% negative, producing three actionable recommendations on sizing guidance, fabric communication and marketing messaging."},
+      learn:"Sentiment analysis gives you the temperature; topic classification gives you the diagnosis. A report that only states percentages leaves the business side with no idea what to do next.",
+      stack:["Python","Selenium","VADER","Keyword Topic Classification","Co-occurrence Network"],
+      figures:[
+        {src:"assets/case/lululemon/fig1_sentiment_overview.png", alt:"Overall sentiment distribution (69.2% positive / 18.0% neutral / 12.8% negative)"},
+        {src:"assets/case/lululemon/fig2_sentiment_platform.png", alt:"Sentiment comparison: Reddit vs. YouTube"},
+        {src:"assets/case/lululemon/fig3_topic_frequency.png", alt:"Frequency distribution across six topic categories"},
+        {src:"assets/case/lululemon/fig4_keyword_importance.png", alt:"High-frequency topic keywords"},
+        {src:"assets/case/lululemon/fig5_topic_sentiment_stacked.png", alt:"Sentiment distribution by topic"},
+        {src:"assets/case/lululemon/fig6_sna_network.png", alt:"Topic co-occurrence network"},
+        {src:"assets/case/lululemon/fig7_lda_topics.png", alt:"LDA topic-word distribution (comparison experiment, not adopted)"}
+      ],
+      link:"", repo:"" }
+  ],
+
+  more:[
+    { d:"2026.09", name:"Semiconductor Operating Efficiency Study · DEA Value-Chain Analysis",
+      s:"MSc dissertation: 40 pure-play listed semiconductor firms from Compustat, 200 firm-year observations (2020–2024). Measured operating efficiency with an output-oriented BCC DEA model (total assets + headcount → revenue), compared across the IC design / foundry / assembly-and-test value chain and by country, with a second-stage bootstrap-truncated regression.",
+      n:"46%", e:"Foundry efficiency significantly below IC design (p = 0.0018); country differences not statistically significant" },
+    { d:"2026.07", name:"Deloitte Australia Data Analytics Job Simulation",
+      s:"Fed Daikibo’s device telemetry JSON into Tableau, built an ‘unhealthy’ calculated field to convert it into downtime, pinpointed the highest-downtime production lines by factory and machine type, and delivered a dashboard proposal.",
+      n:"Tableau", e:"Forage-certified · Downtime analysis & dashboard proposal" },
+    { d:"2025.10 — 12", name:"Marketing Budget Optimisation Model",
+      s:"Cleaned 40,237 TechCorp campaign records, filtered to the top 80% by conversion-per-dollar (32,189 records), and used PuLP linear programming to minimise total spend while holding conversion, impression and engagement targets; sensitivity analysis then identified 10 ‘star campaigns’ whose budget caps could be relaxed, saving an additional $916k.",
+      n:"−28%", e:"ad spend (vs. $387.6M historical spend on the selected campaigns)" },
+    { d:"2025.10 — 12", name:"Green Business Attractiveness Index (GBAI)",
+      s:"Macro, energy and environmental data across 173 countries; built a composite index from 46 variables via PCA, validated with 10-fold cross-validated Random Forest and Elastic Net.",
+      n:"R² 0.907", e:"Key drivers: electricity access, GDP per capita" },
+    { d:"2025.05", name:"The Effect of Stock-Name Phonetics on IPO Performance",
+      s:"Undergraduate dissertation + coursework report: Wind and Shenzhen Stock Exchange IPO data, 2010–2023, 2,039 companies, 6,121 firm-year observations; fixed-effects regression with HC3 robust standard errors and industry-heterogeneity analysis.",
+      n:"+4.8~5.8%", e:"Easier-to-read tones associated with higher IPO P/E ratios" },
+    { d:"2023.12 — 2024.01", name:"Pfizer Investment Report · Team Lead",
+      s:"Broke down Pfizer’s revenue, profit, costs and cash flow; studied the pharma industry and pandemic impact against key competitors; used head-and-shoulders reversal, descending triangle, moving averages and RSI for price analysis, and estimated Beta and 2024 expected returns via CAPM.",
+      n:"CAPM", e:"Beta & expected-return estimation · Team lead" },
+    { d:"2022.04 — 2023.12", name:"Jiangsu SME Manufacturing Digital Transformation Study · Lead",
+      s:"Led overall planning and progress control, conducting on-site research and interviews at manufacturing SMEs across Nanjing and Suzhou; approved and completed at provincial level under the National College Students’ Innovation Program, with a paper published in Modern Business.",
+      n:"40+", e:"companies field-researched · 70,000-word final report" },
+    { d:"2023.08", name:"9th National Undergraduate Statistical Modelling Contest",
+      s:"Collected 2014–2022 data from 8 healthcare companies, using TF-IDF and TOPSIS to score and rank their digital-transformation progress.",
+      n:"2nd Prize", e:"Jiangsu region · Provincial" },
+    { d:"2023.03 — 05", name:"Top Boss Business Simulation · Manager / CFO",
+      s:"Set production volume, scheduling and process plans, coordinated procurement and sales, and analysed financial position while managing financial risk.",
+      n:"1st", e:"Annual simulated performance · Best Team" }
+  ],
+
+  media:[
+    { type:"International Coverage", source:"RootCause.ai · LinkedIn", date:"Aug 2026",
+      title:"Day two of the hackathon closed with the pitches",
+      desc:"The event organiser’s official account announced the winners, naming Team Clover (Zeineb, Boang, Allan, Yiwen) as winners of the NCC Advanced Manufacturing track.",
+      link:"https://www.linkedin.com/posts/rootcauseai_day-two-of-the-hackathon-closed-with-the-activity-7495756193999507456-crXV" },
+    { type:"Alumni Feature", source:"Nanjing Audit University, Institute of Economics and Finance · WeChat", date:"2025",
+      title:"MSc Business Analytics at Bristol! EFIT Student Yiwen Ma’s Cross-Discipline Path to a Postgraduate Offer",
+      desc:"A graduate feature on her home institute’s WeChat account, tracing her path from International Trade & Economics into the EFIT programme, turning down offers from KPMG Nanjing, China Merchants Bank (Suzhou) and Agricultural Bank of China (Yangzhou) to pursue a Business Analytics master’s instead.",
+      link:"https://mp.weixin.qq.com/s/hSl5_zhQSXyPJeZGzj7mWA" }
+  ],
+
+  podcast:{
+    title:"Podcast Host · Close Up, Wide Lens",
+    titleHtml:"Podcast Host<br><em>Close Up, Wide Lens</em>",
+    moreLabel:"9 episodes total — the rest are on Xiaoyuzhou", listenLabel:"Listen on Xiaoyuzhou",
+    cover:"assets/podcast-cover.jpg",
+    url:"https://www.xiaoyuzhoufm.com/podcast/698de3beef0b3c4f10b49575",
+    meta:["Host / Producer / Editor — solo run","Xiaoyuzhou · 9 episodes and counting","2026 – present"],
+    intro:`A podcast about individual choices
+and the gaps in how we see the world.
+Through different cities, industries and life stages,
+recalibrating what it means to understand a life.`,
+    eps:[
+      { no:"Vol.9", date:"2026-07-28", title:"Tuning Parameters Beyond the Formula: Maths, Cameras and Robots",
+        desc:"A conversation with guest Eric: how someone wired to look for the ‘optimal solution’ deals with questions that do not have one." },
+      { no:"Vol.8", date:"2026-07-10", title:"After Running the Whole Way on a Gifted-Kid Script, She Began… (Part 2)",
+        desc:"The final part of a three-episode conversation with Emily: what contemporary women are actually chasing." },
+      { no:"Vol.7", date:"2026-06-25", title:"After Running the Whole Way on a Gifted-Kid Script, She Began… (Part 1)",
+        desc:"Last episode covered academics and the research track; this one is about relationships." }
+    ]
+  },
+
+  edu:{
+    school:"University of Bristol, UK",
+    degree:"MSc Business Analytics",
+    when:"Sep 2025 – Sep 2026 (expected)",
+    honorsLabel:"Honours & Awards", campusLabel:"Campus Life",
+    rows:[
+      {k:"MSc Modules",v:"Social Media & Network Analysis 70 · Modelling Analytics 77 · Business Analytics Programming 70 · Behavioural Decision Analysis 72 · Business Data Analytics 69 · <b>IBM Group Project</b>"},
+      {k:"Undergraduate",v:"<b>Nanjing Audit University</b> · BSc Finance, School of Finance · Sep 2021 – Jun 2025; average 83%, top 20% of cohort"},
+      {k:"Key Grades",v:"Real Estate Finance 94 · Commercial Banking 94 · Microeconometrics 93 · Statistics & Data Analysis 88 · Corporate Finance 87 · Linear Algebra 87 · Intermediate Macroeconomics 84 · Econometrics 84"},
+      {k:"Languages",v:"IELTS <b>6.5</b> (no band below 6.0) · CET-4 603 / CET-6 443 · Putonghua Proficiency Test, Grade 2-A, 88.6"},
+      {k:"Certificates",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python (Dec 2024)<br>Deloitte Australia Data Analytics Job Simulation, Forage (Jul 2026)"}
+    ],
+    honors:[
+      {t:"Winner, NCC AI Hackathon · Advanced Manufacturing Track",d:"Team Clover (5 people) · University of Bristol × UWE Bristol · Aug 2026<br>Organised by Global Tech Advocates, challenge set by the UK's National Composites Centre (NCC)"},
+      {t:"Outstanding Graduate Scholarship · College Flag-Bearer",d:"Nanjing Audit University · Jun 2025"},
+      {t:"3rd-Class Academic Excellence Scholarship · 3rd-Class International Innovation Talent Scholarship",d:"Nanjing Audit University · Oct 2024"},
+      {t:"2nd Prize, Jiangsu Region, National Undergraduate Statistical Modelling Contest",d:"9th edition · Aug 2023"},
+      {t:"1st Prize, SAP Business Simulation Challenge",d:"Nanjing Audit University · May 2022"},
+      {t:"3rd Prize, FLTRP National English Competition",d:"2021"}
+    ],
+    campus:[
+      { role:"Course Representative, MSc Business Analytics", org:"University of Bristol", y:"2025.09 — 2026.09",
+        points:[
+          "Represented 110 MSc Business Analytics students as the liaison between the student body and faculty, attending 5 Staff-Student Liaison Committee meetings to systematically collect and relay feedback on scheduling, workload and teaching resources.",
+          "Regularly gathered and synthesised student feedback on curriculum, pacing and learning resources (107 survey responses), consolidating recurring issues for the department and helping secure additional office hours and access to the Kaggle course-materials database.",
+          "Built and ran a shared documents platform for the business school’s students, consolidating course materials and announcements to improve collaboration among international students."
+        ]},
+      { role:"Host, Close Up, Wide Lens Podcast", org:"Personal Project", y:"2026 – present",
+        points:["Independently plans topics, books guests and edits episodes — 9 released."]},
+      { role:"Project Lead, National College Students’ Innovation & Entrepreneurship Programme", org:"Nanjing Audit University", y:"2022.04 — 2023.12",
+        points:["Provincial approval Apr 2022, provincial completion Dec 2023; 3rd author on a paper published in the core journal Modern Business."]},
+      { role:"University-level Key Project, Student Summer Social Practice", org:"Nanjing Audit University", y:"2023.08",
+        points:[]},
+      { role:"External Liaison Officer, Science & Technology Association, Zeyuan College", org:"Nanjing Audit University", y:"2021.09 — 2022.06",
+        points:[
+          "Planned and led an inter-university social event, drawing 200+ students from institutions including Nanjing Agricultural University and Nanjing Normal University, and strengthening cross-campus exchange.",
+          "Wrote an event proposal recognised as an outstanding plan for its originality and attention to execution detail.",
+          "Supported the department head in building partnerships with multiple university societies, securing RMB 5,000 in sponsorship."
+        ]},
+      { role:"Class Organisation Committee Member", org:"Nanjing Audit University", y:"2021.09 — 2022.06",
+        points:[
+          "Assisted the Communist Youth League branch secretary, organising 5 college/university-level events with an average turnout of 50 participants.",
+          "Planned and ran 8 class team-building events and group gatherings (outdoor activities, themed evenings), reaching over 90% participation and noticeably strengthening peer communication and teamwork.",
+          "Relayed 85 official notices accurately, achieving 100% class coverage, and resolved 16 internal communication issues within the class."
+        ]}
+    ]
+  },
+
+  cards:{
+    skill:[
+      {n:"User Research",r:"SSR",lv:90,d:"Semi-structured interviews and end-to-end workflow mapping across 3 studios, turning qualitative feedback into prioritised requirements."},
+      {n:"Evaluation Frameworks",r:"SSR",lv:86,d:"Co-built a 12-metric offline model-evaluation framework — turning ‘is it good’ into a number you can compare."},
+      {n:"SQL",r:"SSR",lv:85,d:"Cleaned and standardised a dataset of 217 urban-rail projects, 26,088 vehicles and roughly RMB 206.3bn in contract value."},
+      {n:"Python",r:"SSR",lv:84,d:"Pandas / scikit-learn / statsmodels / Selenium — collection, cleaning, regression, PCA and topic modelling, all put to use."},
+      {n:"Industry Research",r:"SR",lv:82,d:"AIDC, humanoid robotics, rail-transit equipment — value-chain breakdown, competitive positioning, market sizing."},
+      {n:"Financial Modelling",r:"SR",lv:80,d:"NPV and sensitivity analysis, earnings-forecast breakdowns, PE / PB / EV-EBITDA comparable-company benchmarking."},
+      {n:"Visualisation",r:"SR",lv:76,d:"Tableau / Matplotlib / Power BI — turning analysis into dashboards you can present straight from."},
+      {n:"Vibe Coding",r:"R",lv:74,d:"Both the IBM recommender prototype and this site were written and deployed by me, solo."},
+      {n:"Written & Spoken Communication",r:"R",lv:86,d:"Structured expression honed over 9 podcast episodes; also wrote a 70,000-word project report."}
+    ],
+    hobby:[
+      {n:"Photography",r:"SSR",lv:90,d:"Fujifilm compact + Lightroom / Capture One — partial to early-morning and dusk light.",img:"assets/gallery/seven-sisters.jpg"},
+      {n:"Travel",r:"SSR",lv:95,d:"Switzerland, the UK, France, Portugal, Italy — see the world first, then see yourself.",img:"assets/photos/geneva-clock.jpg"},
+      {n:"Guzheng, Grade 10",r:"SSR",lv:92,d:"From childhood to Grade 10 — the thing I have stuck with longest. Practice taught me more patience than any class.",img:"assets/photos/paris.jpg"},
+      {n:"Podcast Host",r:"SSR",lv:88,d:"Host of Close Up, Wide Lens, on individual choices and how differently we all see things.",img:"assets/photos/portrait.jpg"},
+      {n:"Skydiving",r:"SR",lv:80,d:"Jumped once over Interlaken. Afraid of heights — jumped anyway.",img:"assets/photos/skydive.jpg"},
+      {n:"Exhibitions",r:"SR",lv:76,d:"Galleries, photography shows, architecture exhibits — always block out half a day for them when travelling.",img:"assets/photos/exhibit.jpg"},
+      {n:"City Walking",r:"R",lv:70,d:"First move in any new city: 20,000 steps, learning the scale of its streets on foot.",img:"assets/photos/british-museum.jpg"}
+    ]
+  },
+
+  wall:[
+    {f:"seven-sisters.jpg",     cap:"The White Cliffs",       loc:"England · Seven Sisters",
+      s:"Wind off the English Channel carved the chalk into a row of silent walls."},
+    {f:"mont-saint-michel.jpg", cap:"Abbey in the Tide",      loc:"France · Mont Saint-Michel",
+      s:"At high tide the stone steps disappear underwater, and the abbey seems to hang in mid-air."},
+    {f:"lucerne-dusk.jpg",      cap:"Lakeside at Dusk",       loc:"Switzerland · Lucerne",
+      s:"Mountain shadows fall into the lake, and the sky keeps only its last warm layer of light."},
+    {f:"duomo.jpg",             cap:"Dome at Sunset",         loc:"Italy · Florence",
+      s:"A six-hundred-year-old brick-red dome, catching the whole city’s sunset."},
+    {f:"lake-aerial.jpg",       cap:"Island in the Lake, From Above", loc:"Switzerland · Rigi",
+      s:"The cable car climbs to the summit, and the little island in the lake shrinks to a single green dot."},
+    {f:"hydepark-sunset.jpg",   cap:"Swans at Sunset",        loc:"London · Hyde Park",
+      s:"A swan cuts across the water, drawing a ripple through the orange sky along with it."},
+    {f:"train-window.jpg",      cap:"Through the Train Window", loc:"Switzerland · Rigi Bahn",
+      s:"The rack railway climbs hugging the mountainside as cloud and mist sweep past the glass."},
+    {f:"arno.jpg",              cap:"Morning on the Arno",    loc:"Italy · Florence",
+      s:"Before the mist has fully lifted, the Arno is already awake."},
+    {f:"lake-flowers.jpg",      cap:"Boat Behind the Flowers", loc:"Switzerland · Brienz",
+      s:"The lake is an unreal green, and a boat slowly emerges from behind the flowers."},
+    {f:"hydepark-autumn.jpg",   cap:"Autumn Leaves, Backlit", loc:"London · Hyde Park",
+      s:"Sunlight passes through the autumn leaves, dyeing the whole path gold."},
+    {f:"normandy-sheep.jpg",    cap:"Sheep on the Salt Marsh", loc:"France · Normandy",
+      s:"Once the tide pulls back, the salt marsh becomes a quiet pasture for sheep."},
+    {f:"winter-fair.jpg",       cap:"Winter Fairground",     loc:"London · Winter Wonderland",
+      s:"When the Ferris wheel starts turning, London’s winter suddenly tastes like candy."}
+  ]
+}
+};
+
+let lang="zh";
+let DATA=CONTENT[lang];
+
+/* ══════════ 渲染 ══════════ */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+let openExpIndex=0, curCaseIndex=null, curSlide=0;
+let pool="skill", state={skill:[],hobby:[]};
+
+function renderPage(){
+  $$(".fnameEn").forEach(e=>e.textContent=DATA.nameEn);
+  $("#statusText").innerHTML=`<b>${DATA.status}</b>`;
+  $("#heroName").innerHTML=`${DATA.name}<span class="thin"> / ${DATA.nameSub}</span>`;
+  $("#heroTitle").innerHTML=DATA.heroHtml;
+  $("#intro").textContent=DATA.intro;
+  $("#who").innerHTML=DATA.who.map(w=>`<span><i></i>${w}</span>`).join("");
+  $("#lookingFor").textContent=DATA.lookingFor;
+  $("#focusGrid").innerHTML=DATA.focus.map(f=>`<div class="focus-it"><div class="no mono">${f.no}</div><h4>${f.t}</h4><p>${f.d}</p></div>`).join("");
+  $("#nums").innerHTML=DATA.nums.map(n=>`<div><div class="stat-n mono">${n.n}<i>${n.i}</i></div><div class="stat-k">${n.k}</div></div>`).join("");
+  $("#podTitle").innerHTML=DATA.podcast.titleHtml;
+  $("#resumeModalTitle").textContent=DATA.ui.resumeModalTitle;
+
+  /* 经历手风琴 */
+  $("#timeline").innerHTML=DATA.timeline.map((t,i)=>`
+    <article class="exp-row${i===openExpIndex?" active":""}">
+      <button class="exp-trigger">
+        <span class="exp-no mono">0${i+1}</span>
+        <div><h3>${t.role}</h3><p>${t.co}</p></div>
+        <time class="mono">${t.y}</time>
+        <i>＋</i>
+      </button>
+      <div class="exp-body"><div class="exp-inner">
+        <p class="exp-summary">${t.summary}</p>
+        <ul>${t.points.map(p=>`<li>${p}</li>`).join("")}</ul>
+        <div class="exp-tags">${t.abil.map(a=>`<span>${a}</span>`).join("")}</div>
+      </div></div>
+    </article>`).join("");
+  $$("#timeline .exp-trigger").forEach((b,i)=>b.addEventListener("click",()=>{
+    const row=b.parentElement, was=row.classList.contains("active");
+    $$("#timeline .exp-row").forEach(r=>r.classList.remove("active"));
+    openExpIndex=was?-1:i;
+    if(!was) row.classList.add("active");
+  }));
+
+  /* 作品：卡片网格 */
+  $("#workGrid").innerHTML=DATA.cases.map((c,i)=>`
+    <article class="work-card ${c.tone}" data-i="${i}">
+      <div class="work-card-top"><span>${c.type}</span><b class="mono">${c.no} / 03</b></div>
+      <div class="work-card-main">
+        <p class="work-metric"><strong>${c.metric}</strong><span>${c.metricLabel}</span></p>
+        <div><h3>${c.name}</h3><p>${c.subtitle}</p></div>
+      </div>
+      <div class="work-methods">${c.stack.slice(0,4).map(m=>`<span>${m}</span>`).join("")}</div>
+      <button class="open-case" data-open="${i}">OPEN CASE <span>↗</span></button>
+      <div class="work-watermark">${String(i+1).padStart(2,"0")}</div>
+    </article>`).join("");
+  $$("#workGrid [data-open]").forEach(b=>b.addEventListener("click",()=>openCase(+b.dataset.open)));
+  if(curCaseIndex!==null && workOverlay.classList.contains("open")) renderCase();
+
+  /* also built 列表 */
+  $("#more").innerHTML=DATA.more.map(m=>`
+    <div class="more-row">
+      <span class="d mono">${m.d}</span>
+      <span><h4>${m.name}</h4><p class="s">${m.s}</p></span>
+      <span class="n mono">${m.n}<em>${m.e}</em></span>
+    </div>`).join("");
+
+  /* 媒体报道 */
+  $("#mediaList").innerHTML=DATA.media.map(m=>`
+    <a class="media-row" href="${m.link}" target="_blank" rel="noopener">
+      <span class="meta">${m.type}<span>${m.date}</span></span>
+      <span><h4>${m.title}</h4><p>${m.desc}</p></span>
+      <span class="go mono">${m.source} ↗</span>
+    </a>`).join("");
+
+  /* 播客 */
+  const P=DATA.podcast; $("#footPod").href=P.url;
+  $("#podBox").innerHTML=`
+    <div>
+      <div class="pod-art">
+        <img src="${P.cover}" alt="${P.title}">
+      </div>
+      <div class="pod-meta">${P.meta.map(m=>`<span>${m}</span>`).join("")}</div>
+      <a class="pod-link" href="${P.url}" target="_blank" rel="noopener">${P.listenLabel} <span>↗</span></a>
+    </div>
+    <div>
+      <div class="pod-quote">${P.intro}</div>
+      <div class="eps">${P.eps.map(e=>`
+        <a class="ep" href="${P.url}" target="_blank" rel="noopener">
+          <span class="no mono">${e.no}</span>
+          <span><h4>${e.title}</h4><p>${e.desc}</p></span>
+          <span class="go mono">${e.date}</span>
+        </a>`).join("")}
+        <div class="ep"><span class="no mono">···</span><span><h4 style="font-weight:400;font-size:13px;color:#a3a59d">${P.moreLabel}</h4></span><span class="go"></span></div>
+      </div>
+    </div>`;
+
+  /* 教育背景 */
+  const E=DATA.edu;
+  $("#eduBox").innerHTML=`
+    <div class="edu-head"><div><h3>${E.school}</h3><p>${E.degree}</p></div>
+      <span class="mono">${E.when}</span></div>
+    <div style="margin-top:22px">${E.rows.map(r=>`<div class="row"><div class="k">${r.k}</div><div class="v">${r.v}</div></div>`).join("")}</div>
+    <div class="edu-block"><h4>${E.honorsLabel}</h4>${E.honors.map(h=>`<div class="honor-it"><b>${h.t}</b><div class="s">${h.d}</div></div>`).join("")}</div>
+    <div class="edu-block"><h4>${E.campusLabel}</h4>${E.campus.map(c=>`
+      <div class="campus-it">
+        <div class="chead"><div><div class="role">${c.role}</div><div class="org">${c.org}</div></div><time class="mono">${c.y}</time></div>
+        ${c.points&&c.points.length?`<ul>${c.points.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}
+      </div>`).join("")}</div>`;
+
+  /* 摄影墙 */
+  $("#wallSub").textContent=DATA.wallCaption.replace("{n}",DATA.wall.length);
+  $("#wall").innerHTML=DATA.wall.map(w=>`
+    <figure class="shot" data-src="assets/gallery/${w.f}" data-cap="${w.cap} — ${w.loc}">
+      <img src="assets/gallery/${w.f}" alt="${w.cap}" loading="lazy">
+      <figcaption><b>${w.cap}</b><i>${w.loc}</i><span class="story">${w.s}</span></figcaption>
+    </figure>`).join("");
+  $$("#wall .shot").forEach(s=>s.addEventListener("click",()=>{
+    $("#lbImg").src=s.dataset.src; $("#lbCap").textContent=s.dataset.cap; $("#lb").classList.add("open"); }));
+
+  /* 抽卡：刷新已展示内容的文案，不重新抽取 */
+  renderGacha();
+}
+
+/* 作品弹窗（函数只定义一次，读取时取当前 DATA） */
+const workOverlay=$("#workOverlay"), workBody=$("#workModalBody");
+function openCase(i){
+  curCaseIndex=i; curSlide=0;
+  renderCase();
+  workOverlay.classList.add("open"); document.body.style.overflow="hidden";
+}
+function renderCase(){
+  const c=DATA.cases[curCaseIndex];
+  workBody.innerHTML=`
+    <article class="case-modal ${c.tone}">
+      <div class="case-head"><span>${c.type}</span><button data-close>${DATA.ui.closeX}</button></div>
+      <div class="case-intro">
+        <p class="case-number">${c.no}</p>
+        <div><h2>${c.name}</h2><h3>${c.subtitle}</h3><span class="case-kind mono">${c.kind}</span></div>
+      </div>
+      ${c.figures?`<div class="case-gallery">
+        <div class="case-figure"><img src="${c.figures[curSlide].src}" alt="${c.figures[curSlide].alt}"></div>
+        ${c.figures.length>1?`<div class="case-gallery-nav">
+          <span class="mono">${String(curSlide+1).padStart(2,"0")} / ${String(c.figures.length).padStart(2,"0")} · ${c.figures[curSlide].alt}</span>
+          <div><button id="prevFig">←</button><button id="nextFig">→</button></div>
+        </div>`:`<div class="case-gallery-nav"><span class="mono">${c.figures[0].alt}</span><div></div></div>`}
+      </div>`:""}
+      <div class="case-story">
+        <section>
+          <p class="case-label">THE QUESTION</p>
+          <p class="case-detail">${c.problem}</p>
+          <div class="work-methods" style="color:var(--ink)">${c.stack.map(m=>`<span>${m}</span>`).join("")}</div>
+        </section>
+        <section>
+          <p class="case-label">WHAT I DID</p>
+          <p class="case-detail" style="margin-bottom:0">${c.judge}</p>
+        </section>
+        <section class="case-change">
+          <p class="case-label">WHAT CHANGED</p>
+          <p class="txt">${c.result.t}</p>
+        </section>
+        <section class="case-takeaway">
+          <p class="case-label">${c.takeawayLabel||"WHAT I TOOK AWAY"}</p>
+          <p>${c.learn}</p>
+        </section>
+      </div>
+      ${(c.link||c.repo)?`<div class="case-links">
+        ${c.link?`<a href="${c.link}" target="_blank" rel="noopener">${c.linkLabel||DATA.ui.openDemo}</a>`:""}
+        ${c.repo?`<a href="${c.repo}" target="_blank" rel="noopener">${c.repoLabel||DATA.ui.viewRepo}</a>`:""}
+      </div>`:""}
+    </article>`;
+  $("[data-close]",workBody).addEventListener("click",closeCase);
+  if(c.figures&&c.figures.length>1){
+    $("#prevFig",workBody).addEventListener("click",()=>{curSlide=(curSlide-1+c.figures.length)%c.figures.length;renderCase();});
+    $("#nextFig",workBody).addEventListener("click",()=>{curSlide=(curSlide+1)%c.figures.length;renderCase();});
+  }
+}
+function closeCase(){ workOverlay.classList.remove("open"); workBody.innerHTML=""; document.body.style.overflow=""; }
+workOverlay.addEventListener("click",e=>{ if(e.target===workOverlay) closeCase(); });
+
+/* 灯箱 */
+$("#lb").addEventListener("click",()=>$("#lb").classList.remove("open"));
+
+/* 简历弹窗 */
+const resumeOverlay=$("#resumeOverlay"), resumeBody=$("#resumeBody");
+function openResume(){
+  resumeBody.innerHTML=`<iframe src="${DATA.resume}#view=FitH" title="${DATA.ui.resumeIframeTitle}" style="width:100%;height:68vh;border:0;background:#fff"></iframe>
+    <div class="fb" id="fb" style="display:none">
+      <div style="font-size:15px">${DATA.ui.noResumeTitle}</div>
+      <div class="s">${DATA.ui.noResumeBody}</div></div>`;
+  if(location.protocol!=="file:"){
+    const show=()=>{const fb=$("#fb");if(fb){fb.style.display="grid";const f=resumeBody.querySelector("iframe");if(f)f.style.display="none"}};
+    fetch(DATA.resume,{method:"HEAD"}).then(r=>{if(!r.ok)show()}).catch(show);
+  }
+  resumeOverlay.classList.add("open"); document.body.style.overflow="hidden";
+}
+function closeResume(){ resumeOverlay.classList.remove("open"); resumeBody.innerHTML=""; document.body.style.overflow=""; }
+$$("[data-resume]").forEach(b=>b.addEventListener("click",openResume));
+$$("[data-close]").forEach(b=>b.addEventListener("click",closeResume));
+resumeOverlay.addEventListener("click",e=>{ if(e.target===resumeOverlay) closeResume(); });
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeResume();closeCase();$("#lb").classList.remove("open")}});
+
+/* 抽卡：抽取逻辑只定义一次，state 跨语言切换保留 */
+const grid=$("#cardGrid"), L=()=>DATA.cards[pool];
+function renderGacha(){
+  const list=L(), got=state[pool];
+  $("#total").textContent=list.length; $("#drawn").textContent=got.length;
+  $("#deckMark").textContent=pool==="skill"?"Skill":"Hobby";
+  $("#deckHint").textContent=got.length>=list.length?DATA.ui.gachaHintPoolDone:DATA.ui.gachaHintDefault;
+  grid.innerHTML=list.map((c,i)=>{
+    const idx=got.indexOf(i);
+    if(idx<0) return `<div class="slot">? ? ?</div>`;
+    return `<div class="gcard" data-r="${c.r}" style="animation-delay:${Math.min(idx,8)*45}ms"><div class="gc">
+      ${c.img?`<div class="gc-pic"><img src="${c.img}" alt="${c.n}" loading="lazy"></div>`:""}
+      <div class="gc-t"><span class="r">${c.r}</span><span>${String(i+1).padStart(2,"0")}</span></div>
+      <div class="gc-n">${c.n}</div><div class="gc-d">${c.d}</div>
+      <div class="bar"><i data-w="${c.lv}"></i></div>
+      <div class="gc-l"><span>${pool==="skill"?DATA.ui.gachaProficiency:DATA.ui.gachaPassion}</span><span>${c.lv}</span></div>
+      </div></div>`;
+  }).join("");
+  requestAnimationFrame(()=>$$(".bar i",grid).forEach(b=>b.style.width=b.dataset.w+"%"));
+}
+function draw(){
+  const list=L(), got=state[pool];
+  const left=list.map((_,i)=>i).filter(i=>!got.includes(i));
+  if(!left.length){ $("#deckHint").textContent=DATA.ui.gachaHintAllDrawn; return; }
+  const w=i=>({SSR:1,SR:2,R:3})[list[i].r]||2;
+  const bag=left.flatMap(i=>Array(w(i)).fill(i));
+  got.push(bag[Math.floor(Math.random()*bag.length)]); renderGacha();
+}
+$("#deck").addEventListener("click",draw);
+$("#drawBtn").addEventListener("click",draw);
+$("#allBtn").addEventListener("click",()=>{state[pool]=L().map((_,i)=>i);renderGacha()});
+$("#resetBtn").addEventListener("click",()=>{state[pool]=[];renderGacha()});
+$$("#tabs button").forEach(b=>b.addEventListener("click",()=>{
+  $$("#tabs button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
+  pool=b.dataset.pool; renderGacha(); }));
+
+/* 移动端菜单 */
+$("#menuBtn").addEventListener("click",()=>$("#topnav").classList.toggle("open"));
+$$("#topnav a").forEach(a=>a.addEventListener("click",()=>$("#topnav").classList.remove("open")));
+
+/* 静态文案（导航、标题、按钮等）中英切换 */
+function applyStatic(l){
+  $$("[data-en]").forEach(el=>{
+    if(el.dataset.zh===undefined) el.dataset.zh=el.innerHTML;
+    el.innerHTML = l==="en" ? el.dataset.en : el.dataset.zh;
+  });
+}
+
+/* 语言切换 */
+const TITLE={zh:"马益雯 Yiwen Ma · 个人主页", en:"Yiwen Ma · Portfolio"};
+const DESC={zh:"马益雯 / Yiwen Ma —— 布里斯托大学商业分析硕士。在数据、行业和用户之间，寻找值得落地的答案。",
+  en:"Yiwen Ma — MSc Business Analytics, University of Bristol. Between data, industries and users, looking for answers worth acting on."};
+function switchLang(l){
+  if(l===lang) return;
+  lang=l; DATA=CONTENT[lang];
+  renderPage();
+  applyStatic(lang);
+  $$("#langToggle button").forEach(b=>b.classList.toggle("on", b.dataset.lang===lang));
+  $("#htmlRoot").lang = lang==="en" ? "en" : "zh-CN";
+  document.title = TITLE[lang];
+  $('meta[name="description"]').setAttribute("content", DESC[lang]);
+  try{ localStorage.setItem("site-lang", lang); }catch(e){}
+}
+$$("#langToggle button").forEach(b=>b.addEventListener("click",()=>switchLang(b.dataset.lang)));
+
+/* 滚动揭示 + 导航高亮 */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.08});
+$$(".rv").forEach((el,i)=>{el.style.transitionDelay=Math.min(i%4*70,220)+"ms";io.observe(el)});
+const secs=["top","focus","exp","work","media","pod","edu","skill"];
+function hl(){ let cur=secs[0];
+  secs.forEach(id=>{const el=document.getElementById(id); if(el&&el.getBoundingClientRect().top<=170)cur=id});
+  $$("#topnav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+cur)); }
+addEventListener("scroll",hl,{passive:true});
+
+/* 初始化 */
+let savedLang="zh";
+try{ savedLang=localStorage.getItem("site-lang")||"zh"; }catch(e){}
+renderPage();
+applyStatic("zh");
+draw();
+hl();
+if(savedLang==="en") switchLang("en");
+</script>
+</body>
+</html>

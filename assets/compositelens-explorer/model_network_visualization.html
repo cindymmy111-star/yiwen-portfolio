@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071115'/%3E%3Ccircle cx='22' cy='22' r='8' fill='%2319d4c1'/%3E%3Ccircle cx='43' cy='42' r='12' fill='%234d8fff'/%3E%3C/svg%3E">
+  <title>CompositeLens Model Network Visualisation</title>
+  <style>
+    :root {
+      --bg: #071115;
+      --panel: #0c1a20;
+      --panel-2: #10242b;
+      --line: #29414a;
+      --muted: #8ea3aa;
+      --text: #f3f7f6;
+      --teal: #19d4c1;
+      --blue: #4d8fff;
+      --amber: #f4b844;
+      --red: #ef4444;
+      --matrix: #626b7a;
+      --fibre: #3479f6;
+      --void: #ef4444;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% -8%, rgba(25, 212, 193, 0.12), transparent 32%),
+        radial-gradient(circle at 92% 0%, rgba(77, 143, 255, 0.10), transparent 28%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(1500px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 24px 0 34px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(25, 212, 193, 0.44);
+      border-radius: 50%;
+      box-shadow: inset 0 0 20px rgba(25, 212, 193, 0.08);
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .brand-mark::before { width: 6px; height: 6px; left: 8px; top: 7px; }
+    .brand-mark::after { width: 10px; height: 10px; right: 6px; bottom: 7px; opacity: 0.75; }
+
+    .top-actions, .transport {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(12, 26, 32, 0.78);
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .control:hover { border-color: rgba(25, 212, 193, 0.68); background: #11262d; }
+    .control:active { transform: translateY(1px); }
+    .control:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .control.primary { border-color: transparent; background: var(--teal); color: #031210; font-weight: 760; }
+    .control.icon { width: 38px; padding: 0; display: grid; place-items: center; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 760;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(38px, 5vw, 72px);
+      font-weight: 650;
+      letter-spacing: -0.035em;
+      line-height: 0.98;
+    }
+
+    .hero-copy {
+      max-width: 840px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.6;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(130px, 1fr));
+      gap: 10px;
+      width: min(390px, 100%);
+    }
+
+    .metric {
+      min-height: 78px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(12, 26, 32, 0.72);
+    }
+
+    .metric strong { display: block; color: var(--text); font-size: 21px; line-height: 1; }
+    .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .visual-shell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(16, 36, 43, 0.92), rgba(8, 21, 26, 0.96));
+      box-shadow: var(--shadow);
+    }
+
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 17, 21, 0.72);
+    }
+
+    .stage-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 720;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 5px rgba(25, 212, 193, 0.10), 0 0 20px rgba(25, 212, 193, 0.48);
+    }
+
+    .stage-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      min-height: 610px;
+    }
+
+    .network-scroll {
+      min-width: 0;
+      overflow: auto hidden;
+      scrollbar-color: var(--line) transparent;
+    }
+
+    #network {
+      display: block;
+      width: 100%;
+      min-width: 930px;
+      height: 610px;
+      background:
+        linear-gradient(rgba(73, 104, 114, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(73, 104, 114, 0.045) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+
+    .explainer {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 24px 24px;
+      border-left: 1px solid var(--line);
+      background: rgba(7, 17, 21, 0.82);
+    }
+
+    .step-number {
+      color: var(--teal);
+      font: 700 58px/1 Georgia, serif;
+      opacity: 0.95;
+    }
+
+    .step-kicker {
+      margin-top: 22px;
+      color: var(--amber);
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .step-heading { margin: 8px 0 0; font-size: 25px; line-height: 1.12; }
+    .step-copy { margin: 15px 0 0; color: var(--muted); font-size: 15px; line-height: 1.62; }
+
+    .technical-note {
+      margin-top: auto;
+      padding: 14px;
+      border: 1px solid rgba(244, 184, 68, 0.24);
+      border-radius: 12px;
+      background: rgba(244, 184, 68, 0.055);
+      color: #c9d4d6;
+      font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border-top: 1px solid var(--line);
+      background: rgba(7, 17, 21, 0.88);
+    }
+
+    .phase-button {
+      position: relative;
+      min-height: 72px;
+      padding: 14px 12px 12px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      color: var(--muted);
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .phase-button:last-child { border-right: 0; }
+    .phase-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 100%;
+      height: 3px;
+      background: var(--teal);
+      transition: right 260ms ease;
+    }
+
+    .phase-button.active { color: var(--text); background: rgba(25, 212, 193, 0.055); }
+    .phase-button.active::before { right: 0; }
+    .phase-button.complete::before { right: 0; background: rgba(25, 212, 193, 0.34); }
+    .phase-button small { display: block; color: var(--teal); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; }
+    .phase-button span { display: block; margin-top: 7px; font-size: 12px; font-weight: 720; }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: 0.95fr 1.4fr 0.95fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .pipeline-card {
+      position: relative;
+      min-height: 132px;
+      padding: 17px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(12, 26, 32, 0.76);
+      transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+    }
+
+    .pipeline-card.active {
+      border-color: rgba(25, 212, 193, 0.65);
+      background: rgba(18, 48, 53, 0.80);
+      transform: translateY(-2px);
+    }
+
+    .pipeline-card h3 { margin: 0; font-size: 14px; }
+    .pipeline-card p { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    .view-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 13px;
+    }
+
+    .view {
+      display: grid;
+      place-items: center;
+      min-height: 30px;
+      border: 1px solid #29414a;
+      border-radius: 7px;
+      color: #9db3ba;
+      background: #0a171c;
+      font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      transition: border-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .pipeline-card.active .view {
+      animation: viewPulse 1.6s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 90ms);
+    }
+
+    .class-legend { display: grid; gap: 7px; margin-top: 13px; }
+    .legend-row { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 11px; }
+    .swatch { width: 10px; height: 10px; border-radius: 3px; }
+    .swatch.matrix { background: var(--matrix); }
+    .swatch.fibre { background: var(--fibre); }
+    .swatch.void { background: var(--void); }
+
+    .formula {
+      display: grid;
+      place-items: center;
+      height: 62px;
+      margin-top: 12px;
+      border-radius: 10px;
+      background: #08171c;
+      color: #d8e8e8;
+      font: 700 13px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-align: center;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 16px;
+      color: #71878e;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .footer strong { color: #a7babf; }
+
+    /* SVG */
+    .perspective-grid {
+      fill: none;
+      stroke: #28444d;
+      stroke-width: 1;
+      opacity: 0.22;
+      vector-effect: non-scaling-stroke;
+      pointer-events: none;
+    }
+
+    .edge-halo {
+      fill: none;
+      stroke: #061014;
+      stroke-width: 8;
+      opacity: 0.72;
+      vector-effect: non-scaling-stroke;
+      transition: stroke 260ms ease, opacity 260ms ease;
+      pointer-events: none;
+    }
+
+    .edge-halo.active {
+      stroke: rgba(25, 212, 193, 0.16);
+      opacity: 1;
+      filter: url(#wideGlow);
+    }
+
+    .edge {
+      fill: none;
+      stroke: #46636d;
+      stroke-width: 1.85;
+      opacity: 0.56;
+      vector-effect: non-scaling-stroke;
+      transition: stroke 260ms ease, opacity 260ms ease, stroke-width 260ms ease;
+    }
+
+    .edge.skip { stroke: #416a75; stroke-dasharray: 7 7; opacity: 0.64; }
+    .edge.complete { stroke: rgba(25, 212, 193, 0.48); opacity: 0.82; }
+    .edge.active {
+      stroke: var(--teal);
+      stroke-width: 2.8;
+      opacity: 1;
+      stroke-dasharray: 9 8;
+      animation: edgeFlow 0.72s linear infinite;
+      filter: url(#softGlow);
+    }
+
+    .edge-particle {
+      fill: var(--amber);
+      stroke: #fff5d4;
+      stroke-width: 1;
+      opacity: 0;
+      pointer-events: none;
+      filter: url(#particleGlow);
+      transition: opacity 220ms ease;
+    }
+
+    .edge-particle.active { opacity: 1; }
+
+    .node {
+      cursor: pointer;
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: opacity 240ms ease, transform 240ms ease;
+    }
+
+    .node .node-front,
+    .node .node-back {
+      stroke-width: 1.5;
+      transition: fill 240ms ease, stroke 240ms ease, filter 240ms ease, opacity 240ms ease;
+    }
+
+    .node .node-back { opacity: 0.30; }
+    .node .node-top,
+    .node .node-side {
+      stroke-width: 1.2;
+      transition: fill 240ms ease, stroke 240ms ease, opacity 240ms ease;
+    }
+
+    .node.encoder .node-front { fill: url(#encoderFace); stroke: #3b7f9d; }
+    .node.encoder .node-back { fill: #0b1c26; stroke: #295368; }
+    .node.encoder .node-top { fill: #204d61; stroke: #3b7f9d; }
+    .node.encoder .node-side { fill: #0a202c; stroke: #2d647c; }
+
+    .node.decoder .node-front { fill: url(#decoderFace); stroke: #367968; }
+    .node.decoder .node-back { fill: #0a1d1b; stroke: #29594f; }
+    .node.decoder .node-top { fill: #205a4c; stroke: #39806e; }
+    .node.decoder .node-side { fill: #0a251f; stroke: #2d6758; }
+
+    .node.head .node-front { fill: url(#headFace); stroke: #977936; }
+    .node.head .node-back { fill: #211a0d; stroke: #66511f; }
+    .node.head .node-top { fill: #5a471c; stroke: #9b7a31; }
+    .node.head .node-side { fill: #2e240f; stroke: #715a25; }
+
+    .node.dim { opacity: 0.28; }
+    .node.complete .node-front { stroke: rgba(25, 212, 193, 0.56); }
+    .node.active { filter: drop-shadow(0 9px 10px rgba(0, 0, 0, 0.34)); }
+    .node.active .node-front { stroke: var(--teal); filter: url(#nodeGlow); }
+    .node.active .node-top { fill: #2e776a; stroke: var(--teal); }
+    .node.active .node-side { stroke: var(--teal); }
+    .node.active .node-title { fill: #ffffff; }
+    .node:hover .node-front,
+    .node:focus .node-front { stroke: var(--amber); }
+
+    .node-title { fill: #dce9e9; font-size: 12px; font-weight: 760; text-anchor: middle; pointer-events: none; }
+    .node-sub { fill: #789199; font-size: 9px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-anchor: middle; pointer-events: none; }
+    .section-label { fill: #6d858d; font-size: 10px; font-weight: 760; letter-spacing: 0.13em; text-transform: uppercase; }
+    .svg-caption { fill: #8399a0; font-size: 10px; }
+    .volume-back { fill: #071115; stroke: #294b56; stroke-width: 1.2; opacity: 0.56; }
+    .volume-top { fill: #244954; stroke: #4d7782; stroke-width: 1.2; }
+    .volume-side { fill: #0a2027; stroke: #315b66; stroke-width: 1.2; }
+    .input-frame { fill: #0b181d; stroke: #4b7480; stroke-width: 1.5; }
+    .input-fibre { fill: #596870; stroke: #82959b; stroke-width: 1; }
+    .input-void { fill: #161d21; stroke: #ef4444; stroke-width: 1.5; }
+    .mask-matrix { fill: var(--matrix); }
+    .mask-fibre { fill: var(--fibre); }
+    .mask-void { fill: var(--void); }
+    .input-group, .mask-group { transition: opacity 240ms ease; }
+    .input-group.active, .mask-group.active { filter: url(#nodeGlow); }
+    .attention-dot { fill: var(--amber); opacity: 0.8; }
+
+    @keyframes edgeFlow { to { stroke-dashoffset: -16; } }
+    @keyframes viewPulse {
+      0%, 100% { border-color: #29414a; color: #9db3ba; transform: scale(1); box-shadow: none; }
+      46% { border-color: var(--teal); color: #eafffb; transform: scale(1.035); box-shadow: 0 0 16px rgba(25, 212, 193, 0.18); }
+    }
+
+    @media (max-width: 1050px) {
+      .hero { grid-template-columns: 1fr; }
+      .metrics { width: 100%; grid-template-columns: repeat(4, 1fr); }
+      .stage-body { grid-template-columns: 1fr; }
+      .explainer { min-height: 240px; border-left: 0; border-top: 1px solid var(--line); }
+      .technical-note { margin-top: 20px; }
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .app { width: min(100% - 20px, 1500px); padding-top: 12px; }
+      .topbar { align-items: flex-start; }
+      .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+      .hero { margin-top: 18px; }
+      h1 { font-size: 42px; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .stage-header { align-items: flex-start; flex-direction: column; }
+      .timeline { grid-template-columns: repeat(3, 1fr); }
+      .phase-button:nth-child(3) { border-right: 0; }
+      .phase-button:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
+      .pipeline { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>CompositeLens · Model Explorer</div>
+      <div class="top-actions">
+        <button class="control" id="langButton" type="button" aria-label="Switch language">EN</button>
+        <button class="control icon" id="fullscreenButton" type="button" aria-label="Fullscreen" title="Fullscreen (F)">⛶</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">当前生产模型 · 架构动画</p>
+        <h1 data-i18n="title">显微图像如何变成工程判断</h1>
+        <p class="hero-copy" data-i18n="intro">动画展示当前 checkpoint 的完整推理路径：EfficientNet-B0 提取多尺度特征，UNet++ 通过密集嵌套跳跃连接恢复边界，八视角 D4 平均提高方向稳定性。</p>
+      </div>
+      <div class="metrics" aria-label="Model facts">
+        <div class="metric"><strong>6.64 M</strong><span data-i18n="parameters">可训练参数</span></div>
+        <div class="metric"><strong>256 × 256</strong><span data-i18n="tile">原生输入切片</span></div>
+        <div class="metric"><strong>8</strong><span data-i18n="views">D4 推理视角</span></div>
+        <div class="metric"><strong>3</strong><span data-i18n="classes">输出类别</span></div>
+      </div>
+    </section>
+
+    <section class="visual-shell" aria-label="Animated model architecture">
+      <div class="stage-header">
+        <div class="stage-title"><span class="live-dot" aria-hidden="true"></span><span data-i18n="stageLabel">网络数据流</span></div>
+        <div class="transport">
+          <button class="control icon" id="prevButton" type="button" aria-label="Previous step" title="Previous (←)">←</button>
+          <button class="control primary" id="playButton" type="button">暂停</button>
+          <button class="control icon" id="nextButton" type="button" aria-label="Next step" title="Next (→)">→</button>
+          <button class="control" id="speedButton" type="button" aria-label="Animation speed">1×</button>
+        </div>
+      </div>
+
+      <div class="stage-body">
+        <div class="network-scroll" id="networkScroll">
+          <svg id="network" viewBox="0 0 1240 610" role="img" aria-labelledby="networkTitle networkDesc">
+            <title id="networkTitle">CompositeLens UNet++ model network</title>
+            <desc id="networkDesc">An animated EfficientNet-B0 encoder, nested UNet++ decoder with SCSE attention, segmentation head and three-class output mask.</desc>
+            <defs>
+              <linearGradient id="encoderFace" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#173f53"/><stop offset="0.58" stop-color="#102f40"/><stop offset="1" stop-color="#0a202d"/>
+              </linearGradient>
+              <linearGradient id="decoderFace" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#174a3d"/><stop offset="0.58" stop-color="#10382f"/><stop offset="1" stop-color="#09251f"/>
+              </linearGradient>
+              <linearGradient id="headFace" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4d3d18"/><stop offset="0.58" stop-color="#372c13"/><stop offset="1" stop-color="#241c0d"/>
+              </linearGradient>
+              <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="wideGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="particleGlow" x="-300%" y="-300%" width="700%" height="700%">
+                <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="nodeGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#19d4c1" flood-opacity="0.45"/>
+              </filter>
+              <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L7,3.5 L0,7 Z" fill="#55717a"/>
+              </marker>
+            </defs>
+
+            <g aria-hidden="true" opacity="0.85">
+              <path class="perspective-grid" d="M196 558 L1025 558 L1137 490 L300 490 Z"/>
+              <path class="perspective-grid" d="M244 530 L1071 530 M289 502 L1118 502"/>
+              <path class="perspective-grid" d="M300 490 L196 558 M430 490 L326 558 M560 490 L456 558 M690 490 L586 558 M820 490 L716 558 M950 490 L846 558 M1080 490 L976 558"/>
+            </g>
+
+            <text x="38" y="34" class="section-label">INPUT</text>
+            <text x="245" y="34" class="section-label">EFFICIENTNET-B0 ENCODER</text>
+            <text x="535" y="34" class="section-label">UNET++ NESTED DECODER · SCSE</text>
+            <text x="1038" y="34" class="section-label">3-CLASS OUTPUT</text>
+
+            <g id="edgeLayer"></g>
+            <g id="nodeLayer"></g>
+
+            <g class="input-group" data-phase="0" transform="translate(35 210)">
+              <rect class="volume-back" x="10" y="-10" width="144" height="144" rx="15"/>
+              <rect class="volume-back" x="5" y="-5" width="144" height="144" rx="15"/>
+              <polygon class="volume-top" points="0,0 10,-10 154,-10 144,0"/>
+              <polygon class="volume-side" points="144,0 154,-10 154,134 144,144"/>
+              <rect class="input-frame" width="144" height="144" rx="15"/>
+              <g transform="translate(10 10)">
+                <circle class="input-fibre" cx="18" cy="19" r="15"/><circle class="input-fibre" cx="54" cy="17" r="14"/>
+                <circle class="input-fibre" cx="90" cy="20" r="16"/><circle class="input-fibre" cx="120" cy="18" r="12"/>
+                <circle class="input-fibre" cx="22" cy="55" r="14"/><circle class="input-fibre" cx="60" cy="55" r="16"/>
+                <circle class="input-fibre" cx="96" cy="58" r="15"/><circle class="input-fibre" cx="123" cy="54" r="11"/>
+                <circle class="input-fibre" cx="18" cy="91" r="13"/><circle class="input-fibre" cx="52" cy="92" r="15"/>
+                <circle class="input-fibre" cx="92" cy="94" r="16"/><circle class="input-fibre" cx="121" cy="91" r="12"/>
+                <path class="input-void" d="M69 29 C77 24, 88 28, 87 38 C86 46, 72 48, 67 41 C63 36, 64 32, 69 29Z"/>
+                <path class="input-void" d="M24 104 C33 98, 44 103, 41 115 C38 123, 25 124, 20 116 C17 111, 19 107, 24 104Z"/>
+              </g>
+              <text x="72" y="165" class="node-title">RGB tile</text>
+              <text x="72" y="181" class="node-sub">256² × 3</text>
+            </g>
+
+            <g class="mask-group" data-phase="5" transform="translate(1070 210)">
+              <rect class="volume-back" x="10" y="-10" width="144" height="144" rx="15"/>
+              <rect class="volume-back" x="5" y="-5" width="144" height="144" rx="15"/>
+              <polygon class="volume-top" points="0,0 10,-10 154,-10 144,0"/>
+              <polygon class="volume-side" points="144,0 154,-10 154,134 144,144"/>
+              <rect class="input-frame" width="144" height="144" rx="15"/>
+              <rect x="10" y="10" width="124" height="124" rx="8" class="mask-matrix"/>
+              <g transform="translate(10 10)">
+                <circle class="mask-fibre" cx="18" cy="19" r="15"/><circle class="mask-fibre" cx="54" cy="17" r="14"/>
+                <circle class="mask-fibre" cx="90" cy="20" r="16"/><circle class="mask-fibre" cx="120" cy="18" r="12"/>
+                <circle class="mask-fibre" cx="22" cy="55" r="14"/><circle class="mask-fibre" cx="60" cy="55" r="16"/>
+                <circle class="mask-fibre" cx="96" cy="58" r="15"/><circle class="mask-fibre" cx="123" cy="54" r="11"/>
+                <circle class="mask-fibre" cx="18" cy="91" r="13"/><circle class="mask-fibre" cx="52" cy="92" r="15"/>
+                <circle class="mask-fibre" cx="92" cy="94" r="16"/><circle class="mask-fibre" cx="121" cy="91" r="12"/>
+                <path class="mask-void" d="M69 29 C77 24, 88 28, 87 38 C86 46, 72 48, 67 41 C63 36, 64 32, 69 29Z"/>
+                <path class="mask-void" d="M24 104 C33 98, 44 103, 41 115 C38 123, 25 124, 20 116 C17 111, 19 107, 24 104Z"/>
+              </g>
+              <text x="72" y="165" class="node-title">Mask</text>
+              <text x="72" y="181" class="node-sub">0 matrix · 1 fibre · 2 void</text>
+            </g>
+
+            <text x="50" y="405" class="svg-caption">per-image mean / std</text>
+            <text x="48" y="420" class="svg-caption">normalisation</text>
+            <text x="1048" y="405" class="svg-caption">threshold 0.875</text>
+            <text x="1048" y="420" class="svg-caption">min void area 10 px</text>
+          </svg>
+        </div>
+
+        <aside class="explainer" aria-live="polite">
+          <div class="step-number" id="stepNumber">01</div>
+          <div class="step-kicker" id="stepKicker">INPUT</div>
+          <h2 class="step-heading" id="stepHeading">输入与归一化</h2>
+          <p class="step-copy" id="stepCopy">每张显微图先转换为 RGB，并按图像自身的均值和标准差进行归一化，减少亮度与对比度变化带来的影响。</p>
+          <div class="technical-note" id="technicalNote">tensor: 1 × 3 × 256 × 256<br>normalise: (x − μ) / max(σ, 0.05)</div>
+        </aside>
+      </div>
+
+      <nav class="timeline" id="timeline" aria-label="Animation phases"></nav>
+    </section>
+
+    <section class="pipeline" aria-label="Inference pipeline details">
+      <article class="pipeline-card" data-card-phase="1">
+        <h3 data-i18n="d4Title">八视角 D4</h3>
+        <p data-i18n="d4Copy">四次旋转 × 原图/镜像，全部进入同一个共享网络。</p>
+        <div class="view-grid" aria-hidden="true">
+          <div class="view" style="--i:0">R0</div><div class="view" style="--i:1">R90</div><div class="view" style="--i:2">R180</div><div class="view" style="--i:3">R270</div>
+          <div class="view" style="--i:4">M0</div><div class="view" style="--i:5">M90</div><div class="view" style="--i:6">M180</div><div class="view" style="--i:7">M270</div>
+        </div>
+      </article>
+      <article class="pipeline-card" data-card-phase="3">
+        <h3 data-i18n="skipTitle">密集跳跃连接</h3>
+        <p data-i18n="skipCopy">浅层纹理与深层语义在多个解码节点重复融合，改善小孔隙与边界恢复。</p>
+        <div class="formula">encoder features<br>+ nested decoder features<br>+ SCSE attention</div>
+      </article>
+      <article class="pipeline-card" data-card-phase="4">
+        <h3 data-i18n="classTitle">三类像素概率</h3>
+        <p data-i18n="classCopy">3×3 卷积把 16 个解码通道映射为三类 logits。</p>
+        <div class="class-legend">
+          <div class="legend-row"><span class="swatch matrix"></span><span data-i18n="matrix">Matrix · 基体</span></div>
+          <div class="legend-row"><span class="swatch fibre"></span><span data-i18n="fibre">Fibre · 纤维</span></div>
+          <div class="legend-row"><span class="swatch void"></span><span data-i18n="void">Void · 孔隙</span></div>
+        </div>
+      </article>
+      <article class="pipeline-card" data-card-phase="5">
+        <h3 data-i18n="consensusTitle">平均、诊断与后处理</h3>
+        <p data-i18n="consensusCopy">反向旋转八个结果后求平均，同时计算预测熵和 D4 分歧，再生成最终 Mask。</p>
+        <div class="formula">p̄ = ⅛ Σ pᵢ<br>void if p̄ ≥ 0.875</div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <div><strong data-i18n="verified">已根据当前 checkpoint 核对：</strong> UNet++ · timm-efficientnet-b0 · SCSE · 6,640,473 parameters · epoch 5</div>
+      <div data-i18n="diagramNote">演示图对功能模块进行分组，不代表逐层张量追踪。快捷键：空格播放/暂停，←/→切换，F全屏。</div>
+    </footer>
+  </main>
+
+  <script>
+    const NS = "http://www.w3.org/2000/svg";
+
+    const copy = {
+      zh: {
+        eyebrow: "当前生产模型 · 架构动画",
+        title: "显微图像如何变成工程判断",
+        intro: "动画展示当前 checkpoint 的完整推理路径：EfficientNet-B0 提取多尺度特征，UNet++ 通过密集嵌套跳跃连接恢复边界，八视角 D4 平均提高方向稳定性。",
+        parameters: "可训练参数", tile: "原生输入切片", views: "D4 推理视角", classes: "输出类别",
+        stageLabel: "网络数据流", play: "播放", pause: "暂停",
+        d4Title: "八视角 D4", d4Copy: "四次旋转 × 原图/镜像，全部进入同一个共享网络。",
+        skipTitle: "密集跳跃连接", skipCopy: "浅层纹理与深层语义在多个解码节点重复融合，改善小孔隙与边界恢复。",
+        classTitle: "三类像素概率", classCopy: "3×3 卷积把 16 个解码通道映射为三类 logits。",
+        matrix: "Matrix · 基体", fibre: "Fibre · 纤维", void: "Void · 孔隙",
+        consensusTitle: "平均、诊断与后处理", consensusCopy: "反向旋转八个结果后求平均，同时计算预测熵和 D4 分歧，再生成最终 Mask。",
+        verified: "已根据当前 checkpoint 核对：",
+        diagramNote: "演示图对功能模块进行分组，不代表逐层张量追踪。快捷键：空格播放/暂停，←/→切换，F全屏。"
+      },
+      en: {
+        eyebrow: "CURRENT PRODUCTION MODEL · ANIMATED ARCHITECTURE",
+        title: "How a micrograph becomes an engineering decision",
+        intro: "The current checkpoint in motion: EfficientNet-B0 extracts multi-scale features, UNet++ restores boundaries through dense nested skips, and eight-view D4 averaging improves orientation stability.",
+        parameters: "trainable parameters", tile: "native input tile", views: "D4 inference views", classes: "output classes",
+        stageLabel: "network data flow", play: "Play", pause: "Pause",
+        d4Title: "Eight-view D4", d4Copy: "Four rotations × original/mirrored input, all processed by one shared network.",
+        skipTitle: "Dense nested skips", skipCopy: "Shallow texture and deep semantics are repeatedly fused to recover small voids and boundaries.",
+        classTitle: "Three pixel classes", classCopy: "A 3×3 convolution maps 16 decoder channels to three class logits.",
+        matrix: "Matrix", fibre: "Fibre", void: "Void",
+        consensusTitle: "Average, diagnose, post-process", consensusCopy: "The eight predictions are inverted and averaged; entropy and D4 disagreement are measured before the final mask.",
+        verified: "Verified against the current checkpoint:",
+        diagramNote: "Functional blocks are grouped for presentation; this is not a layer-by-layer tensor trace. Keys: Space play/pause, ←/→ step, F fullscreen."
+      }
+    };
+
+    const phases = [
+      {
+        short: { zh: "输入", en: "Input" }, kicker: "INPUT",
+        title: { zh: "输入与归一化", en: "Input and normalisation" },
+        body: {
+          zh: "每张显微图先转换为 RGB，并按图像自身的均值和标准差进行归一化，减少亮度与对比度变化带来的影响。",
+          en: "Each micrograph is converted to RGB and normalised using its own mean and standard deviation to reduce brightness and contrast variation."
+        },
+        technical: "tensor: 1 × 3 × 256 × 256<br>normalise: (x − μ) / max(σ, 0.05)"
+      },
+      {
+        short: { zh: "八视角", en: "8 views" }, kicker: "D4 TEST-TIME AUGMENTATION",
+        title: { zh: "从八个方向观察", en: "Inspect from eight orientations" },
+        body: {
+          zh: "原图与镜像图各旋转 0°、90°、180° 和 270°。八个视角共享同一个模型，因此增加稳定性而不增加参数量。",
+          en: "The original and mirrored images are each rotated by 0°, 90°, 180° and 270°. All views share one model, adding stability without adding parameters."
+        },
+        technical: "views: 2 mirrors × 4 rotations = 8<br>weights: shared across every pass"
+      },
+      {
+        short: { zh: "编码", en: "Encode" }, kicker: "EFFICIENTNET-B0",
+        title: { zh: "提取多尺度特征", en: "Extract multi-scale features" },
+        body: {
+          zh: "编码器逐级降低空间分辨率，同时把通道从 32 扩展到 320，学习从纤维纹理到孔隙上下文的不同层次特征。",
+          en: "The encoder progressively reduces spatial resolution while expanding channels from 32 to 320, learning fibre texture and wider void context."
+        },
+        technical: "encoder channels: 32 → 24 → 40 → 112 → 320<br>feature scales: 128² → 8²"
+      },
+      {
+        short: { zh: "解码", en: "Decode" }, kicker: "UNET++ + SCSE",
+        title: { zh: "嵌套融合与边界恢复", en: "Nested fusion and boundary recovery" },
+        body: {
+          zh: "UNet++ 不只使用一条跳跃连接，而是在同一分辨率上反复融合编码器与解码器特征。每个解码块加入 SCSE 注意力，突出有效通道与空间区域。",
+          en: "UNet++ repeatedly fuses encoder and decoder features at matching scales. SCSE attention in every decoder block emphasises useful channels and spatial regions."
+        },
+        technical: "decoder channels: 256 → 128 → 64 → 32 → 16<br>attention: channel SE + spatial SE"
+      },
+      {
+        short: { zh: "分类", en: "Classify" }, kicker: "SEGMENTATION HEAD",
+        title: { zh: "为每个像素预测三类", en: "Predict three classes per pixel" },
+        body: {
+          zh: "最终 3×3 卷积把 16 个解码通道映射为基体、纤维和孔隙三个 logits，再通过 Softmax 得到每个像素的类别概率。",
+          en: "A final 3×3 convolution maps 16 decoder channels to matrix, fibre and void logits; Softmax produces per-pixel class probabilities."
+        },
+        technical: "head: Conv2d(16 → 3, kernel 3×3)<br>probability: softmax(logits)"
+      },
+      {
+        short: { zh: "共识", en: "Consensus" }, kicker: "CONSENSUS + POST-PROCESSING",
+        title: { zh: "平均、诊断并生成 Mask", en: "Average, diagnose and build the mask" },
+        body: {
+          zh: "八个结果恢复到原方向后求平均。系统同时计算预测熵和 D4 分歧；孔隙概率达到 0.875 且区域不少于 10 个像素时进入最终 Mask。",
+          en: "All predictions are restored to the original orientation and averaged. Entropy and D4 disagreement are measured; voids require probability ≥ 0.875 and at least 10 pixels."
+        },
+        technical: "mean probability: ⅛ Σ pᵢ<br>void threshold: 0.875 · min component: 10 px"
+      }
+    ];
+
+    const nodes = [
+      { id: "e0", type: "encoder", x: 250, y: 78, w: 100, h: 54, title: "E0", sub: "128² × 32", phase: 2, detailZh: "高分辨率边缘与纹理特征", detailEn: "High-resolution edges and texture" },
+      { id: "e1", type: "encoder", x: 250, y: 176, w: 100, h: 54, title: "E1", sub: "64² × 24", phase: 2, detailZh: "浅层纤维结构", detailEn: "Shallow fibre structure" },
+      { id: "e2", type: "encoder", x: 250, y: 274, w: 100, h: 54, title: "E2", sub: "32² × 40", phase: 2, detailZh: "中尺度缺陷特征", detailEn: "Mid-scale defect features" },
+      { id: "e3", type: "encoder", x: 250, y: 372, w: 100, h: 54, title: "E3", sub: "16² × 112", phase: 2, detailZh: "更大感受野", detailEn: "Wider receptive field" },
+      { id: "e4", type: "encoder", x: 250, y: 470, w: 100, h: 54, title: "E4", sub: "8² × 320", phase: 2, detailZh: "深层语义上下文", detailEn: "Deep semantic context" },
+
+      { id: "x31", type: "decoder", x: 422, y: 372, w: 88, h: 54, title: "X3,1", sub: "SCSE", phase: 3 },
+      { id: "x21", type: "decoder", x: 422, y: 274, w: 88, h: 54, title: "X2,1", sub: "SCSE", phase: 3 },
+      { id: "x11", type: "decoder", x: 422, y: 176, w: 88, h: 54, title: "X1,1", sub: "SCSE", phase: 3 },
+      { id: "x01", type: "decoder", x: 422, y: 78, w: 88, h: 54, title: "X0,1", sub: "SCSE", phase: 3 },
+      { id: "x22", type: "decoder", x: 574, y: 274, w: 88, h: 54, title: "X2,2", sub: "SCSE", phase: 3 },
+      { id: "x12", type: "decoder", x: 574, y: 176, w: 88, h: 54, title: "X1,2", sub: "SCSE", phase: 3 },
+      { id: "x02", type: "decoder", x: 574, y: 78, w: 88, h: 54, title: "X0,2", sub: "SCSE", phase: 3 },
+      { id: "x13", type: "decoder", x: 726, y: 176, w: 88, h: 54, title: "X1,3", sub: "SCSE", phase: 3 },
+      { id: "x03", type: "decoder", x: 726, y: 78, w: 88, h: 54, title: "X0,3", sub: "SCSE", phase: 3 },
+      { id: "x04", type: "decoder", x: 878, y: 78, w: 88, h: 54, title: "X0,4", sub: "16 ch", phase: 3 },
+      { id: "head", type: "head", x: 1000, y: 78, w: 80, h: 54, title: "3×3", sub: "16 → 3", phase: 4 }
+    ];
+
+    const edges = [
+      { from: "input", to: "e0", phase: 0 },
+      { from: "e0", to: "e1", phase: 2 }, { from: "e1", to: "e2", phase: 2 },
+      { from: "e2", to: "e3", phase: 2 }, { from: "e3", to: "e4", phase: 2 },
+
+      { from: "e4", to: "x31", phase: 3 }, { from: "e3", to: "x31", phase: 3, skip: true },
+      { from: "x31", to: "x21", phase: 3 }, { from: "e2", to: "x21", phase: 3, skip: true },
+      { from: "x21", to: "x11", phase: 3 }, { from: "e1", to: "x11", phase: 3, skip: true },
+      { from: "x11", to: "x01", phase: 3 }, { from: "e0", to: "x01", phase: 3, skip: true },
+
+      { from: "x21", to: "x22", phase: 3 }, { from: "e2", to: "x22", phase: 3, skip: true },
+      { from: "x22", to: "x12", phase: 3 }, { from: "e1", to: "x12", phase: 3, skip: true },
+      { from: "x11", to: "x12", phase: 3, skip: true },
+      { from: "x12", to: "x02", phase: 3 }, { from: "e0", to: "x02", phase: 3, skip: true },
+      { from: "x01", to: "x02", phase: 3, skip: true },
+
+      { from: "x12", to: "x13", phase: 3 }, { from: "e1", to: "x13", phase: 3, skip: true },
+      { from: "x11", to: "x13", phase: 3, skip: true },
+      { from: "x13", to: "x03", phase: 3 }, { from: "e0", to: "x03", phase: 3, skip: true },
+      { from: "x01", to: "x03", phase: 3, skip: true }, { from: "x02", to: "x03", phase: 3, skip: true },
+
+      { from: "x03", to: "x04", phase: 3 }, { from: "e0", to: "x04", phase: 3, skip: true },
+      { from: "x01", to: "x04", phase: 3, skip: true }, { from: "x02", to: "x04", phase: 3, skip: true },
+      { from: "x04", to: "head", phase: 4 }, { from: "head", to: "output", phase: 5 }
+    ];
+
+    const initialLanguage = new URLSearchParams(window.location.search).get("lang") === "en" ? "en" : "zh";
+    const state = { phase: 0, playing: true, speed: 1, lang: initialLanguage, timer: null };
+    const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));
+    nodeMap.input = { id: "input", x: 35, y: 210, w: 144, h: 144, phase: 0 };
+    nodeMap.output = { id: "output", x: 1070, y: 210, w: 144, h: 144, phase: 5 };
+
+    const svgElement = (name, attrs = {}) => {
+      const element = document.createElementNS(NS, name);
+      Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value));
+      return element;
+    };
+
+    function anchor(node, side) {
+      if (side === "left") return [node.x, node.y + node.h / 2];
+      if (side === "right") return [node.x + node.w, node.y + node.h / 2];
+      if (side === "top") return [node.x + node.w / 2, node.y];
+      return [node.x + node.w / 2, node.y + node.h];
+    }
+
+    function edgePath(fromNode, toNode, index, isSkip) {
+      const fromCentreY = fromNode.y + fromNode.h / 2;
+      const toCentreY = toNode.y + toNode.h / 2;
+      const fromCentreX = fromNode.x + fromNode.w / 2;
+      const toCentreX = toNode.x + toNode.w / 2;
+      const deltaX = toCentreX - fromCentreX;
+      const deltaY = toCentreY - fromCentreY;
+
+      if (isSkip) {
+        const [x1, y1] = anchor(fromNode, "right");
+        const [x2, y2] = anchor(toNode, "left");
+        const span = Math.max(48, Math.abs(x2 - x1));
+        const lane = index % 4;
+        const lift = Math.min(104, 26 + span * 0.13 + lane * 8);
+        const crest = Math.max(46, Math.min(y1, y2) - lift);
+        const controlSpread = Math.max(42, span * 0.36);
+        return `M ${x1} ${y1} C ${x1 + controlSpread} ${crest}, ${x2 - controlSpread} ${crest}, ${x2} ${y2}`;
+      }
+
+      const mostlyVertical = Math.abs(deltaY) > Math.abs(deltaX) * 0.82;
+      if (mostlyVertical && toNode.x <= fromNode.x + fromNode.w + 118) {
+        const travellingUp = toNode.y < fromNode.y;
+        const [x1, y1] = anchor(fromNode, travellingUp ? "top" : "bottom");
+        const [x2, y2] = anchor(toNode, travellingUp ? "bottom" : "top");
+        const direction = index % 2 === 0 ? 1 : -1;
+        const bow = direction * (28 + (index % 3) * 7);
+        const midY = (y1 + y2) / 2;
+        return `M ${x1} ${y1} C ${x1 + bow} ${midY}, ${x2 + bow} ${midY}, ${x2} ${y2}`;
+      }
+
+      const [x1, y1] = anchor(fromNode, "right");
+      const [x2, y2] = anchor(toNode, "left");
+      const span = Math.max(34, Math.abs(x2 - x1));
+      const lift = 10 + (index % 3) * 5;
+      const control = Math.max(36, span * 0.44);
+      return `M ${x1} ${y1} C ${x1 + control} ${y1 - lift}, ${x2 - control} ${y2 - lift}, ${x2} ${y2}`;
+    }
+
+    function renderGraph() {
+      const edgeLayer = document.getElementById("edgeLayer");
+      const nodeLayer = document.getElementById("nodeLayer");
+      edgeLayer.replaceChildren();
+      nodeLayer.replaceChildren();
+
+      edges.forEach((edge, index) => {
+        const d = edgePath(nodeMap[edge.from], nodeMap[edge.to], index, edge.skip);
+        const halo = svgElement("path", {
+          d,
+          class: "edge-halo",
+          "data-phase": edge.phase,
+          "aria-hidden": "true"
+        });
+        const path = svgElement("path", {
+          id: `edge-path-${index}`,
+          d,
+          class: `edge${edge.skip ? " skip" : ""}`,
+          "data-phase": edge.phase,
+          "data-edge": index,
+          "marker-end": "url(#arrow)"
+        });
+        const particle = svgElement("circle", {
+          class: "edge-particle",
+          "data-phase": edge.phase,
+          r: edge.skip ? 3 : 2.5,
+          "aria-hidden": "true"
+        });
+        particle.appendChild(svgElement("animateMotion", {
+          path: d,
+          dur: `${1.5 + (index % 5) * 0.14}s`,
+          begin: `${-(index % 7) * 0.19}s`,
+          repeatCount: "indefinite",
+          rotate: "auto"
+        }));
+        edgeLayer.append(halo, path, particle);
+      });
+
+      nodes.forEach((node) => {
+        const group = svgElement("g", {
+          class: `node ${node.type}`,
+          transform: `translate(${node.x} ${node.y})`,
+          "data-phase": node.phase,
+          tabindex: "0",
+          role: "button",
+          "aria-label": `${node.title}: ${node.sub}`
+        });
+        const depth = node.type === "encoder" ? 11 : node.type === "decoder" ? 9 : 8;
+        group.append(
+          svgElement("rect", { x: depth, y: -depth, width: node.w, height: node.h, rx: 10, class: "node-back" }),
+          svgElement("rect", { x: depth / 2, y: -depth / 2, width: node.w, height: node.h, rx: 10, class: "node-back" }),
+          svgElement("polygon", { points: `0,0 ${depth},${-depth} ${node.w + depth},${-depth} ${node.w},0`, class: "node-top" }),
+          svgElement("polygon", { points: `${node.w},0 ${node.w + depth},${-depth} ${node.w + depth},${node.h - depth} ${node.w},${node.h}`, class: "node-side" }),
+          svgElement("rect", { width: node.w, height: node.h, rx: 10, class: "node-front" })
+        );
+        if (node.type === "decoder") {
+          group.appendChild(svgElement("circle", { cx: node.w - 10, cy: 10, r: 3.5, class: "attention-dot" }));
+        }
+        const title = svgElement("text", { x: node.w / 2, y: 23, class: "node-title" });
+        title.textContent = node.title;
+        const sub = svgElement("text", { x: node.w / 2, y: 40, class: "node-sub" });
+        sub.textContent = node.sub;
+        group.append(title, sub);
+        group.addEventListener("mouseenter", () => showNodeDetail(node));
+        group.addEventListener("focus", () => showNodeDetail(node));
+        group.addEventListener("mouseleave", updateExplainer);
+        group.addEventListener("blur", updateExplainer);
+        group.addEventListener("click", () => {
+          setPhase(node.phase, false);
+          showNodeDetail(node);
+        });
+        nodeLayer.appendChild(group);
+      });
+    }
+
+    function showNodeDetail(node) {
+      const detail = state.lang === "zh" ? (node.detailZh || "UNet++ 嵌套解码节点，融合多尺度特征并应用 SCSE 注意力。") : (node.detailEn || "A nested UNet++ decoder node that fuses multi-scale features with SCSE attention.");
+      document.getElementById("stepKicker").textContent = `${node.type.toUpperCase()} · ${node.title}`;
+      document.getElementById("stepHeading").textContent = node.sub;
+      document.getElementById("stepCopy").textContent = detail;
+      document.getElementById("technicalNote").innerHTML = `node: ${node.title}<br>feature: ${node.sub}`;
+    }
+
+    function renderTimeline() {
+      const timeline = document.getElementById("timeline");
+      timeline.replaceChildren();
+      phases.forEach((phase, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "phase-button";
+        button.innerHTML = `<small>${String(index + 1).padStart(2, "0")}</small><span>${phase.short[state.lang]}</span>`;
+        button.addEventListener("click", () => setPhase(index, false));
+        timeline.appendChild(button);
+      });
+    }
+
+    function updateExplainer() {
+      const phase = phases[state.phase];
+      document.getElementById("stepNumber").textContent = String(state.phase + 1).padStart(2, "0");
+      document.getElementById("stepKicker").textContent = phase.kicker;
+      document.getElementById("stepHeading").textContent = phase.title[state.lang];
+      document.getElementById("stepCopy").textContent = phase.body[state.lang];
+      document.getElementById("technicalNote").innerHTML = phase.technical;
+    }
+
+    function applyPhaseClasses() {
+      document.querySelectorAll("[data-phase]").forEach((element) => {
+        const phase = Number(element.dataset.phase);
+        element.classList.toggle("active", phase === state.phase);
+        element.classList.toggle("complete", phase < state.phase);
+        element.classList.toggle("dim", phase > state.phase + 1);
+      });
+      document.querySelectorAll(".phase-button").forEach((button, index) => {
+        button.classList.toggle("active", index === state.phase);
+        button.classList.toggle("complete", index < state.phase);
+        button.setAttribute("aria-current", index === state.phase ? "step" : "false");
+      });
+      document.querySelectorAll("[data-card-phase]").forEach((card) => {
+        card.classList.toggle("active", Number(card.dataset.cardPhase) === state.phase);
+      });
+      document.getElementById("playButton").textContent = state.playing ? copy[state.lang].pause : copy[state.lang].play;
+    }
+
+    function setPhase(index, keepPlaying = state.playing) {
+      state.phase = (index + phases.length) % phases.length;
+      state.playing = keepPlaying;
+      updateExplainer();
+      applyPhaseClasses();
+      restartTimer();
+    }
+
+    function restartTimer() {
+      window.clearInterval(state.timer);
+      if (!state.playing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      state.timer = window.setInterval(() => setPhase(state.phase + 1, true), 3000 / state.speed);
+    }
+
+    function togglePlay() {
+      state.playing = !state.playing;
+      applyPhaseClasses();
+      restartTimer();
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "en";
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.dataset.i18n;
+        if (copy[state.lang][key]) element.textContent = copy[state.lang][key];
+      });
+      document.getElementById("langButton").textContent = state.lang === "zh" ? "EN" : "中文";
+      renderTimeline();
+      updateExplainer();
+      applyPhaseClasses();
+    }
+
+    document.getElementById("playButton").addEventListener("click", togglePlay);
+    document.getElementById("prevButton").addEventListener("click", () => setPhase(state.phase - 1, false));
+    document.getElementById("nextButton").addEventListener("click", () => setPhase(state.phase + 1, false));
+    document.getElementById("speedButton").addEventListener("click", () => {
+      const options = [0.75, 1, 1.5, 2];
+      state.speed = options[(options.indexOf(state.speed) + 1) % options.length];
+      document.getElementById("speedButton").textContent = `${state.speed}×`;
+      restartTimer();
+    });
+    document.getElementById("langButton").addEventListener("click", () => {
+      state.lang = state.lang === "zh" ? "en" : "zh";
+      applyLanguage();
+    });
+    document.getElementById("fullscreenButton").addEventListener("click", async () => {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === " " && !event.repeat) { event.preventDefault(); togglePlay(); }
+      if (event.key === "ArrowLeft") setPhase(state.phase - 1, false);
+      if (event.key === "ArrowRight") setPhase(state.phase + 1, false);
+      if (event.key.toLowerCase() === "f") document.getElementById("fullscreenButton").click();
+    });
+
+    renderGraph();
+    renderTimeline();
+    applyLanguage();
+    restartTimer();
+  </script>
+</body>
+</html>
