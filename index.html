@@ -680,7 +680,7 @@ main{padding:10px}
   <div class="resume-modal" onclick="event.stopPropagation()">
     <div class="modal-bar"><p id="resumeModalTitle">马益雯 · 中文简历</p><button data-close data-en="Close">关闭</button></div>
     <div id="resumeBody"></div>
-    <div class="modal-links"><a href="assets/resume.pdf" target="_blank" data-en="Open in new tab">新窗口打开</a><a href="assets/resume.pdf" download data-en="Download PDF">下载 PDF</a></div>
+    <div class="modal-links"><a id="resumeOpenLink" href="assets/resume-zh.pdf" target="_blank" data-en="Open in new tab">新窗口打开</a><a id="resumeDownloadLink" href="assets/resume-zh.pdf" download data-en="Download PDF">下载 PDF</a></div>
   </div>
 </div>
 
@@ -707,7 +707,7 @@ const ICON = {
 const CONTENT = { zh: {
   name:"马益雯 Cindy", nameSub:"Yiwen Ma", nameEn:"CINDY",
   email:"cindyyiwen0101@163.com",
-  resume:"assets/resume.pdf",
+  resume:"assets/resume-zh.pdf",
   status:"University of Bristol · MSc Business Analytics",
   heroHtml:`在数据、行业和用户之间，<br>寻找<em>值得落地</em>的答案。`,
   intro:"你好，我是马益雯 Cindy。金融学本科、商业分析硕士，经历横跨证券研究、咨询、互联网产品与数据分析。",
@@ -983,7 +983,7 @@ const CONTENT = { zh: {
 en: {
   name:"Yiwen Ma", nameSub:"马益雯 · Cindy", nameEn:"CINDY",
   email:"cindyyiwen0101@163.com",
-  resume:"assets/resume.pdf",
+  resume:"assets/resume-en.pdf",
   status:"University of Bristol · MSc Business Analytics",
   heroHtml:`Between data, industries,<br>and users, I look for answers <em>worth acting on</em>.`,
   intro:"Hi, I am Yiwen Ma (Cindy) — a Finance graduate turned MSc Business Analytics student, with experience spanning equity research, consulting, tech product, and data analytics.",
@@ -1451,6 +1451,7 @@ function openResume(){
     <div class="fb" id="fb" style="display:none">
       <div style="font-size:15px">${DATA.ui.noResumeTitle}</div>
       <div class="s">${DATA.ui.noResumeBody}</div></div>`;
+  $("#resumeOpenLink").href=DATA.resume; $("#resumeDownloadLink").href=DATA.resume;
   if(location.protocol!=="file:"){
     const show=()=>{const fb=$("#fb");if(fb){fb.style.display="grid";const f=resumeBody.querySelector("iframe");if(f)f.style.display="none"}};
     fetch(DATA.resume,{method:"HEAD"}).then(r=>{if(!r.ok)show()}).catch(show);
