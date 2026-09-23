@@ -185,17 +185,22 @@ main{padding:10px}
 
 /* ---------- 作品 ---------- */
 .work-panel{background:var(--paper)}
-.work-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
-.work-grid>.work-card:first-child{grid-column:1/3;display:grid;grid-template-columns:.42fr .58fr;align-items:end;min-height:340px}
-.work-card{position:relative;overflow:hidden;padding:28px;display:flex;flex-direction:column;border-radius:24px;
+.work-grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:12px}
+.work-grid>.work-card:first-child{grid-row:1/3;min-height:632px}
+.work-card{position:relative;overflow:hidden;padding:28px;display:flex;flex-direction:column;border-radius:24px;min-height:300px;
   transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .work-card:hover{transform:translateY(-6px);box-shadow:0 26px 60px rgba(24,26,23,.14)}
 .work-card.clay{background:#b56f52;color:#fff9ef}
 .work-card.sea{background:#315d63;color:#f2efe6}
 .work-card.sage{background:#7b8574;color:#f8f5ec}
-.work-card-top{display:flex;justify-content:space-between;font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em;opacity:.72}
-.work-card-main{margin:auto 0 22px;display:grid;grid-template-columns:.38fr .62fr;gap:24px;align-items:end}
-.work-grid>.work-card:first-child .work-card-main{grid-column:1/3;margin:0}
+.work-card-cover{position:absolute;inset:0;z-index:0}
+.work-card-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.work-card-cover::after{content:"";position:absolute;inset:0}
+.work-card.clay .work-card-cover::after{background:linear-gradient(180deg,rgba(60,28,16,.12),rgba(52,24,14,.82) 68%)}
+.work-card.sea .work-card-cover::after{background:linear-gradient(180deg,rgba(14,28,31,.14),rgba(12,26,29,.85) 68%)}
+.work-card.sage .work-card-cover::after{background:linear-gradient(180deg,rgba(35,40,32,.12),rgba(31,36,27,.83) 68%)}
+.work-card-top{display:flex;justify-content:space-between;font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em;opacity:.72;position:relative;z-index:2}
+.work-card-main{margin:auto 0 22px;display:grid;grid-template-columns:.38fr .62fr;gap:24px;align-items:end;position:relative;z-index:2}
 .work-metric{margin:0}
 .work-metric strong{display:block;font-weight:400;font-family:Georgia,serif;font-size:clamp(46px,5.6vw,84px);line-height:.8;letter-spacing:-.07em}
 .work-metric span{display:block;margin-top:10px;font-size:10px;opacity:.72}
@@ -209,8 +214,7 @@ main{padding:10px}
 .work-watermark{position:absolute;right:-14px;bottom:-58px;font:400 200px/1 Georgia,serif;opacity:.09;pointer-events:none}
 @media(max-width:980px){
   .work-grid{grid-template-columns:1fr}
-  .work-grid>.work-card:first-child{grid-column:1;grid-template-columns:1fr}
-  .work-grid>.work-card:first-child .work-card-main{grid-column:1;grid-template-columns:1fr}
+  .work-grid>.work-card:first-child{grid-row:auto;min-height:300px}
 }
 @media(max-width:700px){.work-card{min-height:auto;padding:22px}.work-card-main{grid-template-columns:1fr}}
 
@@ -286,9 +290,6 @@ main{padding:10px}
 
 /* ---------- 抽卡 ---------- */
 .cards-panel{background:#d1c4aa}
-.tabs{display:flex;gap:22px;margin-bottom:clamp(24px,3.2vw,38px)}
-.tabs button{font-size:13px;color:#6f6a5c;padding-bottom:6px;border-bottom:1px solid transparent;transition:.3s}
-.tabs button.on{color:var(--ink);border-color:var(--ink)}
 .gacha{display:grid;grid-template-columns:236px 1fr;gap:clamp(24px,4vw,50px);align-items:start}
 .deck-side{position:sticky;top:100px}
 .deck{position:relative;width:100%;max-width:200px;aspect-ratio:.72;cursor:pointer;margin-bottom:20px}
@@ -298,12 +299,16 @@ main{padding:10px}
 .deck:hover .dc:nth-child(1){transform:translate(15px,13px) rotate(6deg)}
 .deck:hover .dc:nth-child(2){transform:translate(7px,6px) rotate(3deg)}
 .deck:hover .dc:nth-child(3){transform:translateY(-7px) rotate(-1.5deg)}
-.dface{display:grid;place-items:center;overflow:hidden}
+.dface{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden}
 .dface .in{position:absolute;inset:11px;border:1px solid rgba(24,26,23,.15);border-radius:9px}
-.dface .mk{position:relative;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#8c8a82}
+.dface .dicon{position:relative;width:40px;height:40px;opacity:.55}
+.dface .dicon img{width:100%;height:100%;display:block}
+.dface .mk{position:relative;font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--ink)}
 .dface .sh{position:absolute;top:-60%;left:-60%;width:60%;height:220%;transform:rotate(22deg);
   background:linear-gradient(90deg,transparent,rgba(48,95,104,.14),transparent);animation:sh 4.2s ease-in-out infinite}
 @keyframes sh{0%{left:-70%}55%,100%{left:130%}}
+#deckSkill .dface{background:#dbe6e9}
+#deckHobby .dface{background:#f0e2c9}
 .deck-meta{font-size:13px;color:#514e43}
 .deck-meta b{color:var(--ink)}
 .deck-meta .h{font-size:11px;color:#7a7666;margin-top:5px}
@@ -334,6 +339,27 @@ main{padding:10px}
 .bar{position:relative;z-index:2;height:1px;background:rgba(24,26,23,.15);margin-top:12px}
 .bar i{position:absolute;left:0;top:0;height:1px;background:var(--sea);width:0;transition:width 1.1s var(--ease) .2s}
 .gc-l{position:relative;z-index:2;display:flex;justify-content:space-between;font:9.5px ui-monospace,Menlo,monospace;color:#8c8a82;margin-top:7px}
+/* 个人技能卡：参考初版卡片设计——图标改为独立色块，每张卡换一种色调，不再是同色淡水印 */
+/* 卡片改为不固定长宽比、内容精简，整体高度与左侧牌堆对齐，避免文字被裁切 */
+#cardGridSkill{grid-template-columns:repeat(3,1fr)}
+#cardGridSkill .gcard,#cardGridSkill .slot{aspect-ratio:auto;min-height:198px}
+#cardGridSkill .gc{background:var(--paper);background-image:none;border-color:var(--line);padding:14px}
+#cardGridSkill .gc-pic{position:relative;inset:auto;height:46px;flex:none;overflow:hidden;
+  margin:-14px -14px 10px;width:calc(100% + 28px);opacity:1}
+#cardGridSkill .gc-pic img{width:100%;height:100%;object-fit:contain;filter:none;padding:10px}
+#cardGridSkill .gcard:hover .gc-pic{opacity:1}
+#cardGridSkill .gc-n{font-size:15px;margin:0 0 5px;line-height:1.2}
+#cardGridSkill .gc-d{font-size:10.5px;line-height:1.45}
+@media(max-width:640px){#cardGridSkill{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){#cardGridSkill{grid-template-columns:1fr}}
+/* 兴趣卡：略降低长宽比，让展开后的卡池高度更贴近左侧牌堆 */
+#cardGridHobby .gcard,#cardGridHobby .slot{aspect-ratio:.88}
+#cardGridSkill .gcard:nth-child(1) .gc-pic{background:#dbe6e9}
+#cardGridSkill .gcard:nth-child(2) .gc-pic{background:#e3e6dc}
+#cardGridSkill .gcard:nth-child(3) .gc-pic{background:#ecdcd0}
+#cardGridSkill .gcard:nth-child(4) .gc-pic{background:#efe2c3}
+#cardGridSkill .gcard:nth-child(5) .gc-pic{background:#cfe0e3}
+#cardGridSkill .gcard:nth-child(6) .gc-pic{background:#e9e1d2}
 @media(max-width:860px){.gacha{grid-template-columns:1fr}.deck-side{position:static}}
 
 /* ---------- 摄影墙 ---------- */
@@ -440,7 +466,7 @@ main{padding:10px}
   <a class="wordmark" href="#top"><i></i><span class="fnameEn">Yiwen Ma</span></a>
   <nav class="topnav" id="topnav">
     <a href="#top" data-en="Home">主页</a><a href="#focus" data-en="Focus">关注领域</a><a href="#exp" data-en="Experience">经历</a><a href="#work" data-en="Work">作品</a>
-    <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a><a href="#skill" data-en="Interests">技能爱好</a>
+    <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a><a href="#skill" data-en="Skills">个人技能</a><a href="#hobby" data-en="Interests">个人兴趣</a>
   </nav>
   <div class="nav-end">
     <div class="lang-toggle" id="langToggle">
@@ -540,40 +566,66 @@ main{padding:10px}
 <section id="edu" class="panel edu-panel">
   <div class="pad">
     <div class="panel-head rv">
-      <div><span class="kicker"><b>07</b> <span data-en="EDUCATION">教育背景</span></span><h2 data-en="Education.">教育背景。</h2></div>
+      <div><span class="kicker"><b>07</b> <span data-en="EDUCATION">教育背景</span></span><h2 data-en="Education">教育背景</h2></div>
       <p></p>
     </div>
     <div class="rv" id="eduBox"></div>
+    <div class="more-head rv"><span class="kicker">07.1 <span data-en="HONOURS &amp; AWARDS">荣誉 / 奖项</span></span></div>
+    <div class="rv" id="honorsBox"></div>
   </div>
 </section>
 
-<!-- 技能爱好 -->
+<!-- 个人技能 -->
 <section id="skill" class="panel cards-panel">
   <div class="pad">
     <div class="panel-head rv">
-      <div><span class="kicker"><b>08</b> <span data-en="DRAW A CARD">抽卡</span></span><h2 data-en="Skills &amp;amp; interests —&lt;br&gt;draw a card.">技能 &amp; 兴趣<br>抽卡。</h2></div>
+      <div><span class="kicker"><b>08</b> <span data-en="PERSONAL SKILLS">个人技能</span></span><h2 data-en="Skills —&lt;br&gt;draw a card.">个人技能<br>抽卡。</h2></div>
       <p data-en="Draw from the deck — what you get joins the collection">点卡堆抽一张，抽到的进图鉴</p>
     </div>
     <div class="rv">
-      <div class="tabs" id="tabs">
-        <button data-pool="skill" class="on" data-en="Skill Pool">技能卡池</button>
-        <button data-pool="hobby" data-en="Interest Pool">兴趣卡池</button>
-      </div>
       <div class="gacha">
         <div class="deck-side">
-          <div class="deck" id="deck">
+          <div class="deck" id="deckSkill">
             <div class="dc"></div><div class="dc"></div>
-            <div class="dc dface"><span class="in"></span><span class="mk" id="deckMark">Skill</span><span class="sh"></span></div>
+            <div class="dc dface"><span class="in"></span><span class="dicon"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='20' y='12' width='52' height='70' rx='8' transform='rotate(-8 46 47)' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Crect x='28' y='16' width='52' height='70' rx='8' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3C/svg%3E" alt=""></span><span class="mk" data-en="Skill">技能</span><span class="sh"></span></div>
           </div>
-          <div class="deck-meta"><span data-en="Drawn">已抽到</span> <b id="drawn">0</b> / <span id="total">0</span>
-            <div class="h" id="deckHint">点击卡堆抽一张</div></div>
+          <div class="deck-meta"><span data-en="Drawn">已抽到</span> <b id="drawnSkill">0</b> / <span id="totalSkill">0</span>
+            <div class="h" id="deckHintSkill">点击卡堆抽一张</div></div>
           <div class="deck-act">
-            <button id="drawBtn" data-en="Draw">抽一张</button>
-            <button id="allBtn" data-en="Reveal All">全部展开</button>
-            <button id="resetBtn" data-en="Reset">重置</button>
+            <button id="drawBtnSkill" data-en="Draw">抽一张</button>
+            <button id="allBtnSkill" data-en="Reveal All">全部展开</button>
+            <button id="resetBtnSkill" data-en="Reset">重置</button>
           </div>
         </div>
-        <div class="grid-cards" id="cardGrid"></div>
+        <div class="grid-cards" id="cardGridSkill"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 个人兴趣 -->
+<section id="hobby" class="panel cards-panel">
+  <div class="pad">
+    <div class="panel-head rv">
+      <div><span class="kicker"><b>09</b> <span data-en="PERSONAL INTERESTS">个人兴趣</span></span><h2 data-en="Interests —&lt;br&gt;draw a card.">个人兴趣<br>抽卡。</h2></div>
+      <p data-en="Draw from the deck — what you get joins the collection">点卡堆抽一张，抽到的进图鉴</p>
+    </div>
+    <div class="rv">
+      <div class="gacha">
+        <div class="deck-side">
+          <div class="deck" id="deckHobby">
+            <div class="dc"></div><div class="dc"></div>
+            <div class="dc dface"><span class="in"></span><span class="dicon"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 82 C20 60 8 42 8 26 C8 12 20 4 32 8 C42 11 48 20 50 26 C52 20 58 11 68 8 C80 4 92 12 92 26 C92 42 80 60 50 82 Z' fill='none' stroke='%23181a17' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E" alt=""></span><span class="mk" data-en="Hobby">兴趣</span><span class="sh"></span></div>
+          </div>
+          <div class="deck-meta"><span data-en="Drawn">已抽到</span> <b id="drawnHobby">0</b> / <span id="totalHobby">0</span>
+            <div class="h" id="deckHintHobby">点击卡堆抽一张</div></div>
+          <div class="deck-act">
+            <button id="drawBtnHobby" data-en="Draw">抽一张</button>
+            <button id="allBtnHobby" data-en="Reveal All">全部展开</button>
+            <button id="resetBtnHobby" data-en="Reset">重置</button>
+          </div>
+        </div>
+        <div class="grid-cards" id="cardGridHobby"></div>
       </div>
     </div>
   </div>
@@ -583,8 +635,7 @@ main{padding:10px}
 <section id="photo" class="panel dark wall-panel">
   <div class="pad">
     <div class="panel-head rv">
-      <div><span class="kicker"><b>08.1</b> <span data-en="PHOTOGRAPHY">摄影</span></span><h2 data-en="Photography · Travel.">摄影 · 旅行。</h2></div>
-      <p id="wallSub"></p>
+      <div><span class="kicker"><b>09.1</b> <span data-en="PHOTOGRAPHY">摄影</span></span><h2 data-en="Photography · Travel.">摄影 · 旅行。</h2></div>
     </div>
     <div class="wall rv" id="wall"></div>
   </div>
@@ -593,31 +644,33 @@ main{padding:10px}
 <!-- 结尾 -->
 <footer id="contact" class="panel dark footer-panel">
   <div class="pad" style="display:flex;flex-direction:column;flex:1">
-    <span class="kicker rv"><b>09</b> <span data-en="LET'S TALK">联系方式</span></span>
+    <span class="kicker rv"><b>10</b> <span data-en="LET'S TALK">联系方式</span></span>
     <h2 class="rv" data-en="If you are also looking&lt;br&gt;&lt;b&gt;for an answer worth acting on.&lt;/b&gt;">如果你也在寻找<br><b>值得落地的答案。</b></h2>
     <a class="footer-link rv" href="mailto:cindyyiwen0101@163.com">cindyyiwen0101@163.com <span>↗</span></a>
     <div class="foot-cols rv">
       <div>
-        <h5>Contact</h5>
-        <div class="li"><span data-en="Bristol, UK · Open to remote or relocating to China">Bristol, UK · 可远程 / 可回国面试</span></div>
+        <h5 data-en="Contact">联系</h5>
+        <div class="li"><span data-en="Target cities: Shanghai · Shenzhen · Nanjing">期望城市：上海 · 深圳 · 南京</span></div>
+        <div class="li"><span data-en="Phone: +86 18252741872">电话：+86 18252741872</span></div>
+        <div class="li"><a href="mailto:cindyyiwen0101@163.com">cindyyiwen0101@163.com</a></div>
       </div>
       <div>
-        <h5>Elsewhere</h5>
+        <h5 data-en="Elsewhere">其他平台</h5>
         <div class="li">
-          <a id="footPod" target="_blank" rel="noopener" data-en="Close Up, Wide Lens · Xiaoyuzhou">《近距远观》· 小宇宙</a>
           <a href="https://www.linkedin.com/in/yiwen-ma-cindy" target="_blank" rel="noopener">LinkedIn</a>
           <a href="https://github.com/cindymmy111-star" target="_blank" rel="noopener">GitHub</a>
+          <a id="footPod" target="_blank" rel="noopener" data-en="Close Up, Wide Lens · Xiaoyuzhou">《近距远观》· 小宇宙</a>
         </div>
       </div>
       <div>
-        <h5>Index</h5>
+        <h5 data-en="Index">目录</h5>
         <div class="li">
           <a href="#focus" data-en="Focus">关注领域</a><a href="#exp" data-en="Experience">经历</a><a href="#work" data-en="Work">作品</a><a href="#media" data-en="Press">媒体报道</a>
-          <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a>
+          <a href="#pod" data-en="Podcast">播客</a><a href="#edu" data-en="Education">教育背景</a><a href="#skill" data-en="Skills">个人技能</a><a href="#hobby" data-en="Interests">个人兴趣</a>
         </div>
       </div>
     </div>
-    <div class="footer-meta rv"><span>YIWEN MA © 2026</span><span>BRISTOL / NANJING</span></div>
+    <div class="footer-meta rv"><span>YIWEN MA © 2026</span><span>SHANGHAI · SHENZHEN · NANJING</span></div>
   </div>
 </footer>
 
@@ -637,6 +690,18 @@ main{padding:10px}
 
 <script>
 /* ══════════════════════════════════════════════════════════
+   技能卡背景图标（line-art SVG，复用 .gc-pic 的淡化处理）
+   ══════════════════════════════════════════════════════════ */
+const ICON = {
+  data:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='15' y='55' width='14' height='30' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Crect x='43' y='35' width='14' height='50' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Crect x='71' y='20' width='14' height='65' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Cline x1='10' y1='90' x2='90' y2='90' stroke='%23181a17' stroke-width='3'/%3E%3C/svg%3E",
+  biz:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='20' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23181a17'/%3E%3Cline x1='50' y1='4' x2='50' y2='16' stroke='%23181a17' stroke-width='3'/%3E%3Cline x1='50' y1='84' x2='50' y2='96' stroke='%23181a17' stroke-width='3'/%3E%3Cline x1='4' y1='50' x2='16' y2='50' stroke='%23181a17' stroke-width='3'/%3E%3Cline x1='84' y1='50' x2='96' y2='50' stroke='%23181a17' stroke-width='3'/%3E%3C/svg%3E",
+  ai:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='8' y='16' width='84' height='68' rx='8' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Cpath d='M24 40 L38 50 L24 60' fill='none' stroke='%23181a17' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='46' y1='60' x2='70' y2='60' stroke='%23181a17' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E",
+  eval:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M40 12 L40 38 L18 78 Q14 86 24 86 L76 86 Q86 86 82 78 L60 38 L60 12' fill='none' stroke='%23181a17' stroke-width='3' stroke-linejoin='round'/%3E%3Cline x1='33' y1='12' x2='67' y2='12' stroke='%23181a17' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='27' y1='62' x2='73' y2='62' stroke='%23181a17' stroke-width='3'/%3E%3Ccircle cx='45' cy='73' r='3' fill='%23181a17'/%3E%3Ccircle cx='58' cy='76' r='2.4' fill='%23181a17'/%3E%3C/svg%3E",
+  fin:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23181a17' stroke-width='3'/%3E%3Cpath d='M32 58 L44 44 L54 54 L70 34' fill='none' stroke='%23181a17' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 34 L70 34 L70 44' fill='none' stroke='%23181a17' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+  pen:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M22 78 L64 20 Q70 12 78 20 Q86 28 78 34 L28 84 L14 88 Z' fill='none' stroke='%23181a17' stroke-width='3' stroke-linejoin='round'/%3E%3Cline x1='58' y1='26' x2='72' y2='38' stroke='%23181a17' stroke-width='3'/%3E%3C/svg%3E"
+};
+
+/* ══════════════════════════════════════════════════════════
    【内容配置区】—— 与主站内容保持一致
    ══════════════════════════════════════════════════════════ */
 const CONTENT = { zh: {
@@ -647,8 +712,7 @@ const CONTENT = { zh: {
   heroHtml:`在数据、行业和用户之间，<br>寻找<em>值得落地</em>的答案。`,
   intro:"你好，我是马益雯 Cindy。金融学本科、商业分析硕士，经历横跨证券研究、咨询、互联网产品与数据分析。",
   who:["本科金融 · 硕士商业分析","商业分析 / 产品 / 数据分析 / 行研 / 咨询","播客主播 · 摄影 · 古筝十级"],
-  lookingFor:"Data / Product Analytics · Business Analysis · 科技与产业研究",
-  wallCaption:"富士随身机拍的 {n} 张 —— 瑞士、英国、法国、意大利。点图放大，悬停恢复彩色。",
+  lookingFor:"科技与产业研究、产品分析、商业分析",
   ui:{
     closeX:"关闭 ✕", openDemo:"打开 Demo ↗", viewRepo:"看源码 ↗",
     resumeModalTitle:"马益雯 · 中文简历", resumeIframeTitle:"简历",
@@ -672,51 +736,48 @@ const CONTENT = { zh: {
   ],
 
   timeline:[
-    { y:"2026.01 — 05", role:"IBM Group Project · 学生开发者", co:"IBM × University of Bristol", tag:"产品",
+    { y:"2026.01 — 05", role:"SkillsBuild 学习路径推荐系统项目组 · 数据分析实习生", co:"IBM 英国伦敦", tag:"产品",
       summary:"把「下一门课学什么」，变成一套讲得清逻辑的推荐系统。",
       points:[
-        "为 IBM SkillsBuild 平台设计课程推荐系统，把「选课」重新定义成<b>可解释的评分问题</b>——角色匹配、学科关联度、难度分级、技能缺口奖励、前置技能校验、兴趣关键词，六项规则各自打分再加权求和。",
-        "难度门控是我坚持要加的：按学生年级限定可推荐的课程难度，避免系统给低年级学生推一堆「听起来对口、实际学不下去」的高阶课。",
-        "独立实现纯前端单页应用（HTML/CSS/JS）的规则引擎与打分逻辑，对 <b>12 门课程</b>结构化打分排序，输出可追溯的 Top 4 学习路径。",
-        "与 <b>6 人</b>跨职能团队协作，撰写架构图与评分算法说明文档，减少前端与客户沟通的返工。"],
-      abil:["产品设计","规则引擎","数据建模","跨职能协作"] },
-    { y:"2025.01 — 05", role:"产品实习生", co:"字节跳动 ByteDance · 深圳", tag:"产品",
+        "围绕 IBM SkillsBuild 平台的用户匹配需求设计并投放前期调研问卷，回收 <b>38 份</b>有效样本，据此确定推荐模型的维度选取与权重分配，让规则设计建立在用户数据而非主观判断之上。",
+        "独立开发规则推荐引擎，围绕岗位匹配、专业契合度、技能差距、难度门控、先修条件及兴趣关键词<b>六个维度</b>构建加权评分体系，对 <b>12 门课程</b>结构化评分，原始分归一化至 65–99% 匹配区间，为不同背景用户生成由初至高级的分级学习路径。",
+        "组织 <b>65 人</b>用户测试验证推荐相关性，89% 参与者评分达 4–5 星；以纯前端 HTML/CSS/JS 独立实现规则引擎，与 <b>6 人</b>国际团队协作完成交付，产品部署于 GitHub Pages；独立撰写涵盖系统架构、数据流与评分逻辑的技术文档。"],
+      abil:["用户调研","规则引擎设计","评分体系建模","跨职能协作"] },
+    { y:"2025.06 — 08", role:"AI产品实习生 · AI漫画创作工具", co:"字节跳动 ByteDance · 北京", tag:"产品",
       summary:"从三家漫画工作室的真实工作流出发，把模糊的创作反馈变成可评价、可迭代的产品问题。",
       points:[
-        "对 <b>3 家</b>专业漫画工作室做半结构化访谈与端到端工作流梳理，定位重复性环节、模型质量问题，以及 AI 辅助创作工具的采纳阻碍。",
-        "把定性反馈转成有优先级的需求，并共同搭建 <b>12 项指标</b>的离线评测框架（线条完整度、上色区域准确率、画风一致性），支撑模型选型、版本对比与功能迭代。",
-        "搭内部看板监控活跃、功能使用、任务完成与留存，定位用户旅程摩擦点，试点用户留存<b>相对提升约 7%</b>。"],
-      abil:["用户研究","需求拆解","评测框架设计","数据看板"] },
-    { y:"2024.11 — 2025.01", role:"行业研究实习生 · 机械组", co:"山西证券 行业研究所 · 上海", tag:"行研",
+        "访谈 <b>3 家</b>不同规模的专业漫画工作室，结合稿件梳理真实问题，将用户反馈归纳为线条质量、上色准确度、风格一致性与工作流效率<b>四类需求</b>；结合问题频率、成品质量影响及实现难度排序优先级，为 AI 辅助线稿与上色功能迭代提供依据。",
+        "设计 <b>12 项指标</b>的模型评估框架，覆盖线条完整度、区域识别准确率、颜色溢出及风格一致性；建立覆盖人物数量、线条复杂度、遮挡程度及色彩区域等场景的固定测试集，对 <b>8 个模型版本</b>进行横向评测，评估结果用于算法参数调整与版本筛选。",
+        "搭建试点用户数据看板，持续追踪活跃、任务完成与阶段留存，识别首次使用后流失、AI 上色入口使用率偏低及生成结果高频返工等问题；迭代后用户活跃率<b>相对提升 20%</b>、AI 上色入口点击率<b>相对提升 8%</b>、试点用户留存<b>相对提升 7%</b>。"],
+      abil:["用户研究","模型评测框架","数据看板","需求优先级排序"] },
+    { y:"2025.01 — 05", role:"行业研究实习生 · 机械组", co:"山西证券 行业研究所 · 上海", tag:"行研",
       summary:"在产业信息、公司财务和供应链数据之间，寻找能够支持投资判断的证据。",
       points:[
-        "围绕机械、AIDC（AI 数据中心）、轨交装备、人形机器人做行业与公司研究，跟踪市场动态、业务模式与重点厂商布局，产出 <b>5 份以上</b>研究底稿与专题材料。",
-        "拆解 AIDC 产业链<b>约 12 家</b>公司的技术路线、客户结构、产能规划、供应链与竞争位置，识别成长驱动与国产替代机会。",
-        "更新振宇科技、中国中车等公司盈利预测，完成主营业务拆分与分部收入、毛利、费用、现金流、EPS / ROE / ROIC 测算，并对约 15 家上市公司做 PE / PB / EV-EBITDA 对比；参与发动机、发电机盈利预测模型搭建，<b>预测准确率提高 15%</b>。",
-        "用 SQL 清洗标准化 2020–2024 城轨招标数据：<b>217 个项目、26,088 辆车、约 2,063 亿元</b>合同额，形成结构化数据集支撑市场空间测算与车辆需求预测。",
-        "收集整理液冷设备、发电机组等行业数据搭建结构化底稿；参与 <b>AIDC 行业白皮书</b>撰写，搭建中美供应链成本比较模型，分析不同市场下的成本结构与竞争差异。"],
+        "围绕数据中心电力设备方向开展产业链研究，拆解市场空间、成本结构、供需格局及国产替代逻辑；横向对比 <b>12 家</b>发动机、整机及液冷设备企业的技术路线、客户结构与产能规划，筛选出具备国产替代逻辑的重点标的；搭建中美供应链成本比较模型，支撑机械行业年度策略、AIDC 行业研究等 <b>5 份</b>研究成果。",
+        "系统梳理人形机器人及核心零部件<b>18 家</b>全球厂商的供应链布局、技术路线、产能规划及目标售价，拆解关节、电机、减速器、丝杠及传感器等核心零部件方案，并对比关键产品指标；形成年度策略人形机器人核心底稿，参与撰写约 <b>30,000 字</b>报告。",
+        "参与振宇科技、中国中车等公司研究，拆分主营业务收入与盈利驱动，更新振宇科技 2024–2026 年归母净利润预测至 <b>2.61/4.10/6.11 亿元</b>，复核核心财务指标；完成约 <b>15 家</b>上市公司 P/E、P/B、EV/EBITDA 可比公司分析，支持估值判断，预测净利润与 Wind 一致预期的偏差率同比收窄 <b>15%</b>。",
+        "使用 Excel、Python 与 SQL 清洗并搭建 2020–2024 年城市轨道交通招标数据库（<b>217 个项目、26,088 辆、约 2,063 亿元</b>），结合线路建设规划测算车辆采购需求，支持轨交装备市场空间及行业景气判断。"],
       abil:["行业研究","产业链拆解","盈利预测","SQL 数据清洗","跨市场比较"] },
-    { y:"2024.05 — 08", role:"咨询部实习生", co:"致同会计师事务所 Grant Thornton · 深圳", tag:"咨询",
+    { y:"2024.11 — 2025.01", role:"咨询部实习生", co:"致同会计师事务所 Grant Thornton · 深圳", tag:"咨询",
       summary:"把制度、流程与财务数据放在同一张图里，理解组织如何真正运转。",
       points:[
-        "参与制造业与物流装备升级项目，搭 Excel <b>NPV 模型</b>与敏感性分析评估设备升级方案，测算相对基准方案<b>最高约 23%</b> 的成本节省空间，交付 Excel 模型与书面报告支持投资决策。",
-        "为医疗客户做内控手册与预算管理评估：梳理预算编报与调整、预算绩效、收支与付款、采购招投标、合同履约、资产盘点报废等关键流程，明确岗位职责分离与审批权限，识别控制缺口并协助形成<b>内控手册初稿</b>。",
-        "提出的改进建议——不相容岗位分离、按金额分级审批、强化预算刚性约束、建立月度预算执行分析与「绩效目标—监控—评价—整改」闭环——被纳入正式客户报告。",
-        "日均核查 <b>1,000+ 条</b>交易记录，重点核对重复账单与授权缺失，识别 <b>38 项</b>异常并结构化成问题清单供管理层复核。",
-        "参与公共部门智能设备<b>补贴资格评估</b>，按预设资格标准核对客户申报材料与申请条件。"],
+        "搭建 NPV / 现金流折现模型并进行敏感性分析，比较制造与物流客户的设备升级方案，提出分阶段实施路径；交付 Excel 模型及书面报告支持管理层方案选型，测算最优方案较基准方案节约成本约 <b>23%</b>。",
+        "日均核查 <b>1,000+ 条</b>交易记录，识别 <b>38 项</b>异常（含重复计费、授权缺失），整理为结构化问题清单并转化为客户建议。",
+        "协助编制医疗机构内控手册与预算管理评估，提出岗位分离与审批权限缺陷的<b>改进建议被采纳</b>至正式报告。"],
       abil:["财务测算","流程梳理","内控评估","异常识别","合规核查"] },
-    { y:"2024.01 — 02", role:"风控合规部实习生", co:"东海证券 · 南京", tag:"风控",
+    { y:"2024.01 — 02", role:"风控合规部实习生", co:"东海证券 · 南京洪武北路证券营业部", tag:"风控",
       summary:"第一次近距离参与风险管理体系的建设，理解合规如何在业务一线真正生效。",
       points:[
-        "参与风险管理体系的建设与运作——风险识别、评估、监控与应对，协助识别评估潜在风险点 <b>20 项以上</b>，有效监控使风险事件发生率<b>降低 15%</b>。",
+        "了解并参与风险管理体系的建设与运作——风险识别、评估、监控与应对，助力识别并评估潜在风险点<b>超 20 项</b>，有效监控使风险事件发生率<b>降低 10%</b>。",
         "负责审查反洗钱黑名单系统，确保无一遗漏，保障交易合规性。",
-        "研究公司合规政策，参与策划并执行 <b>3 场</b>合规培训，覆盖员工超百人。"],
+        "研究公司合规政策，参与策划并执行 <b>3 场</b>合规培训，覆盖员工超百人，显著提升合规意识和能力。"],
       abil:["风险识别","反洗钱审查","合规培训"] },
     { y:"2023.06 — 07", role:"税务部实习生", co:"中审众环会计师事务所 · 江苏分所", tag:"审计",
       summary:"从一张张凭证里，学会怎么把细节核对做成一件靠谱的事。",
       points:[
-        "协助完成 <b>2 个</b>审计项目，通过细致检索凭证识别并报告被审单位管理漏洞与潜在违约点 <b>12 处</b>，审计效率<b>提升约 20%</b>。",
-        "完成会计凭证整理与账证核对，校对会计档案、参与审计底稿制定；主动与合作公司沟通协调资料收集。"],
+        "累计协助完成 <b>2 个</b>审计项目；通过细致检索凭证，成功识别并报告被审单位管理漏洞及潜在违约点 <b>12 处</b>。",
+        "数据汇总和整合，有效提升审计效率<b>约 20%</b>，确保数据准确无误；积极与合作公司沟通，协调资料收集。",
+        "完成会计凭证整理与账证核对，确保财务信息准确性；细致整理、校对会计档案，参加审计底稿的制定，提升档案管理规范性。"],
       abil:["凭证核查","审计底稿","细节把控","对外沟通"] }
   ],
 
@@ -724,7 +785,7 @@ const CONTENT = { zh: {
     { no:"01", tone:"clay", type:"INDUSTRY RESEARCH", name:"人形机器人产业透视",
       kind:"行业研究简报 · 数据网站　|　个人项目　|　2026.09",
       subtitle:"60+ 条数据全部挂回一手来源，把行业里对不上的数字理清楚。",
-      metric:"60+", metricLabel:"条一手信源",
+      metric:"60+", metricLabel:"条一手信源", cover:"assets/case/humanoid-robot/report-zh.jpg",
       problem:"人形机器人是这两年最热也最乱的赛道——高盛说 2035 年出货 140 万台，Macquarie 说 110 万台，各家机构口径、时间点都不一样，网上还流传一堆查无实据的「在手订单」传闻。<b>普通读者根本分不清哪个数字能信。</b>",
       judge:"我不想再做一份新闻合集。所以坚持每个关键数字都挂回一手来源——分析师报告、招股书、官方通稿，点开就能溯源；网传但核实不到出处、或互相矛盾的数字（比如某些企业「在手订单超 300 亿元」的说法），我在正文里直接标注「不采用」，而不是照抄。另外写了个每日定时任务自动抓取当天行业动态放进单独的「快讯」区，不让没核实的信息混进正式分析结论。",
       result:{t:"市场规模、竞争格局、核心零部件、投融资四大板块，条条数据可点击溯源；外加每日自动更新的行业快讯"},
@@ -737,10 +798,10 @@ const CONTENT = { zh: {
     { no:"02", tone:"sea", type:"PRODUCT & MECHANISM DESIGN", name:"CompositeLens · 工业质检 AI 应用",
       kind:"计算机视觉 · NCC AI Hackathon 先进制造赛道冠军　|　Team Clover（5 人）　|　2026.08",
       subtitle:"5 人团队的冠军作品，我负责把技术判断做成一个真的能用、敢用的产品。",
-      metric:"39/39", metricLabel:"缺陷零漏检",
+      metric:"39/39", metricLabel:"缺陷零漏检", cover:"assets/case/hackathon-certificate.jpg",
       problem:"碳纤维复合材料的内部质量目前靠人工看显微图像判断——慢、主观、结论无法追溯。NCC（英国国家复合材料中心）要的不只是一个识别模型，而是一套能给出合格/不合格判断、且每条结论都能回溯到证据的方案。",
-      judge:"模型训练由队友 Boang 负责。我做的是让它变成一个能交付、敢用、讲得清价值的产品：<br><br><b>把模型封装成浏览器应用。</b>上传单张图或整个文件夹，服务端完成推理，几分钟返回 PDF 检测报告，用户不需要配环境、不需要 GPU。原型跑在谁的笔记本上，和客户自己能打开，中间隔着的就是这一层。<br><br><b>设计人机协同的复核机制。</b>系统不对每个样本强行给结论：严重度落在判定阈值 ±5µm 内、多视角预测跨阈值分歧、图像质量异常或物理尺度缺失的，自动转人工。独立原型验证（247 张 holdout）：84.6% 的样本自动处理，这部分准确率 95.7%、零漏检；模型出错的 15 例里有 6 例被规则拦下转了人工。在安全敏感场景，「知道自己什么时候不该下结论」是产品能力，不是模型指标。<br><br><b>统一评估口径，并做商业化测算。</b>团队试了 8 种方案，我把它们放到同一套去重、按母图像分组、零重叠的验证集上比较——让「哪个更好」从各说各话变成可比较。商业侧设计了试点验证→年度许可→按检测量扩展的分层模式，并建了 ROI 模型：按年检 1 万张、每张人工判读 4 分钟、检测员全成本 £34/小时测算，单客户年化可验证价值约 £19k；定价 £6k/年时客户回报 3.4 倍、回本 3.6 个月。",
-      result:{t:"NCC Advanced Manufacturing 赛道冠军。团队提交方案在 268 张源分离独立验证集上零漏检（TP 39 / FP 3 / FN 0），Void Dice 0.8023，综合验证分数 0.9848。Dice 最高的方案（0.8200）综合得分反而更低——它漏掉了 2 个真实缺陷，团队选了零漏检的那个。"},
+      judge:"模型训练由队友 Boang 负责。我做的是把团队的缺陷分割模型产品化成一个能交付、敢用、讲得清价值的应用：<br><br><b>把模型封装成浏览器端质检应用。</b>支持单图、批量及整文件夹上传，服务端完成推理，几分钟内生成包含缺陷测量结果与判定依据的 PDF 报告，用户不需要配环境、不需要本地 GPU。原型跑在谁的笔记本上，和客户自己能打开，中间隔着的就是这一层。<br><br><b>设计人机协同的复核机制。</b>基于判定边界距离、多视角一致性、图像质量及物理尺度校验自动分流，不对每个样本强行给结论。独立原型验证（247 张 holdout）：84.6% 自动化处理率、95.7% 准确率且零漏检；模型出错的案例里 40% 被规则拦下转了人工。在安全敏感场景，「知道自己什么时候不该下结论」是产品能力，不是模型指标。<br><br><b>统一评估口径，并做商业化测算。</b>团队试了 8 种方案，我把它们放到同一套去重、按母图像分组、零重叠的验证集上比较——让「哪个更好」从各说各话变成可比较。搭建定价与 ROI 模型，设计试点验证、年度许可、按检测量扩展三层商业模式，测算单客户年化可验证价值约 £25k，对标竞品给出 £6k/年定价带，客户回本约 3 个月。",
+      result:{t:"NCC Advanced Manufacturing 赛道冠军。最终方案在 268 张独立验证集上零漏检（TP 39 / FP 3 / FN 0），综合验证分 0.9949。"},
       learn:"8 种方案里综合分最高的不是 Dice 最高的那个——官方指标把「漏检」的代价定得比「误报」高 4 倍，所以真正决定排名的是有没有漏检，不是像素画得多准。把这件事讲成客户听得懂的逻辑，比调出那个模型更难，也更接近我想做的工作。",
       stack:["产品化","人机协同复核","评估体系","商业化建模"],
       figures:[{src:"assets/case/hackathon-certificate.jpg", alt:"NCC AI Hackathon Winner · Team Clover"}],
@@ -750,9 +811,9 @@ const CONTENT = { zh: {
     { no:"03", tone:"sage", type:"SOCIAL MEDIA ANALYTICS", name:"Lululemon 用户评论与社媒分析",
       kind:"文本挖掘 · Python　|　University of Bristol · EFIMM0139　|　2026.03 — 04",
       subtitle:"2,180 条跨平台评论里，找到品牌看不到的「为什么」。",
-      metric:"2,180", metricLabel:"条评论",
+      metric:"2,180", metricLabel:"条评论", cover:"assets/case/lululemon/fig1_sentiment_overview.png",
       problem:"一件百镑级别的外套，评论区到底在抱怨什么？品牌能看到星级评分，但看不到「为什么」——而只有「为什么」才能改产品页和沟通口径。",
-      judge:"我没有停在情感打分。通过 Reddit 公开接口与 Selenium 采集清洗 2,180 条 Reddit 与 YouTube 评论后，69.2% 的正面比例说明口碑本来不差，真正值钱的是那 12.8% 负面里反复出现的三件事：尺码不准、面料耐用性、价格价值感。主题拆分上我其实先试了 LDA 无监督建模，但跑出来主题边界模糊、还得反复调参和人工贴标签；运动服饰评论的主题类型文献里已经很成熟，所以我换成关键词种子词分类+共现网络，牺牲一点「自动发现」的完整性，换来更可解释、可复现的结果。最后把三个高频议题一条条转化成能直接执行的建议：产品页尺码指引、材质沟通话术、营销表达调整。",
+      judge:"我没有停在情感打分。用 Python 调用 Reddit 公开 JSON 接口与 Selenium 采集清洗 2,180 条 Reddit 与 YouTube 评论，并对单帖评论数设上限，避免个别热帖主导样本；69.2% 的正面比例说明口碑本来不差，真正值钱的是那 12.8% 负面里反复出现的三件事：尺码不准、面料耐用性、价格价值感。主题拆分上我其实先试了 LDA 无监督建模，但跑出来主题边界模糊、还得反复调参和人工贴标签；运动服饰评论的主题类型文献里已经很成熟，所以我换成关键词种子词分类+共现网络，牺牲一点「自动发现」的完整性，换来更可解释、可复现的结果。拆到主题层看，价格价值与耐用性的负面率分别达 20% 和 17%，尺码讨论占全部评论的 19%——这三条就是产品页和沟通话术最该改的地方。最后把三个高频议题一条条转化成能直接执行的建议：产品页尺码指引、材质沟通话术、营销表达调整。",
       result:{t:"Reddit 1,974 + YouTube 206，采集清洗后做 VADER 情感分析、六类关键词主题分类与共现网络；正面 69.2% / 中性 18.0% / 负面 12.8%，产出产品页尺码指引、材质沟通、营销表达三项可执行建议。"},
       learn:"情感分析给的是温度，主题分类给的才是病因。只报比例的报告，业务方看完不知道下一步做什么。",
       stack:["Python","Selenium","VADER","关键词主题分类","共现网络"],
@@ -770,31 +831,31 @@ const CONTENT = { zh: {
 
   more:[
     { d:"2026.09", name:"半导体企业运营效率研究 · DEA 价值链分析",
-      s:"硕士毕业论文：Compustat 40 家纯半导体上市公司、200 个 firm-year 观测（2020–2024），output-oriented BCC DEA 模型（总资产+员工 → 营收）测算运营效率，按 IC 设计 / 晶圆代工 / 封测三段价值链与国别对比，Bootstrap 截断回归做二阶段分析。",
-      n:"46%", e:"晶圆代工效率显著低于 IC 设计（p=0.0018）；国别差异未通过显著性检验" },
+      s:"硕士毕业论文：从 58 家候选企业筛选出 40 家纯半导体上市公司（22 家 IC 设计、10 家晶圆代工、8 家封测），统一记账币种与财年口径构建 200 个 firm-year 观测（2020–2024）的可比面板，output-oriented BCC DEA 模型测算运营效率；11 家 IDM 厂商业务跨环节、生产函数不同，单独建立参照系。Bootstrap 截断回归识别效率驱动因素，晶圆代工身份边际效应约 −40 个百分点。",
+      n:"46%", e:"晶圆代工效率低于 IC 设计（p=0.002）；国别差异未达显著——美国 13 家样本中 11 家属 IC 设计，地域差异实为业务结构差异" },
     { d:"2026.07", name:"Deloitte Australia 数据分析实战模拟",
       s:"把 Daikibo 设备遥测 JSON 接入 Tableau，建 unhealthy 计算字段换算停机时间，按工厂与机器类型定位停机最多的产线，并交付看板方案。",
       n:"Tableau", e:"Forage 认证 · 停机分析与看板提案" },
     { d:"2025.10 — 12", name:"营销预算优化模型",
-      s:"清洗 TechCorp 品牌 40,237 条投放记录，按每美元转化率筛选出效果前 80%（32,189 条），用 PuLP 线性规划在守住转化、曝光与互动目标下最小化总支出；再用敏感性分析找出 10 个「明星广告」放宽预算上限，额外省下 91.6 万美元。",
+      s:"清洗 Kaggle 公开数据集中 TechCorp 品牌 40,237 条投放记录，按每美元转化率筛选出效果前 80%（32,189 条），用 PuLP 线性规划在转化 / 曝光 / 互动目标较历史基线各上浮 5%–10% 的前提下最小化总支出：六大渠道预算同步下压 25.8%–30.3%，总支出从 3.876 亿降到 2.786 亿美元，直接省下 1.09 亿美元（-28.1%）；再用敏感性分析放宽 10 个「明星广告」的预算上限，额外多省 91.6 万美元。",
       n:"−28%", e:"投放支出（对比入选投放的历史支出 $387.6M）" },
     { d:"2025.10 — 12", name:"绿色投资吸引力指数 GBAI",
-      s:"173 国宏观、能源与环境数据，46 个变量做 PCA 构建综合指数；Random Forest 与 Elastic Net 十折交叉验证。",
-      n:"R² 0.907", e:"关键驱动：电力可及性、人均 GDP" },
+      s:"担任团队「可视化专家」：把队友产出的 173 国 PCA 综合指数、Random Forest 特征重要性、Elastic Net 系数三组模型结果，按 Cleveland & McGill 图形感知理论与 Tufte 数据墨水比原则设计成分布图、重要性排序图与正负系数发散图；期间从图表里发现 R² 异常接近 1 的数据泄漏迹象，推动团队修正建模流程后重做全部图表。",
+      n:"R² 0.907", e:"角色：可视化专家 · 发现数据泄漏并推动重建模型" },
     { d:"2025.05", name:"股票名称语音特性对 IPO 表现的影响",
-      s:"本科毕业论文 + 课程报告：Wind 与深交所 2010–2023 年 IPO 数据，2,039 家公司、6,121 个 firm-year 观测，固定效应回归 + HC3 稳健标准误 + 行业异质性分析。",
-      n:"+4.8~5.8%", e:"易读声调对应更高 IPO 市盈率" },
+      s:"本科论文研究：Wind 与深交所 2010–2023 年 IPO 数据，2,039 家公司、6,121 个 firm-year 观测；用 Python（pypinyin）程序化提取股票简称末字声调构建语音流畅度指标，年度固定效应 + HC3 稳健标准误回归，效应集中于高科技行业。硕士阶段拓展至 AI 辅助决策场景，检验 2016 年后 AI 分析工具普及是否削弱该偏差，未见显著收敛。",
+      n:"+4.8~5.8%", e:"易读声调对应更高 IPO 市盈率（p<0.01），仅高科技行业显著" },
     { d:"2023.12 — 2024.01", name:"辉瑞投资报告 · 组长",
       s:"拆解辉瑞收入、利润、成本与现金流，研究生物医药行业与疫情影响并与主要竞争者对比；用头肩反转、下降三角形、均线与 RSI 做股价分析，以 CAPM 测算 Beta 与 2024 年预期收益。",
       n:"CAPM", e:"Beta 与预期收益测算 · 团队负责人" },
     { d:"2022.04 — 2023.12", name:"江苏中小制造企业数字化转型研究 · 负责人",
-      s:"带队完成整体规划与进度控制，走访南京、苏州两地制造业中小企业做实地调研与访谈；国家级大创省级立项与结项，论文发表于《现代商业》。",
+      s:"作为负责人之一带队完成整体规划与进度控制：梳理国内外文献、设计问卷调查、走访南京与苏州两地制造业中小企业做实地调研与访谈，识别数字化转型的主要影响因素；国家级大创省级立项与结项，论文发表于《现代商业》。",
       n:"40+", e:"家企业实地调研 · 7 万字结项报告" },
     { d:"2023.08", name:"全国大学生统计建模大赛（第九届）",
       s:"收集 8 家医疗企业 2014–2022 年数据，用 TF-IDF 与 TOPSIS 衡量数字化转型程度并排序。",
       n:"二等奖", e:"江苏赛区 · 省级" },
     { d:"2023.03 — 05", name:"Top Boss 商业模拟经营 · 经理 / 财务总监",
-      s:"制定产量、时间与工艺生产计划，协调采购与销售部门，分析财务状况并控制财务风险。",
+      s:"5 人小组的《创业基础》模拟实验：担任生产经理与财务总监，制定产量、时间与工艺生产计划，管理生产过程与产品质量，协调采购与销售部门，分析财务状况并控制财务风险，完成 7,500 字实验报告。",
       n:"第 1", e:"年度模拟经营绩效 · Best Team" }
   ],
 
@@ -830,17 +891,37 @@ const CONTENT = { zh: {
   },
 
   edu:{
-    school:"英国布里斯托大学 University of Bristol",
-    degree:"商业分析硕士 MSc Business Analytics",
-    when:"2025.09 — 2026.09（预计）",
-    honorsLabel:"荣誉 / 奖项", campusLabel:"在校经历",
-    rows:[
-      {k:"硕士课程",v:"社交媒体与网络分析 70 · 建模分析 77 · 商业分析编程 70 · 行为决策与分析 72 · 商业数据分析 69 · <b>IBM Group Project</b>"},
-      {k:"本科",v:"<b>南京审计大学</b> · 金融学院 金融学学士 · 2021.09 — 2025.06；均分 83%，专业前 20%"},
-      {k:"本科成绩",v:"房地产金融 94 · 商业银行业务与经营 94 · 微观计量学 93 · 统计与数据分析 88 · 公司金融 87 · 线性代数 87 · 中级宏观 84 · 计量经济学 84"},
-      {k:"语言",v:"雅思 <b>6.5</b>（单项最低 6.0）· CET-4 603 / CET-6 443 · 普通话二级甲等 88.6"},
-      {k:"证书",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python（2024.12）<br>Deloitte Australia Data Analytics Job Simulation, Forage（2026.07）"}
+    degrees:[
+      { school:"布里斯托大学", degree:"商业分析硕士", when:"2025.09 — 2027.01",
+        rows:[
+          {k:"硕士课程",v:"社交媒体与网络分析 70 · 建模分析 77 · 商业分析编程 70 · 行为决策与分析 72 · 商业数据分析 70"},
+          {k:"语言",v:"雅思 <b>6.5</b>（单项最低 6.0）· CET-4 603 / CET-6 443 · 普通话二级甲等 88.6"},
+          {k:"证书",v:"Deloitte Australia Data Analytics Job Simulation, Forage（2026.07）"}
+        ],
+        campusLabel:"在校经历",
+        campus:[
+          { role:"商业分析硕士项目 · 学生代表（Course Representative）", org:"University of Bristol", y:"2025.09 — 2026.09",
+            points:[
+              "代表 110 名商业分析硕士同学，作为学生与教职团队之间的联络人，5 次参加师生联席会议（Staff-Student Liaison Committee），系统汇总并反馈课程安排、作业负担与教学资源方面的意见。",
+              "定期收集并归纳同学在课程设置、教学进度与学习资源方面的反馈（问卷 107 份），梳理集中问题并提交院方，推动增加答疑时段、开放 Kaggle 课程资料数据库权限落地。",
+              "搭建并运营商学院学生共享文档平台，整合课程资料与信息通知，提升国际学生群体内部的协作与参与度。"
+            ]}
+        ]},
+      { school:"南京审计大学", degree:"金融学学士 · 金融学院", when:"2021.09 — 2025.06",
+        rows:[
+          {k:"成绩概览",v:"均分 83，专业前 20%"},
+          {k:"主修成绩",v:"房地产金融 94 · 商业银行业务与经营 94 · 微观计量学 93 · 统计与数据分析 88 · 公司金融 87 · 线性代数 87 · 中级宏观 84 · 计量经济学 84"},
+          {k:"证书",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python（2024.12）"}
+        ],
+        campusLabel:"在校经历",
+        campus:[
+          { role:"国家级大学生创新创业训练计划 · 项目主持人", org:"南京审计大学", y:"2022.04 — 2023.12",
+            points:["2022.04 春季省级立项、2023.12 省级结项；作为第三作者在核心期刊《现代商业》发表论文。"]},
+          { role:"大学生暑期社会实践 · 校级重点项目", org:"南京审计大学", y:"2023.08",
+            points:[]}
+        ]}
     ],
+    honorsLabel:"荣誉 / 奖项",
     honors:[
       {t:"NCC AI Hackathon 冠军 · Advanced Manufacturing 赛道",d:"Team Clover（5 人）· University of Bristol × UWE Bristol · 2026.08<br>Global Tech Advocates 主办，英国国家复合材料中心（NCC）提供赛题"},
       {t:"校级优秀毕业生奖学金 · 院级方阵代表",d:"南京审计大学 · 2025.06"},
@@ -848,46 +929,17 @@ const CONTENT = { zh: {
       {t:"全国大学生统计建模大赛 江苏赛区二等奖",d:"第九届 · 2023.08"},
       {t:"SAP 商业模拟挑战赛 一等奖",d:"南京审计大学 · 2022.05"},
       {t:"外研社全国大学生英语竞赛 三等奖",d:"2021"}
-    ],
-    campus:[
-      { role:"商业分析硕士项目 · 学生代表（Course Representative）", org:"University of Bristol", y:"2025.09 — 2026.09",
-        points:[
-          "代表 110 名商业分析硕士同学，作为学生与教职团队之间的联络人，5 次参加师生联席会议（Staff-Student Liaison Committee），系统汇总并反馈课程安排、作业负担与教学资源方面的意见。",
-          "定期收集并归纳同学在课程设置、教学进度与学习资源方面的反馈（问卷 107 份），梳理集中问题并提交院方，推动增加答疑时段、开放 Kaggle 课程资料数据库权限落地。",
-          "搭建并运营商学院学生共享文档平台，整合课程资料与信息通知，提升国际学生群体内部的协作与参与度。"
-        ]},
-      { role:"《近距远观》播客主播", org:"个人项目", y:"2026 至今",
-        points:["独立策划选题、约访嘉宾、剪辑上线，已更新 9 期。"]},
-      { role:"国家级大学生创新创业训练计划 · 项目主持人", org:"南京审计大学", y:"2022.04 — 2023.12",
-        points:["2022.04 春季省级立项、2023.12 省级结项；作为第三作者在核心期刊《现代商业》发表论文。"]},
-      { role:"大学生暑期社会实践 · 校级重点项目", org:"南京审计大学", y:"2023.08",
-        points:[]},
-      { role:"泽园书院科学与技术协会 · 外联部干事", org:"南京审计大学", y:"2021.09 — 2022.06",
-        points:[
-          "成功策划并主导「相约南审，寻梦光影」高校联谊活动，覆盖南京农业大学、南京师范大学等知名高校，吸引超 200 名学生参与，有效促进校际间交流。",
-          "撰写的活动策划案创意独特、执行细节详尽，评为优秀方案。",
-          "协助部长领导外联团队与多家高校社团建立合作，成功争取到赞助资金 5,000 元。"
-        ]},
-      { role:"班级组织委员", org:"南京审计大学", y:"2021.09 — 2022.06",
-        points:[
-          "协助团支书工作，成功举办 5 场校级/院级活动，组织同学积极参与，平均参与人数达 50 人。",
-          "策划并组织 8 次班级团建和小组聚会，通过创意策划（如户外拓展、主题晚会等），参与率超 90%，显著增强同学间的沟通与团队协作能力。",
-          "精准传达领导教学活动通知 85 条，确保信息覆盖 100% 班级成员，积极沟通班集体，解决 16 项班级内部沟通障碍。"
-        ]}
     ]
   },
 
   cards:{
     skill:[
-      {n:"用户研究",r:"SSR",lv:90,d:"3 家工作室的半结构化访谈与端到端工作流梳理，把定性反馈变成有优先级的需求。"},
-      {n:"评测框架",r:"SSR",lv:86,d:"共建 12 项指标的模型离线评测框架 —— 让「效果好不好」变成可比的数。"},
-      {n:"SQL",r:"SSR",lv:85,d:"清洗标准化 217 个城轨项目、26,088 辆车、约 2,063 亿元合同额的数据集。"},
-      {n:"Python",r:"SSR",lv:84,d:"Pandas / scikit-learn / statsmodels / Selenium：采集、清洗、回归、PCA、主题模型都跑过。"},
-      {n:"行业研究",r:"SR",lv:82,d:"AIDC、人形机器人、轨交装备：产业链拆解 + 竞争位置 + 市场空间。"},
-      {n:"财务测算",r:"SR",lv:80,d:"NPV 与敏感性分析、盈利预测拆分、PE / PB / EV-EBITDA 可比公司对比。"},
-      {n:"可视化",r:"SR",lv:76,d:"Tableau / Matplotlib / Power BI，把分析做成能直接汇报的看板。"},
-      {n:"VibeCoding",r:"R",lv:74,d:"IBM 推荐系统原型和这个网站都是自己写、自己部署的。"},
-      {n:"内容表达",r:"R",lv:86,d:"播客 9 期练出来的结构化表达；也写过 7 万字结项报告。"}
+      {n:"数据分析与建模",r:"SSR",lv:90,d:"Python · SQL · Excel · Power BI · Tableau · Stata —— 回归、清洗、预测建模、可视化全流程。",img:ICON.data},
+      {n:"产品与商业分析",r:"SSR",lv:88,d:"需求分析、流程梳理、指标体系设计、市场与竞品研究、商业模型分析。",img:ICON.biz},
+      {n:"AI 与开发工具",r:"SR",lv:82,d:"ChatGPT / Codex、Claude Code、DeepSeek —— 日常开发搭档。",img:ICON.ai},
+      {n:"AI 产品能力",r:"SR",lv:80,d:"模型评测、测试集设计、Agent 工作流、Prompt / LLM。",img:ICON.eval},
+      {n:"金融研究工具",r:"SR",lv:78,d:"Wind、WRDS、Refinitiv Eikon —— 券商实习里的日常武器。",img:ICON.fin},
+      {n:"内容表达",r:"R",lv:86,d:"播客 9 期练出来的表达；也写过 7 万字结项报告。",img:ICON.pen}
     ],
     hobby:[
       {n:"摄影",r:"SSR",lv:90,d:"富士随身机 + Lightroom / Capture One，偏爱清晨与黄昏的光。",img:"assets/gallery/seven-sisters.jpg"},
@@ -937,7 +989,6 @@ en: {
   intro:"Hi, I am Yiwen Ma (Cindy) — a Finance graduate turned MSc Business Analytics student, with experience spanning equity research, consulting, tech product, and data analytics.",
   who:["BSc Finance · MSc Business Analytics","Business Analysis / Product / Data Analytics / Equity Research / Consulting","Podcast Host · Photography · Guzheng (Grade 10)"],
   lookingFor:"Data / Product Analytics · Business Analysis · Tech & Industry Research",
-  wallCaption:"{n} shots from a Fujifilm compact — Switzerland, the UK, France and Italy. Click to enlarge; hover to bring back the colour.",
   ui:{
     closeX:"Close ✕", openDemo:"Open Demo ↗", viewRepo:"View Source ↗",
     resumeModalTitle:"Yiwen Ma · Resume (Chinese)", resumeIframeTitle:"Resume",
@@ -961,51 +1012,48 @@ en: {
   ],
 
   timeline:[
-    { y:"2026.01 — 05", role:"IBM Group Project · Student Developer", co:"IBM × University of Bristol", tag:"Product",
+    { y:"2026.01 — 05", role:"SkillsBuild Learning-Path Recommendation System Project Team · Data Analytics Intern", co:"IBM (London, UK)", tag:"Product",
       summary:"Turned ‘what course should I take next’ into a recommendation system with logic you can actually explain.",
       points:[
-        "Designed a course recommendation system for the IBM SkillsBuild platform, reframing course selection as an <b>explainable scoring problem</b> — role match, discipline relevance, difficulty tier, skill-gap bonus, prerequisite check and interest keywords, each rule scored and combined into a weighted sum.",
-        "Insisted on adding a difficulty gate: recommendable course levels are capped by year of study, so the system never pushes a first-year student a pile of advanced courses that sound relevant but are practically unlearnable.",
-        "Independently built the rule engine and scoring logic as a pure front-end single-page app (HTML/CSS/JS), structurally scoring and ranking <b>12 courses</b> to output a traceable Top-4 learning path.",
-        "Collaborated with a <b>6-person</b> cross-functional team, writing the architecture diagrams and scoring-algorithm documentation that cut down rework between front-end and client communication."],
-      abil:["Product Design","Rule Engines","Data Modelling","Cross-functional Collaboration"] },
-    { y:"2025.01 — 05", role:"Product Intern", co:"ByteDance · Shenzhen", tag:"Product",
+        "Designed and ran a pre-project survey around the platform's user-matching needs, collecting <b>38 valid responses</b> to determine the recommendation model's dimensions and weightings — grounding the rule design in user data rather than subjective judgement.",
+        "Independently built the rule-based recommendation engine, constructing a weighted scoring system across <b>six dimensions</b> — role match, degree relevance, skill gap, difficulty gating, prerequisites and interest keywords — to score <b>12 courses</b>, normalising raw scores to a 65–99% match range and generating tiered learning paths from beginner to advanced for users of different backgrounds.",
+        "Ran user testing with <b>65 participants</b> to validate recommendation relevance, with 89% rating it 4–5 stars; independently implemented the rule engine in plain front-end HTML/CSS/JS, collaborated with a <b>6-person</b> international team to ship the product (deployed on GitHub Pages), and independently wrote the technical documentation covering system architecture, data flow and scoring logic."],
+      abil:["User Research","Rule Engine Design","Scoring Model Design","Cross-functional Collaboration"] },
+    { y:"2025.06 — 08", role:"AI Product Intern · AI Comic-Creation Tool", co:"ByteDance · Beijing", tag:"Product",
       summary:"Started from the real workflows of three professional comic studios, turning vague creative feedback into product problems that could be measured and iterated on.",
       points:[
-        "Ran semi-structured interviews and end-to-end workflow mapping across <b>3</b> professional comic studios, pinpointing repetitive steps, model-quality issues, and barriers to adopting AI-assisted creative tools.",
-        "Converted qualitative feedback into prioritised requirements and co-built a <b>12-metric</b> offline evaluation framework (line completeness, colour-fill accuracy, style consistency) supporting model selection, version comparison and feature iteration.",
-        "Built an internal dashboard tracking activity, feature usage, task completion and retention, identifying friction points in the user journey; pilot-user retention rose <b>roughly 7% relative</b>."],
-      abil:["User Research","Requirements Breakdown","Evaluation Framework Design","Data Dashboards"] },
-    { y:"2024.11 — 2025.01", role:"Industry Research Intern · Machinery Group", co:"Shanxi Securities Research Institute · Shanghai", tag:"Research",
+        "Interviewed <b>3</b> professional comic studios of varying scale, combining this with a review of draft materials to identify real problems; grouped feedback into <b>four need categories</b> — line quality, colouring accuracy, style consistency and workflow efficiency — and prioritised them by frequency, impact on finished quality and implementation difficulty to inform AI-assisted line-art and colouring feature iteration.",
+        "Designed a <b>12-metric</b> model evaluation framework covering line completeness, region-recognition accuracy, colour bleed and style consistency; built a fixed test set spanning character count, line complexity, occlusion level and colour-region scenarios, and benchmarked <b>8 model versions</b> against it, with results feeding into parameter tuning and version selection.",
+        "Built a pilot-user data dashboard tracking activity, task completion and staged retention, identifying issues such as first-use churn, low uptake of the AI-colouring entry point, and high rework rates on generated results; after iteration, user activity rose <b>20% relative</b>, AI-colouring entry-point clicks rose <b>8% relative</b>, and pilot-user retention rose <b>7% relative</b>."],
+      abil:["User Research","Model Evaluation Frameworks","Data Dashboards","Requirements Prioritisation"] },
+    { y:"2025.01 — 05", role:"Industry Research Intern · Machinery Group", co:"Shanxi Securities Research Institute · Shanghai", tag:"Research",
       summary:"Worked across industry intelligence, company financials and supply-chain data to find evidence that could actually support an investment call.",
       points:[
-        "Covered industry and company research across machinery, AIDC (AI data centres), rail-transit equipment and humanoid robotics — tracking market developments, business models and key manufacturers’ positioning, producing <b>5+</b> research drafts and thematic reports.",
-        "Broke down the technology roadmaps, customer mix, capacity plans, supply chains and competitive positioning of <b>roughly 12</b> companies across the AIDC value chain, identifying growth drivers and domestic-substitution opportunities.",
-        "Updated earnings forecasts for companies including Zhenyu Technology and CRRC, modelling segment revenue, gross margin, expenses, cash flow, EPS / ROE / ROIC and benchmarking roughly 15 listed companies on PE / PB / EV-EBITDA; contributed to engine and generator earnings-forecast models, <b>improving forecast accuracy by 15%</b>.",
-        "Used SQL to clean and standardise 2020–2024 urban-rail tender data — <b>217 projects, 26,088 vehicles, roughly RMB 206.3bn</b> in contract value — building a structured dataset to support market sizing and vehicle-demand forecasting.",
-        "Collected and structured industry data on liquid-cooling equipment and generator sets; contributed to an <b>AIDC industry white paper</b>, building a US–China supply-chain cost comparison model."],
+        "Led industry-chain research on data-centre power equipment, breaking down market sizing, cost structure, supply-demand balance and domestic-substitution logic; benchmarked <b>12</b> engine, complete-unit and liquid-cooling equipment makers on technology roadmap, customer mix and capacity planning to shortlist domestic-substitution targets; built a China–US supply-chain cost comparison model, contributing to <b>5</b> research outputs including the annual machinery strategy and AIDC industry research.",
+        "Systematically mapped the supply-chain footprint, technology roadmap, capacity plans and target pricing of <b>18</b> global humanoid-robotics and core-component manufacturers, breaking down joint, motor, reducer, lead-screw and sensor solutions and comparing key product specs; produced the core draft for the annual humanoid-robotics strategy and contributed to a roughly <b>30,000-word</b> report.",
+        "Covered Zhenyu Technology, CRRC and other companies, decomposing core business revenue and profit drivers; updated Zhenyu Technology's FY2024–26 net-profit forecast to <b>RMB 261m / 410m / 611m</b> and reviewed core financial metrics; completed P/E, P/B and EV/EBITDA comparable-company analysis across roughly <b>15</b> listed companies to support valuation calls, narrowing the forecast-vs-Wind-consensus deviation by <b>15% year-on-year</b>.",
+        "Used Excel, Python and SQL to clean and build a 2020–2024 urban-rail tender database (<b>217 projects, 26,088 vehicles, roughly RMB 206.3bn</b> in contract value), combining it with route-construction planning to model vehicle-procurement demand and support market-sizing and industry-cycle calls for rail-transit equipment."],
       abil:["Industry Research","Value-Chain Analysis","Earnings Forecasting","SQL Data Cleaning","Cross-Market Comparison"] },
-    { y:"2024.05 — 08", role:"Consulting Intern", co:"Grant Thornton · Shenzhen", tag:"Consulting",
+    { y:"2024.11 — 2025.01", role:"Consulting Intern", co:"Grant Thornton · Shenzhen", tag:"Consulting",
       summary:"Put policy, process and financial data on the same page to understand how an organisation actually runs.",
       points:[
-        "Contributed to a manufacturing and logistics equipment-upgrade project, building an Excel <b>NPV model</b> with sensitivity analysis, quantifying up to <b>roughly 23%</b> cost savings versus the baseline, and delivering the model plus a written report to support the investment decision.",
-        "Conducted an internal-control manual and budget-management assessment for a healthcare client: mapping budgeting, budget performance, receipts and payments, procurement and tendering, contract fulfilment and asset write-off; clarifying segregation of duties and approval authority, and helping draft the <b>internal control manual</b>.",
-        "Proposed improvements — segregating incompatible duties, tiered approval by amount, tighter budget discipline, and a monthly budget-execution review with a ‘target–monitor–evaluate–remediate’ loop — that were adopted into the formal client report.",
-        "Reviewed <b>1,000+</b> transaction records a day, focusing on duplicate billing and missing authorisation, flagging <b>38</b> exceptions and structuring them into an issue log for management review.",
-        "Contributed to a <b>subsidy-eligibility assessment</b> for public-sector smart equipment, checking client materials against predefined eligibility criteria."],
+        "Built an NPV / discounted-cash-flow model with sensitivity analysis to compare equipment-upgrade options for manufacturing and logistics clients and proposed a phased implementation path; delivered the Excel model and a written report to support management's plan selection, with the optimal option saving <b>roughly 23%</b> in cost versus the baseline.",
+        "Reviewed <b>1,000+</b> transaction records a day, flagging <b>38</b> exceptions (including duplicate billing and missing authorisation) and structuring them into an issue log translated into client recommendations.",
+        "Helped draft an internal-control manual and budget-management assessment for a healthcare client; proposed improvements on segregation-of-duties and approval-authority gaps that were <b>adopted into the formal report</b>."],
       abil:["Financial Modelling","Process Mapping","Internal Controls Assessment","Exception Detection","Compliance Review"] },
-    { y:"2024.01 — 02", role:"Risk & Compliance Intern", co:"Donghai Securities · Nanjing", tag:"Risk",
+    { y:"2024.01 — 02", role:"Risk & Compliance Intern", co:"Donghai Securities · Nanjing Hongwu North Road Branch", tag:"Risk",
       summary:"My first close look at building a risk-management framework, and at how compliance actually holds up on the front line of the business.",
       points:[
-        "Contributed to building and running the risk-management framework — identification, assessment, monitoring and response — helping assess <b>20+</b> potential risk points; effective monitoring <b>cut the incidence of risk events by 15%</b>.",
+        "Learned and contributed to building and running the risk-management framework — identification, assessment, monitoring and response — helping identify and assess <b>20+</b> potential risk points; effective monitoring <b>cut the incidence of risk events by 10%</b>.",
         "Reviewed the anti-money-laundering blacklist system to ensure zero omissions and safeguard transaction compliance.",
-        "Studied company compliance policy and helped plan and deliver <b>3</b> compliance training sessions, reaching 100+ staff."],
+        "Studied company compliance policy and helped plan and deliver <b>3</b> compliance training sessions, reaching 100+ staff and noticeably raising compliance awareness."],
       abil:["Risk Identification","AML Review","Compliance Training"] },
     { y:"2023.06 — 07", role:"Tax Intern", co:"ZSZH CPAs · Jiangsu Branch", tag:"Audit",
       summary:"Learned, voucher by voucher, how to make detail-checking something you can actually rely on.",
       points:[
-        "Helped complete <b>2</b> audit engagements, combing through vouchers to identify and report <b>12</b> management gaps and potential breach points at the audited entities, <b>improving audit efficiency by roughly 20%</b>.",
-        "Organised accounting vouchers and reconciled ledgers against source documents, proofread accounting files, contributed to audit working papers, and proactively coordinated with client companies on material collection."],
+        "Helped complete <b>2</b> audit engagements; through careful voucher review, identified and reported <b>12</b> management gaps and potential breach points at the audited entities.",
+        "Consolidated and integrated data, improving audit efficiency by <b>roughly 20%</b> while ensuring data accuracy; proactively coordinated with client companies on material collection.",
+        "Organised accounting vouchers and reconciled ledgers against source documents to ensure financial-information accuracy; carefully proofread accounting files and contributed to audit working papers, improving archive-management standards."],
       abil:["Voucher Verification","Audit Working Papers","Attention to Detail","Client Communication"] }
   ],
 
@@ -1013,7 +1061,7 @@ en: {
     { no:"01", tone:"clay", type:"INDUSTRY RESEARCH", name:"Humanoid Robotics Industry Landscape",
       kind:"Industry Research Brief · Data Website　|　Personal Project　|　Sep 2026",
       subtitle:"60+ data points, every one traced to a primary source — sorting out the numbers that do not add up across the industry.",
-      metric:"60+", metricLabel:"primary sources",
+      metric:"60+", metricLabel:"primary sources", cover:"assets/case/humanoid-robot/report-en.jpg",
       problem:"Humanoid robotics is the hottest — and messiest — sector of the past two years: Goldman Sachs projects 1.4 million units shipped by 2035, Macquarie says 1.1 million, every institution uses different assumptions and timeframes, and the internet is full of unverifiable ‘confirmed order’ rumours. <b>An ordinary reader has no way to tell which numbers to trust.</b>",
       judge:"I did not want to build another news roundup. So I insisted every key figure trace back to a primary source — analyst reports, prospectuses, official releases — clickable and verifiable; numbers that circulate online but cannot be sourced, or that contradict each other (like certain companies’ claims of ‘RMB 30bn+ in confirmed orders’), I flagged directly in the text as ‘not used’ rather than copying them anyway. I also wrote a daily scheduled job that pulls that day’s industry news into a separate ‘briefing’ section, so unverified information never bleeds into the formal analysis.",
       result:{t:"Four sections — market size, competitive landscape, core components, and financing — every data point click-through traceable, plus a daily auto-updating news briefing."},
@@ -1026,10 +1074,10 @@ en: {
     { no:"02", tone:"sea", type:"PRODUCT & MECHANISM DESIGN", name:"CompositeLens · Industrial Inspection AI",
       kind:"Computer Vision · Winner, NCC AI Hackathon — Advanced Manufacturing Track　|　Team Clover (5 people)　|　Aug 2026",
       subtitle:"A 5-person team’s winning entry — my job was turning a technical judgement call into a product people could actually use and trust.",
-      metric:"39/39", metricLabel:"defects caught, zero missed",
+      metric:"39/39", metricLabel:"defects caught, zero missed", cover:"assets/case/hackathon-certificate.jpg",
       problem:"The internal quality of carbon-fibre composites is currently judged by manually inspecting microscopy images — slow, subjective, and the conclusions can't be traced back to evidence. NCC (the UK's National Composites Centre) didn't just want a detection model; they wanted a system that could issue a pass/fail verdict where every conclusion traces back to its evidence.",
-      judge:"Model training was Boang's job. Mine was turning it into a product you could actually ship, trust, and explain the value of:<br><br><b>Packaged the model as a browser app.</b> Upload a single image or a whole folder, inference runs server-side, and a PDF inspection report comes back within minutes — no environment to set up, no GPU required. The gap between 'a prototype running on someone's laptop' and 'a customer can open it themselves' is exactly this layer.<br><br><b>Designed a human-in-the-loop review mechanism.</b> The system doesn't force a verdict on every sample: cases where severity falls within ±5µm of the threshold, multi-view predictions disagree across the threshold, image quality is abnormal, or physical scale is missing are automatically routed to a human reviewer. In an independent prototype validation (247 holdout images): 84.6% of samples were auto-processed at 95.7% accuracy with zero missed defects on that subset; of the 15 cases where the model got it wrong, 6 were caught by the rules and routed to a human. In safety-sensitive settings, 'knowing when not to conclude' is a product capability, not a model metric.<br><br><b>Standardised the evaluation criteria and built the commercial case.</b> The team tried 8 modelling approaches, and I put them on the same deduplicated, parent-image-grouped, zero-overlap validation set so 'which one's better' stopped being a matter of opinion. On the business side, I designed a tiered model — pilot validation → annual licence → usage-based expansion — and built an ROI model: assuming 10,000 annual inspection images, 4 minutes of manual review per image, and a fully-loaded inspector cost of £34/hour, the verifiable annual value per customer comes out to roughly £19k; at a £6k/year price point, that's a 3.4x return with a 3.6-month payback.",
-      result:{t:"Winner, NCC Advanced Manufacturing track. The team's submitted solution scored zero missed defects (TP 39 / FP 3 / FN 0) on a 268-image source-separated independent validation set, Void Dice 0.8023, combined validation score 0.9848. The approach with the highest Dice score (0.8200) actually scored lower overall — it missed 2 real defects; the team chose the zero-miss model instead."},
+      judge:"Model training was Boang's job. Mine was productising the team's defect-segmentation model into an app you could actually ship, trust, and explain the value of:<br><br><b>Packaged it as a browser-based inspection app.</b> Supports single-image, batch and whole-folder upload; inference runs server-side, and a PDF report with defect measurements and the basis for each verdict comes back within minutes — no environment to set up, no local GPU required. The gap between 'a prototype running on someone's laptop' and 'a customer can open it themselves' is exactly this layer.<br><br><b>Designed a human-in-the-loop review mechanism.</b> Auto-routes cases based on distance from the decision boundary, multi-view consistency, image quality and physical-scale checks, rather than forcing a verdict on every sample. In an independent prototype validation (247 holdout images): 84.6% automated-processing rate, 95.7% accuracy, zero missed defects; of the cases where the model got it wrong, 40% were caught by the rules and routed to a human. In safety-sensitive settings, 'knowing when not to conclude' is a product capability, not a model metric.<br><br><b>Standardised the evaluation criteria and built the commercial case.</b> The team tried 8 modelling approaches, and I put them on the same deduplicated, parent-image-grouped, zero-overlap validation set so 'which one's better' stopped being a matter of opinion. Built a pricing and ROI model, designing a three-tier commercial model — pilot validation, annual licence, usage-based expansion — and estimated roughly £25k in verifiable annual value per customer, landing on a £6k/year price band against competitors, with a roughly 3-month payback.",
+      result:{t:"Winner, NCC Advanced Manufacturing track. The final solution scored zero missed defects (TP 39 / FP 3 / FN 0) on a 268-image independent validation set, with a combined validation score of 0.9949."},
       learn:"The highest combined score among the 8 approaches didn't belong to the one with the highest Dice score — the official metric weighted a missed defect 4x higher than a false alarm, so what actually decided the ranking was whether anything got missed, not how precisely the pixels were drawn. Explaining that logic in terms a client actually cares about was harder than tuning the model itself — and closer to the work I want to do.",
       stack:["Productisation","Human-in-the-Loop Review","Evaluation Framework","Commercial Modelling"],
       figures:[{src:"assets/case/hackathon-certificate.jpg", alt:"NCC AI Hackathon Winner · Team Clover"}],
@@ -1039,9 +1087,9 @@ en: {
     { no:"03", tone:"sage", type:"SOCIAL MEDIA ANALYTICS", name:"Lululemon User Reviews & Social Analytics",
       kind:"Text Mining · Python　|　University of Bristol · EFIMM0139　|　Mar – Apr 2026",
       subtitle:"Inside 2,180 cross-platform comments, finding the ‘why’ the brand could not see.",
-      metric:"2,180", metricLabel:"comments",
+      metric:"2,180", metricLabel:"comments", cover:"assets/case/lululemon/fig1_sentiment_overview.png",
       problem:"For a £100+ jacket, what are people in the comments actually complaining about? A brand can see the star rating, but not the ‘why’ — and only the ‘why’ can actually change the product page or the messaging.",
-      judge:"I did not stop at sentiment scoring. After collecting and cleaning 2,180 Reddit and YouTube comments via Reddit's public API and Selenium, a 69.2% positive rate showed word-of-mouth was never really the problem — the value is in the three recurring complaints inside that 12.8% negative share: sizing inconsistency, fabric durability, and perceived price-to-value. For topic separation I actually tried unsupervised LDA first, but the topic boundaries came out blurry and needed constant retuning and manual labelling; the topic categories for athletic-wear reviews are already well established in the literature, so I switched to keyword-seeded classification plus a co-occurrence network — trading some of LDA's 'automatic discovery' completeness for results that were more interpretable and reproducible. I then turned the three highest-frequency issues into concrete, actionable recommendations: product-page sizing guidance, fabric-communication language, and adjusted marketing messaging.",
+      judge:"I did not stop at sentiment scoring. I called Reddit's public JSON API and used Selenium to collect and clean 2,180 Reddit and YouTube comments, capping comments per post so no single viral thread could dominate the sample. A 69.2% positive rate showed word-of-mouth was never really the problem — the value is in the three recurring complaints inside that 12.8% negative share: sizing inconsistency, fabric durability, and perceived price-to-value. For topic separation I actually tried unsupervised LDA first, but the topic boundaries came out blurry and needed constant retuning and manual labelling; the topic categories for athletic-wear reviews are already well established in the literature, so I switched to keyword-seeded classification plus a co-occurrence network — trading some of LDA's 'automatic discovery' completeness for results that were more interpretable and reproducible. Broken down by topic, the negative rate ran 20% for price/value and 17% for durability, and sizing came up in 19% of all comments — those three were exactly where the product page and comms needed to change. I then turned the three highest-frequency issues into concrete, actionable recommendations: product-page sizing guidance, fabric-communication language, and adjusted marketing messaging.",
       result:{t:"Reddit 1,974 + YouTube 206 comments, collected and cleaned, then run through VADER sentiment analysis, six-category keyword topic classification and a co-occurrence network; 69.2% positive / 18.0% neutral / 12.8% negative, producing three actionable recommendations on sizing guidance, fabric communication and marketing messaging."},
       learn:"Sentiment analysis gives you the temperature; topic classification gives you the diagnosis. A report that only states percentages leaves the business side with no idea what to do next.",
       stack:["Python","Selenium","VADER","Keyword Topic Classification","Co-occurrence Network"],
@@ -1059,31 +1107,31 @@ en: {
 
   more:[
     { d:"2026.09", name:"Semiconductor Operating Efficiency Study · DEA Value-Chain Analysis",
-      s:"MSc dissertation: 40 pure-play listed semiconductor firms from Compustat, 200 firm-year observations (2020–2024). Measured operating efficiency with an output-oriented BCC DEA model (total assets + headcount → revenue), compared across the IC design / foundry / assembly-and-test value chain and by country, with a second-stage bootstrap-truncated regression.",
-      n:"46%", e:"Foundry efficiency significantly below IC design (p = 0.0018); country differences not statistically significant" },
+      s:"MSc dissertation: screened 58 candidate firms down to 40 pure-play listed semiconductor companies (22 IC design, 10 foundry, 8 assembly-and-test), standardising currency, fiscal-year-end and price levels into a comparable 200 firm-year panel (2020–2024); measured operating efficiency with an output-oriented BCC DEA model. 11 IDM manufacturers span multiple stages with structurally different production functions, so they were benchmarked on a separate frontier. A bootstrap-truncated regression identified efficiency drivers, with foundry status carrying a robust marginal effect of roughly −40 percentage points.",
+      n:"46%", e:"Foundry efficiency below IC design (p = 0.002); country differences not significant — 11 of the 13 US firms are IC designers, so the apparent geographic gap is really a business-mix difference" },
     { d:"2026.07", name:"Deloitte Australia Data Analytics Job Simulation",
       s:"Fed Daikibo’s device telemetry JSON into Tableau, built an ‘unhealthy’ calculated field to convert it into downtime, pinpointed the highest-downtime production lines by factory and machine type, and delivered a dashboard proposal.",
       n:"Tableau", e:"Forage-certified · Downtime analysis & dashboard proposal" },
     { d:"2025.10 — 12", name:"Marketing Budget Optimisation Model",
-      s:"Cleaned 40,237 TechCorp campaign records, filtered to the top 80% by conversion-per-dollar (32,189 records), and used PuLP linear programming to minimise total spend while holding conversion, impression and engagement targets; sensitivity analysis then identified 10 ‘star campaigns’ whose budget caps could be relaxed, saving an additional $916k.",
+      s:"Cleaned 40,237 TechCorp campaign records from a public Kaggle dataset, filtered to the top 80% by conversion-per-dollar (32,189 records), and used PuLP linear programming to minimise total spend while holding conversion, impression and engagement targets 5–10% above historical baseline: budgets came down 25.8%–30.3% across all six channels in step, cutting total spend from $387.6M to $278.6M — a direct saving of $109M (-28.1%); sensitivity analysis then relaxed the budget cap for 10 'star campaigns', saving an additional $916k.",
       n:"−28%", e:"ad spend (vs. $387.6M historical spend on the selected campaigns)" },
     { d:"2025.10 — 12", name:"Green Business Attractiveness Index (GBAI)",
-      s:"Macro, energy and environmental data across 173 countries; built a composite index from 46 variables via PCA, validated with 10-fold cross-validated Random Forest and Elastic Net.",
-      n:"R² 0.907", e:"Key drivers: electricity access, GDP per capita" },
+      s:"Served as the team's Visualisation Expert: translated teammates' PCA composite index (173 countries), Random Forest feature-importance and Elastic Net coefficient outputs into a distribution plot, ranked importance chart and diverging coefficient chart, applying Cleveland & McGill's graphical-perception theory and Tufte's data-ink principle. Along the way, spotted an R² suspiciously close to 1.0 in the draft charts, flagged likely data leakage, and rebuilt every figure once the team fixed the modelling pipeline.",
+      n:"R² 0.907", e:"Role: Visualisation Expert · caught a data-leakage bug, drove the model rebuild" },
     { d:"2025.05", name:"The Effect of Stock-Name Phonetics on IPO Performance",
-      s:"Undergraduate dissertation + coursework report: Wind and Shenzhen Stock Exchange IPO data, 2010–2023, 2,039 companies, 6,121 firm-year observations; fixed-effects regression with HC3 robust standard errors and industry-heterogeneity analysis.",
-      n:"+4.8~5.8%", e:"Easier-to-read tones associated with higher IPO P/E ratios" },
+      s:"Undergraduate dissertation: Wind and Shenzhen Stock Exchange IPO data, 2010–2023, 2,039 companies, 6,121 firm-year observations; used Python (pypinyin) to programmatically extract the tone of a stock's abbreviated name and build a phonetic-fluency index, then ran year fixed-effects regressions with HC3 robust standard errors — the effect concentrated in tech-sector firms. Extended the question during my Master's to an AI-assisted-decision-making angle, testing whether AI analysis tools becoming widespread after 2016 weakened the bias — no significant convergence found.",
+      n:"+4.8~5.8%", e:"Easier-to-read tones associated with higher IPO P/E ratios (p<0.01), significant only in tech-sector firms" },
     { d:"2023.12 — 2024.01", name:"Pfizer Investment Report · Team Lead",
       s:"Broke down Pfizer’s revenue, profit, costs and cash flow; studied the pharma industry and pandemic impact against key competitors; used head-and-shoulders reversal, descending triangle, moving averages and RSI for price analysis, and estimated Beta and 2024 expected returns via CAPM.",
       n:"CAPM", e:"Beta & expected-return estimation · Team lead" },
     { d:"2022.04 — 2023.12", name:"Jiangsu SME Manufacturing Digital Transformation Study · Lead",
-      s:"Led overall planning and progress control, conducting on-site research and interviews at manufacturing SMEs across Nanjing and Suzhou; approved and completed at provincial level under the National College Students’ Innovation Program, with a paper published in Modern Business.",
+      s:"One of the project leads: handled overall planning and progress control, reviewed domestic and international literature, designed a survey, and conducted on-site research and interviews at manufacturing SMEs across Nanjing and Suzhou to identify the main drivers of digital transformation; approved and completed at provincial level under the National College Students' Innovation Program, with a paper published in Modern Business.",
       n:"40+", e:"companies field-researched · 70,000-word final report" },
     { d:"2023.08", name:"9th National Undergraduate Statistical Modelling Contest",
       s:"Collected 2014–2022 data from 8 healthcare companies, using TF-IDF and TOPSIS to score and rank their digital-transformation progress.",
       n:"2nd Prize", e:"Jiangsu region · Provincial" },
     { d:"2023.03 — 05", name:"Top Boss Business Simulation · Manager / CFO",
-      s:"Set production volume, scheduling and process plans, coordinated procurement and sales, and analysed financial position while managing financial risk.",
+      s:"A 5-person team simulation for the Entrepreneurship Fundamentals course: served as Production Manager and CFO, set production volume, scheduling and process plans, managed the production process and product quality, coordinated with procurement and sales, and analysed financial position while managing financial risk — wrote up a 7,500-word simulation report.",
       n:"1st", e:"Annual simulated performance · Best Team" }
   ],
 
@@ -1120,17 +1168,37 @@ recalibrating what it means to understand a life.`,
   },
 
   edu:{
-    school:"University of Bristol, UK",
-    degree:"MSc Business Analytics",
-    when:"Sep 2025 – Sep 2026 (expected)",
-    honorsLabel:"Honours & Awards", campusLabel:"Campus Life",
-    rows:[
-      {k:"MSc Modules",v:"Social Media & Network Analysis 70 · Modelling Analytics 77 · Business Analytics Programming 70 · Behavioural Decision Analysis 72 · Business Data Analytics 69 · <b>IBM Group Project</b>"},
-      {k:"Undergraduate",v:"<b>Nanjing Audit University</b> · BSc Finance, School of Finance · Sep 2021 – Jun 2025; average 83%, top 20% of cohort"},
-      {k:"Key Grades",v:"Real Estate Finance 94 · Commercial Banking 94 · Microeconometrics 93 · Statistics & Data Analysis 88 · Corporate Finance 87 · Linear Algebra 87 · Intermediate Macroeconomics 84 · Econometrics 84"},
-      {k:"Languages",v:"IELTS <b>6.5</b> (no band below 6.0) · CET-4 603 / CET-6 443 · Putonghua Proficiency Test, Grade 2-A, 88.6"},
-      {k:"Certificates",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python (Dec 2024)<br>Deloitte Australia Data Analytics Job Simulation, Forage (Jul 2026)"}
+    degrees:[
+      { school:"University of Bristol, UK", degree:"MSc Business Analytics", when:"Sep 2025 – Jan 2027 (expected)",
+        rows:[
+          {k:"MSc Modules",v:"Social Media & Network Analysis 70 · Modelling Analytics 77 · Business Analytics Programming 70 · Behavioural Decision Analysis 72 · Business Data Analytics 70"},
+          {k:"Languages",v:"IELTS <b>6.5</b> (no band below 6.0) · CET-4 603 / CET-6 443 · Putonghua Proficiency Test, Grade 2-A, 88.6"},
+          {k:"Certificates",v:"Deloitte Australia Data Analytics Job Simulation, Forage (Jul 2026)"}
+        ],
+        campusLabel:"Campus Life",
+        campus:[
+          { role:"Course Representative, MSc Business Analytics", org:"University of Bristol", y:"2025.09 — 2026.09",
+            points:[
+              "Represented 110 MSc Business Analytics students as the liaison between the student body and faculty, attending 5 Staff-Student Liaison Committee meetings to systematically collect and relay feedback on scheduling, workload and teaching resources.",
+              "Regularly gathered and synthesised student feedback on curriculum, pacing and learning resources (107 survey responses), consolidating recurring issues for the department and helping secure additional office hours and access to the Kaggle course-materials database.",
+              "Built and ran a shared documents platform for the business school’s students, consolidating course materials and announcements to improve collaboration among international students."
+            ]}
+        ]},
+      { school:"Nanjing Audit University", degree:"BSc Finance, School of Finance", when:"Sep 2021 – Jun 2025",
+        rows:[
+          {k:"Grade Overview",v:"Average 83, top 20% of cohort"},
+          {k:"Key Grades",v:"Real Estate Finance 94 · Commercial Banking 94 · Microeconometrics 93 · Statistics & Data Analysis 88 · Corporate Finance 87 · Linear Algebra 87 · Intermediate Macroeconomics 84 · Econometrics 84"},
+          {k:"Certificates",v:"Harvard University edX <b>CS109x</b> Introduction to Data Science with Python (Dec 2024)"}
+        ],
+        campusLabel:"Campus Life",
+        campus:[
+          { role:"Project Lead, National College Students’ Innovation & Entrepreneurship Programme", org:"Nanjing Audit University", y:"2022.04 — 2023.12",
+            points:["Provincial approval Apr 2022, provincial completion Dec 2023; 3rd author on a paper published in the core journal Modern Business."]},
+          { role:"University-level Key Project, Student Summer Social Practice", org:"Nanjing Audit University", y:"2023.08",
+            points:[]}
+        ]}
     ],
+    honorsLabel:"Honours & Awards",
     honors:[
       {t:"Winner, NCC AI Hackathon · Advanced Manufacturing Track",d:"Team Clover (5 people) · University of Bristol × UWE Bristol · Aug 2026<br>Organised by Global Tech Advocates, challenge set by the UK's National Composites Centre (NCC)"},
       {t:"Outstanding Graduate Scholarship · College Flag-Bearer",d:"Nanjing Audit University · Jun 2025"},
@@ -1138,46 +1206,17 @@ recalibrating what it means to understand a life.`,
       {t:"2nd Prize, Jiangsu Region, National Undergraduate Statistical Modelling Contest",d:"9th edition · Aug 2023"},
       {t:"1st Prize, SAP Business Simulation Challenge",d:"Nanjing Audit University · May 2022"},
       {t:"3rd Prize, FLTRP National English Competition",d:"2021"}
-    ],
-    campus:[
-      { role:"Course Representative, MSc Business Analytics", org:"University of Bristol", y:"2025.09 — 2026.09",
-        points:[
-          "Represented 110 MSc Business Analytics students as the liaison between the student body and faculty, attending 5 Staff-Student Liaison Committee meetings to systematically collect and relay feedback on scheduling, workload and teaching resources.",
-          "Regularly gathered and synthesised student feedback on curriculum, pacing and learning resources (107 survey responses), consolidating recurring issues for the department and helping secure additional office hours and access to the Kaggle course-materials database.",
-          "Built and ran a shared documents platform for the business school’s students, consolidating course materials and announcements to improve collaboration among international students."
-        ]},
-      { role:"Host, Close Up, Wide Lens Podcast", org:"Personal Project", y:"2026 – present",
-        points:["Independently plans topics, books guests and edits episodes — 9 released."]},
-      { role:"Project Lead, National College Students’ Innovation & Entrepreneurship Programme", org:"Nanjing Audit University", y:"2022.04 — 2023.12",
-        points:["Provincial approval Apr 2022, provincial completion Dec 2023; 3rd author on a paper published in the core journal Modern Business."]},
-      { role:"University-level Key Project, Student Summer Social Practice", org:"Nanjing Audit University", y:"2023.08",
-        points:[]},
-      { role:"External Liaison Officer, Science & Technology Association, Zeyuan College", org:"Nanjing Audit University", y:"2021.09 — 2022.06",
-        points:[
-          "Planned and led an inter-university social event, drawing 200+ students from institutions including Nanjing Agricultural University and Nanjing Normal University, and strengthening cross-campus exchange.",
-          "Wrote an event proposal recognised as an outstanding plan for its originality and attention to execution detail.",
-          "Supported the department head in building partnerships with multiple university societies, securing RMB 5,000 in sponsorship."
-        ]},
-      { role:"Class Organisation Committee Member", org:"Nanjing Audit University", y:"2021.09 — 2022.06",
-        points:[
-          "Assisted the Communist Youth League branch secretary, organising 5 college/university-level events with an average turnout of 50 participants.",
-          "Planned and ran 8 class team-building events and group gatherings (outdoor activities, themed evenings), reaching over 90% participation and noticeably strengthening peer communication and teamwork.",
-          "Relayed 85 official notices accurately, achieving 100% class coverage, and resolved 16 internal communication issues within the class."
-        ]}
     ]
   },
 
   cards:{
     skill:[
-      {n:"User Research",r:"SSR",lv:90,d:"Semi-structured interviews and end-to-end workflow mapping across 3 studios, turning qualitative feedback into prioritised requirements."},
-      {n:"Evaluation Frameworks",r:"SSR",lv:86,d:"Co-built a 12-metric offline model-evaluation framework — turning ‘is it good’ into a number you can compare."},
-      {n:"SQL",r:"SSR",lv:85,d:"Cleaned and standardised a dataset of 217 urban-rail projects, 26,088 vehicles and roughly RMB 206.3bn in contract value."},
-      {n:"Python",r:"SSR",lv:84,d:"Pandas / scikit-learn / statsmodels / Selenium — collection, cleaning, regression, PCA and topic modelling, all put to use."},
-      {n:"Industry Research",r:"SR",lv:82,d:"AIDC, humanoid robotics, rail-transit equipment — value-chain breakdown, competitive positioning, market sizing."},
-      {n:"Financial Modelling",r:"SR",lv:80,d:"NPV and sensitivity analysis, earnings-forecast breakdowns, PE / PB / EV-EBITDA comparable-company benchmarking."},
-      {n:"Visualisation",r:"SR",lv:76,d:"Tableau / Matplotlib / Power BI — turning analysis into dashboards you can present straight from."},
-      {n:"Vibe Coding",r:"R",lv:74,d:"Both the IBM recommender prototype and this site were written and deployed by me, solo."},
-      {n:"Written & Spoken Communication",r:"R",lv:86,d:"Structured expression honed over 9 podcast episodes; also wrote a 70,000-word project report."}
+      {n:"Data Analysis & Modelling",r:"SSR",lv:90,d:"Python · SQL · Excel · Power BI · Tableau · Stata — regression, cleaning, modelling, visualisation.",img:ICON.data},
+      {n:"Product & Business Analysis",r:"SSR",lv:88,d:"User-needs analysis, workflow mapping, KPI design, market & competitor research.",img:ICON.biz},
+      {n:"AI & Dev Tools",r:"SR",lv:82,d:"ChatGPT/Codex, Claude Code, DeepSeek — daily dev tools.",img:ICON.ai},
+      {n:"AI Product Capability",r:"SR",lv:80,d:"Model evaluation, test-set design, agent workflows, prompt/LLM.",img:ICON.eval},
+      {n:"Finance Research Tools",r:"SR",lv:78,d:"Wind, WRDS, Refinitiv Eikon — daily tools from the brokerage internships.",img:ICON.fin},
+      {n:"Content & Communication",r:"R",lv:86,d:"Storytelling honed over 9 podcast episodes; wrote a 70k-word report.",img:ICON.pen}
     ],
     hobby:[
       {n:"Photography",r:"SSR",lv:90,d:"Fujifilm compact + Lightroom / Capture One — partial to early-morning and dusk light.",img:"assets/gallery/seven-sisters.jpg"},
@@ -1226,7 +1265,7 @@ let DATA=CONTENT[lang];
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
 let openExpIndex=0, curCaseIndex=null, curSlide=0;
-let pool="skill", state={skill:[],hobby:[]};
+let state={skill:[],hobby:[]};
 
 function renderPage(){
   $$(".fnameEn").forEach(e=>e.textContent=DATA.nameEn);
@@ -1266,6 +1305,7 @@ function renderPage(){
   /* 作品：卡片网格 */
   $("#workGrid").innerHTML=DATA.cases.map((c,i)=>`
     <article class="work-card ${c.tone}" data-i="${i}">
+      ${c.cover?`<div class="work-card-cover"><img src="${c.cover}" alt="${c.name}" loading="lazy"></div>`:""}
       <div class="work-card-top"><span>${c.type}</span><b class="mono">${c.no} / 03</b></div>
       <div class="work-card-main">
         <p class="work-metric"><strong>${c.metric}</strong><span>${c.metricLabel}</span></p>
@@ -1273,7 +1313,7 @@ function renderPage(){
       </div>
       <div class="work-methods">${c.stack.slice(0,4).map(m=>`<span>${m}</span>`).join("")}</div>
       <button class="open-case" data-open="${i}">OPEN CASE <span>↗</span></button>
-      <div class="work-watermark">${String(i+1).padStart(2,"0")}</div>
+      ${c.cover?"":`<div class="work-watermark">${String(i+1).padStart(2,"0")}</div>`}
     </article>`).join("");
   $$("#workGrid [data-open]").forEach(b=>b.addEventListener("click",()=>openCase(+b.dataset.open)));
   if(curCaseIndex!==null && workOverlay.classList.contains("open")) renderCase();
@@ -1319,18 +1359,20 @@ function renderPage(){
   /* 教育背景 */
   const E=DATA.edu;
   $("#eduBox").innerHTML=`
-    <div class="edu-head"><div><h3>${E.school}</h3><p>${E.degree}</p></div>
-      <span class="mono">${E.when}</span></div>
-    <div style="margin-top:22px">${E.rows.map(r=>`<div class="row"><div class="k">${r.k}</div><div class="v">${r.v}</div></div>`).join("")}</div>
-    <div class="edu-block"><h4>${E.honorsLabel}</h4>${E.honors.map(h=>`<div class="honor-it"><b>${h.t}</b><div class="s">${h.d}</div></div>`).join("")}</div>
-    <div class="edu-block"><h4>${E.campusLabel}</h4>${E.campus.map(c=>`
-      <div class="campus-it">
-        <div class="chead"><div><div class="role">${c.role}</div><div class="org">${c.org}</div></div><time class="mono">${c.y}</time></div>
-        ${c.points&&c.points.length?`<ul>${c.points.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}
-      </div>`).join("")}</div>`;
+    ${E.degrees.map((D,i)=>`
+    <div${i>0?' style="margin-top:34px;padding-top:30px;border-top:1px solid var(--line)"':''}>
+      <div class="edu-head"><div><h3>${D.school}</h3><p>${D.degree}</p></div>
+        <span class="mono">${D.when}</span></div>
+      <div style="margin-top:22px">${D.rows.map(r=>`<div class="row"><div class="k">${r.k}</div><div class="v">${r.v}</div></div>`).join("")}</div>
+      <div class="edu-block"><h4>${D.campusLabel}</h4>${D.campus.map(c=>`
+        <div class="campus-it">
+          <div class="chead"><div><div class="role">${c.role}</div><div class="org">${c.org}</div></div><time class="mono">${c.y}</time></div>
+          ${c.points&&c.points.length?`<ul>${c.points.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}
+        </div>`).join("")}</div>
+    </div>`).join("")}`;
+  $("#honorsBox").innerHTML=E.honors.map(h=>`<div class="honor-it"><b>${h.t}</b><div class="s">${h.d}</div></div>`).join("");
 
   /* 摄影墙 */
-  $("#wallSub").textContent=DATA.wallCaption.replace("{n}",DATA.wall.length);
   $("#wall").innerHTML=DATA.wall.map(w=>`
     <figure class="shot" data-src="assets/gallery/${w.f}" data-cap="${w.cap} — ${w.loc}">
       <img src="assets/gallery/${w.f}" alt="${w.cap}" loading="lazy">
@@ -1421,41 +1463,43 @@ $$("[data-close]").forEach(b=>b.addEventListener("click",closeResume));
 resumeOverlay.addEventListener("click",e=>{ if(e.target===resumeOverlay) closeResume(); });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeResume();closeCase();$("#lb").classList.remove("open")}});
 
-/* 抽卡：抽取逻辑只定义一次，state 跨语言切换保留 */
-const grid=$("#cardGrid"), L=()=>DATA.cards[pool];
-function renderGacha(){
-  const list=L(), got=state[pool];
-  $("#total").textContent=list.length; $("#drawn").textContent=got.length;
-  $("#deckMark").textContent=pool==="skill"?"Skill":"Hobby";
-  $("#deckHint").textContent=got.length>=list.length?DATA.ui.gachaHintPoolDone:DATA.ui.gachaHintDefault;
-  grid.innerHTML=list.map((c,i)=>{
-    const idx=got.indexOf(i);
-    if(idx<0) return `<div class="slot">? ? ?</div>`;
-    return `<div class="gcard" data-r="${c.r}" style="animation-delay:${Math.min(idx,8)*45}ms"><div class="gc">
-      ${c.img?`<div class="gc-pic"><img src="${c.img}" alt="${c.n}" loading="lazy"></div>`:""}
-      <div class="gc-t"><span class="r">${c.r}</span><span>${String(i+1).padStart(2,"0")}</span></div>
-      <div class="gc-n">${c.n}</div><div class="gc-d">${c.d}</div>
-      <div class="bar"><i data-w="${c.lv}"></i></div>
-      <div class="gc-l"><span>${pool==="skill"?DATA.ui.gachaProficiency:DATA.ui.gachaPassion}</span><span>${c.lv}</span></div>
-      </div></div>`;
-  }).join("");
-  requestAnimationFrame(()=>$$(".bar i",grid).forEach(b=>b.style.width=b.dataset.w+"%"));
+/* 抽卡：技能 / 兴趣各自独立一套牌堆，state 跨语言切换保留 */
+function makeGacha(pool,ids){
+  const grid=$(ids.grid), L=()=>DATA.cards[pool];
+  function render(){
+    const list=L(), got=state[pool];
+    $(ids.total).textContent=list.length; $(ids.drawn).textContent=got.length;
+    $(ids.hint).textContent=got.length>=list.length?DATA.ui.gachaHintPoolDone:DATA.ui.gachaHintDefault;
+    grid.innerHTML=list.map((c,i)=>{
+      const idx=got.indexOf(i);
+      if(idx<0) return `<div class="slot">? ? ?</div>`;
+      return `<div class="gcard" data-r="${c.r}" style="animation-delay:${Math.min(idx,8)*45}ms"><div class="gc">
+        ${c.img?`<div class="gc-pic"><img src="${c.img}" alt="${c.n}" loading="lazy"></div>`:""}
+        <div class="gc-t"><span class="r">${c.r}</span><span>${String(i+1).padStart(2,"0")}</span></div>
+        <div class="gc-n">${c.n}</div><div class="gc-d">${c.d}</div>
+        <div class="bar"><i data-w="${c.lv}"></i></div>
+        <div class="gc-l"><span>${pool==="skill"?DATA.ui.gachaProficiency:DATA.ui.gachaPassion}</span><span>${c.lv}</span></div>
+        </div></div>`;
+    }).join("");
+    requestAnimationFrame(()=>$$(".bar i",grid).forEach(b=>b.style.width=b.dataset.w+"%"));
+  }
+  function draw(){
+    const list=L(), got=state[pool];
+    const left=list.map((_,i)=>i).filter(i=>!got.includes(i));
+    if(!left.length){ $(ids.hint).textContent=DATA.ui.gachaHintAllDrawn; return; }
+    const w=i=>({SSR:1,SR:2,R:3})[list[i].r]||2;
+    const bag=left.flatMap(i=>Array(w(i)).fill(i));
+    got.push(bag[Math.floor(Math.random()*bag.length)]); render();
+  }
+  $(ids.deck).addEventListener("click",draw);
+  $(ids.drawBtn).addEventListener("click",draw);
+  $(ids.allBtn).addEventListener("click",()=>{state[pool]=L().map((_,i)=>i);render()});
+  $(ids.resetBtn).addEventListener("click",()=>{state[pool]=[];render()});
+  return {render,draw};
 }
-function draw(){
-  const list=L(), got=state[pool];
-  const left=list.map((_,i)=>i).filter(i=>!got.includes(i));
-  if(!left.length){ $("#deckHint").textContent=DATA.ui.gachaHintAllDrawn; return; }
-  const w=i=>({SSR:1,SR:2,R:3})[list[i].r]||2;
-  const bag=left.flatMap(i=>Array(w(i)).fill(i));
-  got.push(bag[Math.floor(Math.random()*bag.length)]); renderGacha();
-}
-$("#deck").addEventListener("click",draw);
-$("#drawBtn").addEventListener("click",draw);
-$("#allBtn").addEventListener("click",()=>{state[pool]=L().map((_,i)=>i);renderGacha()});
-$("#resetBtn").addEventListener("click",()=>{state[pool]=[];renderGacha()});
-$$("#tabs button").forEach(b=>b.addEventListener("click",()=>{
-  $$("#tabs button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
-  pool=b.dataset.pool; renderGacha(); }));
+const skillGacha=makeGacha("skill",{grid:"#cardGridSkill",total:"#totalSkill",drawn:"#drawnSkill",hint:"#deckHintSkill",deck:"#deckSkill",drawBtn:"#drawBtnSkill",allBtn:"#allBtnSkill",resetBtn:"#resetBtnSkill"});
+const hobbyGacha=makeGacha("hobby",{grid:"#cardGridHobby",total:"#totalHobby",drawn:"#drawnHobby",hint:"#deckHintHobby",deck:"#deckHobby",drawBtn:"#drawBtnHobby",allBtn:"#allBtnHobby",resetBtn:"#resetBtnHobby"});
+function renderGacha(){ skillGacha.render(); hobbyGacha.render(); }
 
 /* 移动端菜单 */
 $("#menuBtn").addEventListener("click",()=>$("#topnav").classList.toggle("open"));
@@ -1489,7 +1533,7 @@ $$("#langToggle button").forEach(b=>b.addEventListener("click",()=>switchLang(b.
 /* 滚动揭示 + 导航高亮 */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.08});
 $$(".rv").forEach((el,i)=>{el.style.transitionDelay=Math.min(i%4*70,220)+"ms";io.observe(el)});
-const secs=["top","focus","exp","work","media","pod","edu","skill"];
+const secs=["top","focus","exp","work","media","pod","edu","skill","hobby"];
 function hl(){ let cur=secs[0];
   secs.forEach(id=>{const el=document.getElementById(id); if(el&&el.getBoundingClientRect().top<=170)cur=id});
   $$("#topnav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+cur)); }
@@ -1500,7 +1544,8 @@ let savedLang="zh";
 try{ savedLang=localStorage.getItem("site-lang")||"zh"; }catch(e){}
 renderPage();
 applyStatic("zh");
-draw();
+skillGacha.draw();
+hobbyGacha.draw();
 hl();
 if(savedLang==="en") switchLang("en");
 </script>
